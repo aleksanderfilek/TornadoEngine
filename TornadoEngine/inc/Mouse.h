@@ -3,6 +3,7 @@
 
 #include<SDL2/SDL.h>
 #include"Texture.h"
+
 class Mouse{
     public:
         Mouse(const char* cursorPath, SDL_Renderer *renderer);

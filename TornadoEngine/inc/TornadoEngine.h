@@ -1,8 +1,10 @@
 #ifndef TORNADOENGINE_H_
 #define TORNADOENGINE_H_
 
+#include<stdio.h>
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_main.h>
+#include<SDL2/SDL_image.h>
 
 class TornadoEngine{
 private:
@@ -15,7 +17,7 @@ public:
     //Destructor
     ~TornadoEngine();
     //Initialize SDL
-    bool init(const char *title, int width, int height);
+    bool init(const char *title, int width, int height, Uint32 flags);
     //Quit SDL
     void close();
 

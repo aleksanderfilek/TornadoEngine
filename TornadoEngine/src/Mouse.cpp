@@ -1,4 +1,4 @@
-#include<Mouse.h>
+#include"Mouse.h"
 
 Mouse::Mouse(const char* cursorPath, SDL_Renderer *renderer){
     this->texture.loadTexture(cursorPath, renderer);
