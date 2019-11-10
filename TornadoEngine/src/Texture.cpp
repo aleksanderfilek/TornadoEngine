@@ -5,7 +5,7 @@ Texture::Texture(){
 }
 
 Texture::~Texture(){
-    
+    free();
 }
 
 bool Texture::setTexture(const char *path, SDL_Renderer *renderer){

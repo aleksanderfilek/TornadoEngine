@@ -2,13 +2,13 @@
 #define TEXT_H_
 
 #include<SDL2/SDL.h>
-#include<SDL2/SDL_ttf.h>
+#include"Font.h"
 
 #include"Texture.h"
 
 class Text: public Texture{
 private:
-    TTF_Font *font;
+    Font font;
     char *text;
 public:
     Text();
@@ -18,7 +18,7 @@ public:
     static TTF_Font *loadFont(const char *path, int size){return TTF_OpenFont(path, size);};
 
     char *getText(){return text;};
-    void setText(char *_text);
+    void setText(const char *_text);
 };
 
 #endif
