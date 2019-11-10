@@ -1,16 +1,20 @@
 #include"Text.h"
 
-Text::Text(char *_text, const char *path, int size)
+Text::Text(char *_text, const char *path, int size, SDL_Renderer *renderer)
 :text(_text){
-    setFont(path,size);
+    setFont(path,size, renderer);
 }
 
 Text::~Text(){
     free();
 }
 
-bool Text::setFont(const char *path, int size){
-    return this->font.loadFont(path,size);
+bool Text::setFont(const char *path, int size, SDL_Renderer *renderer){
+    bool success = this->font.loadFont(path,size);
+    if(success && renderer != NULL && this->text != NULL){
+        success = setText(this->text,renderer);
+    }
+    return success;
 }
 
 bool Text::setText(const char *_text,SDL_Renderer *renderer){
@@ -42,3 +46,14 @@ bool Text::setText(const char *_text,SDL_Renderer *renderer){
 
     return success;
 }
+
+void Text::update(){
+
+}
+
+void Text::draw(SDL_Renderer *renderer){
+    render(renderer);
+}
+
+
+

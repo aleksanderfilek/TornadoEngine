@@ -3,27 +3,30 @@
 
 #include"Texture.h"
 #include"Text.h"
-#include"Component.h"
+#include"Mouse.h"
+#include<SDL2/SDL.h>
 
-class Button: public Component{
+class Button{
 private:
-    Texture background;
-    Text text;
+    Texture *background;
+    Text *text;
 
     bool isHovered = false;
+    bool isClicked = false;
+
+    bool hover(SDL_Point *point);
 public:
     Button();
-    virtual ~Button();
+    ~Button();
 
-    virtual void draw(SDL_Renderer *renderer);
-    virtual void update();
-
-    void free();
+    void draw(SDL_Renderer *renderer);
+    void update(Mouse *mouse);
 
     bool IsHovered(){return isHovered;};
+    bool IsClicked(){return isClicked;};
 
-    Texture *GetBackground(){return &background;};
-    Text *GetText(){return &text;};
+    Texture *GetBackground(){return background;};
+    Text *GetText(){return text;};
 };
 
 #endif
