@@ -18,6 +18,7 @@ public:
     ~Texture();
 
     bool setTexture(const char* path, SDL_Renderer *renderer);
+    void setTexture(SDL_Texture *newTexture){texture = newTexture;};
     //load texture from file
     static SDL_Texture *loadTexture(const char *path, SDL_Renderer *renderer);
     //free memory of texture

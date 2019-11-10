@@ -10,15 +10,15 @@ class Text: public Texture{
 private:
     Font font;
     char *text;
+    SDL_Color color;
 public:
-    Text();
+    Text(char *_text, const char *path, int size);
     ~Text();
 
     bool setFont(const char *path, int size);
-    static TTF_Font *loadFont(const char *path, int size){return TTF_OpenFont(path, size);};
 
     char *getText(){return text;};
-    void setText(const char *_text);
+    bool setText(const char *_text, SDL_Renderer *renderer);
 };
 
 #endif
