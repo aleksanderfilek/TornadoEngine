@@ -47,13 +47,4 @@ bool Text::setText(const char *_text,SDL_Renderer *renderer){
     return success;
 }
 
-void Text::update(){
-
-}
-
-void Text::draw(SDL_Renderer *renderer){
-    render(renderer);
-}
-
-
 

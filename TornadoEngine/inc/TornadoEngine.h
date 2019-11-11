@@ -6,6 +6,13 @@
 #include<SDL2/SDL_main.h>
 #include<SDL2/SDL_image.h>
 
+#include"Button.h"
+#include"Font.h"
+#include"Mouse.h"
+#include"State.h"
+#include"Texture.h"
+#include"Text.h"
+
 class TornadoEngine{
 private:
     SDL_Window *window;

@@ -5,9 +5,8 @@
 #include"Font.h"
 
 #include"Texture.h"
-#include"Component.h"
 
-class Text: public Texture,public Component{
+class Text: public Texture{
 private:
     Font font;
     char *text;
@@ -20,9 +19,6 @@ public:
 
     char *getText(){return text;};
     bool setText(const char *_text, SDL_Renderer *renderer);
-
-    void update();
-    void draw(SDL_Renderer *renderer);
 };
 
 #endif
