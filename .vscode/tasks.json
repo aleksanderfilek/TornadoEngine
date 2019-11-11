@@ -1,0 +1,32 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558 
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "build",
+            "command": "g++",
+            "args": [
+                "-I/home/aleksander/Dokumenty/Projekty/TornadoEngine/TornadoEngine/inc",
+                "src/main.cpp",
+                "TornadoEngine/src/TornadoEngine.cpp",
+                //"TornadoEngine/src/Mouse.cpp",
+                //"TornadoEngine/src/Text.cpp",
+                //"TornadoEngine/src/Texture.cpp",
+                //"TornadoEngine/src/Button.cpp",
+                //"-Ihome/aleksander/Dokumenty/Projekty/TornadoEngine/inc",
+                "-lSDL2",
+                "-lSDL2main",
+                "-lSDL2_image",
+                "-lSDL2_ttf",
+                "-o",
+                "main"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
