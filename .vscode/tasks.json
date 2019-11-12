@@ -13,7 +13,7 @@
                 "TornadoEngine/src/TornadoEngine.cpp",
                 //"TornadoEngine/src/Mouse.cpp",
                 //"TornadoEngine/src/Text.cpp",
-                //"TornadoEngine/src/Texture.cpp",
+                "TornadoEngine/src/Texture.cpp",
                 //"TornadoEngine/src/Button.cpp",
                 //"-Ihome/aleksander/Dokumenty/Projekty/TornadoEngine/inc",
                 "-lSDL2",
