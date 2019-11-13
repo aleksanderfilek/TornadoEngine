@@ -55,3 +55,7 @@ void TornadoEngine::close(){
     IMG_Quit();
     SDL_Quit();
 }
+
+void TornadoEngine::EventUpdate(){
+    //this->keyboardState = SDL_GetKeyboardState(NULL);
+}

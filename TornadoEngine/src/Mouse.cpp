@@ -21,7 +21,6 @@ void Mouse::render(SDL_Renderer *renderer){
 
 void Mouse::update(const SDL_Event *e){
     this->clicked = e->type == SDL_MOUSEBUTTONDOWN;
-
     if(this->clicked == true){
         //this->texture.setPosition(16,0);
     }

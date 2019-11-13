@@ -13,11 +13,19 @@
 #include"Texture.h"
 #include"Text.h"
 
+enum class Keyboard{
+    Num0 = 0,
+};
+
 class TornadoEngine{
 private:
     SDL_Window *window;
     SDL_Point windowSize;
     SDL_Renderer *renderer;
+
+    SDL_Event event;
+
+    Uint8 *keyboardState;
 public:
     //Constructor
     TornadoEngine();
@@ -27,6 +35,12 @@ public:
     bool init(const char *title, int width, int height, Uint32 flags);
     //Quit SDL
     void close();
+
+    //Event handling
+    void EventUpdate();
+
+    //check if key is pressed
+    bool getKeyboardState(int key){return keyboardState[key];};
 
     //Properties
     SDL_Window *getWindow(){return window;};
