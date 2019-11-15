@@ -64,14 +64,9 @@ void Texture::setPosition(const SDL_Point position){
     this->destinationRect.y = position.y;
 }
 
-void Texture::move(const int x, const int y){
+void Texture::move(const float x, const float y){
     this->destinationRect.x += x;
     this->destinationRect.y += y;
-}
-
-void Texture::move(const SDL_Point offset){
-    this->destinationRect.x += offset.x;
-    this->destinationRect.y += offset.y;
 }
 
 void Texture::setScale(const int x, const int y){

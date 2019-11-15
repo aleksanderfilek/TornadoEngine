@@ -12,6 +12,7 @@
 #include"State.h"
 #include"Texture.h"
 #include"Text.h"
+#include"Timer.h"
 
 enum class Keyboard{
     Num0 = 0,

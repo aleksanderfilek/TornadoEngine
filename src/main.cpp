@@ -13,6 +13,10 @@ int main(){
 
     SDL_Event e;
     bool quit = false;
+    int x=0,y=0;
+
+    Timer timer;
+    timer.start();
     while( !quit )
     {
         //Handle events on queue
@@ -25,24 +29,47 @@ int main(){
             }
             else if( e.type == SDL_KEYDOWN )
             {
-                //Select surfaces based on key press
-                if(e.key.keysym.sym == SDLK_UP){
-                    texture.move(0,-5);
-                }else if(e.key.keysym.sym == SDLK_DOWN){
-                    texture.move(0,5);
+                switch(e.key.keysym.sym){
+                    case SDLK_UP:
+                        y = -5;
+                        break;
+                    case SDLK_DOWN:
+                        y = 5;
+                        break;
+                    case SDLK_LEFT:
+                        x = -5;
+                        break;
+                    case SDLK_RIGHT:
+                        x = 5;
+                        break;
                 }
+            }  
 
-                if(e.key.keysym.sym == SDLK_RIGHT){
-                    texture.move(5,0);
-                }else if(e.key.keysym.sym == SDLK_LEFT){
-                    texture.move(-5,0);
+            if( e.type == SDL_KEYUP )
+            {
+                switch(e.key.keysym.sym){
+                    case SDLK_UP:
+                        y = 0;
+                        break;
+                    case SDLK_DOWN:
+                        y = 0;
+                        break;
+                    case SDLK_LEFT:
+                        x = 0;
+                        break;
+                    case SDLK_RIGHT:
+                        x = 0;
+                        break;
                 }
             }        
         }
-
+        :
+        float deltaTime = timer.restart() / 1000.f;
+        texture.move(x * deltaTime,y * deltaTime);
         SDL_RenderClear(renderer);
         texture.render(renderer);
         SDL_RenderPresent(renderer);
+
     }
 
 

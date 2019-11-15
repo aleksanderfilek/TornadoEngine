@@ -30,8 +30,7 @@ public:
 
     void setPosition(const int x, const int y);
     void setPosition(const SDL_Point position);
-    void move(const int x, const int y);
-    void move(const SDL_Point offset);
+    void move(const float x, const float y);
 
     void setScale(const int x, const int y);
     void setScale(const SDL_Point _scale);

@@ -15,6 +15,7 @@
                 //"TornadoEngine/src/Text.cpp",
                 "TornadoEngine/src/Texture.cpp",
                 //"TornadoEngine/src/Button.cpp",
+                "TornadoEngine/src/Timer.cpp",
                 //"-Ihome/aleksander/Dokumenty/Projekty/TornadoEngine/inc",
                 "-lSDL2",
                 "-lSDL2main",
