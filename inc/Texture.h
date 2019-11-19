@@ -40,7 +40,7 @@ public:
 
     //Properties
     SDL_Rect getSourceRect(){return sourceRect;};
-    SDL_Rect getDestinationRect(){return destinationRect;};
+    SDL_Rect *getDestinationRect(){return &destinationRect;};
     SDL_Point getScale(){return scale;};
     SDL_Texture *getTexture(){return texture;};
 };

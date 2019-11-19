@@ -16,7 +16,7 @@ void Button::draw(SDL_Renderer *renderer){
 
 void Button::update(Mouse *mouse){
     
-    if(hover(&mouse->getMousePosition())){
+    if(hover(mouse->getMousePosition())){
         this->isHovered = true;
         if(mouse->getMouseDown()){
             this->isClicked = true;
@@ -31,7 +31,7 @@ void Button::update(Mouse *mouse){
 }
 
 bool Button::hover(SDL_Point *point){
-    SDL_Rect *dstRect = &this->background->getDestinationRect();
+    SDL_Rect *dstRect = this->background->getDestinationRect();
     if(point->x >= dstRect->x && point->x <= dstRect->x + dstRect->w &&
         point->y >= dstRect->y && point->y <= dstRect->y + dstRect->h){
         return true;

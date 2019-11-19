@@ -8,14 +8,14 @@ Mouse::~Mouse(){
     this->texture.free();
 }
 
-SDL_Point Mouse::getMousePosition(){
-    SDL_Point position;
-    SDL_GetMouseState(&position.x, &position.y);
+SDL_Point *Mouse::getMousePosition(){
+    SDL_Point *position;
+    SDL_GetMouseState(&position->x, &position->y);
     return position;
 }
 
 void Mouse::render(SDL_Renderer *renderer){
-    SDL_Point position = getMousePosition();
+    SDL_Point position = *getMousePosition();
     this->texture.render(renderer);
 }
 
