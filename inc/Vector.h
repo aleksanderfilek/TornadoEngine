@@ -11,14 +11,18 @@ struct Vector2f{
     static Vector2f up(){return {0.0f,1.0f};}
     static Vector2f right(){return {1.0f,0.0f};}
 
-    static void normalize(Vector2f &vector){
-        float length = sqrt(vector.x*vector.x + vector.y*vector.y);
-        vector.x /= length;
-        vector.y /= length;
+    double magnitude(){
+        return sqrt((double)(x*x + y*y));
+    }
+
+    void normalize(){
+        float length = magnitude();
+        x /= length;
+        y /= length;
     }
 
     static Vector2f normalized(const Vector2f *vector){
-        float length = sqrt(vector->x*vector->x + vector->y*vector->y);
+        double length = sqrt(vector->x*vector->x + vector->y*vector->y);
         Vector2f normilizedVector = {vector->x/length,vector->y/length};
         return normilizedVector;
     }
@@ -38,6 +42,39 @@ struct Vector2f{
 
 struct Vector2i{
     int x,y;
+
+    static Vector2i zero(){return {0,0};}
+    static Vector2i one(){return {1,1};}
+    static Vector2i up(){return {0,1};}
+    static Vector2i right(){return {1,0};}
+
+    double magnitude(){
+        return sqrt((double)(x*x + y*y));
+    }
+
+    void normalize(){
+        double length = magnitude();
+        x /= length;
+        y /= length;
+    }
+
+    static Vector2i normalized(const Vector2i *vector){
+        double length = sqrt(vector->x*vector->x + vector->y*vector->y);
+        Vector2i normilizedVector = {vector->x/length,vector->y/length};
+        return normilizedVector;
+    }
+
+    Vector2i& operator+(const Vector2i &rhs){
+        this->x + rhs.x;
+        this->y + rhs.y;
+        return *this;
+    }
+
+    Vector2i& operator-(const Vector2i &rhs){
+        this->x - rhs.x;
+        this->y - rhs.y;
+        return *this;
+    }
 };
 
 
