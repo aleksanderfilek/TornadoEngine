@@ -11,8 +11,8 @@ struct Vector2f{
     static Vector2f up(){return {0.0f,1.0f};}
     static Vector2f right(){return {1.0f,0.0f};}
 
-    double magnitude(){
-        return sqrt((double)(x*x + y*y));
+    float magnitude(){
+        return sqrtf((x*x + y*y));
     }
 
     void normalize(){
@@ -22,7 +22,7 @@ struct Vector2f{
     }
 
     static Vector2f normalized(const Vector2f *vector){
-        double length = sqrt(vector->x*vector->x + vector->y*vector->y);
+        float length = sqrtf(vector->x*vector->x + vector->y*vector->y);
         Vector2f normilizedVector = {vector->x/length,vector->y/length};
         return normilizedVector;
     }
@@ -48,8 +48,8 @@ struct Vector2i{
     static Vector2i up(){return {0,1};}
     static Vector2i right(){return {1,0};}
 
-    double magnitude(){
-        return sqrt((double)(x*x + y*y));
+    float magnitude(){
+        return sqrtf((float)(x*x + y*y));
     }
 
     void normalize(){
@@ -59,7 +59,7 @@ struct Vector2i{
     }
 
     static Vector2i normalized(const Vector2i *vector){
-        double length = sqrt(vector->x*vector->x + vector->y*vector->y);
+        float length = sqrtf(vector->x*vector->x + vector->y*vector->y);
         Vector2i normilizedVector = {vector->x/length,vector->y/length};
         return normilizedVector;
     }
