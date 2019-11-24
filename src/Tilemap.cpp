@@ -16,7 +16,6 @@ void Tilemap::setTilemap(char *TilesetNum, int TileSize, int TileScale, Vector2i
 }
 
 void Tilemap::draw(SDL_Renderer *renderer){     //przemyslec obliczenia!!!
-    char tile;
     SDL_Rect srcRect = {0,0,this->tileSize,this->tileSize};
     int tileSizeScale = this->tileSize * this->tileScale;
     SDL_Rect dstRect = {0,0,tileSizeScale,tileSizeScale};
