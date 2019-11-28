@@ -3,6 +3,10 @@
 
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_main.h>
+#include<SDL2/SDL_image.h>
+
+
+//  TODO: add initializing ttf
 
 typedef struct{
     char *title;
@@ -20,7 +24,7 @@ typedef struct
     void (*close)();
 }State;
 
-int TE_init(Engine *engine, char *title, int width, int heigh);
+int TE_init(Engine *engine,const char *title, int width, int heigh);
 void TE_close(Engine *engine);
 
 #endif

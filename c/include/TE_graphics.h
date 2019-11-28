@@ -19,9 +19,11 @@ void freeTexture(Texture *texture);
 
 typedef struct{
     TTF_Font *font;
-    Texture texture;
+    char *text;
+    Texture *texture;
 }Text;
 
 TTF_Font *loadFont(const char *path, int size);
+void setText(const char *text);
 void freeText();
 #endif
