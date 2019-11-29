@@ -1,22 +1,9 @@
-#ifndef TORNADOENGINE_H_
-#define TORNADOENGINE_H_
+#ifndef TEMAIN_H_
+#define TEMAIN_H_
 
-#include<stdio.h>
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_main.h>
 #include<SDL2/SDL_image.h>
-
-#include"Button.h"
-#include"Font.h"
-#include"Mouse.h"
-#include"State.h"
-#include"Texture.h"
-#include"Text.h"
-#include"Timer.h"
-
-enum class Keyboard{
-    Num0 = 0,
-};
 
 class TornadoEngine{
 private:
@@ -25,8 +12,6 @@ private:
     SDL_Renderer *renderer;
 
     SDL_Event event;
-
-    Uint8 *keyboardState;
 public:
     //Constructor
     TornadoEngine();
@@ -40,13 +25,38 @@ public:
     //Event handling
     void EventUpdate();
 
-    //check if key is pressed
-    bool getKeyboardState(int key){return keyboardState[key];};
-
     //Properties
     SDL_Window *getWindow(){return window;};
     SDL_Point getWindowSize(){return windowSize;};
     SDL_Renderer *getRenderer(){return renderer;};
+};
+
+class State{
+public:
+    State(){}
+    virtual ~State() = 0;
+    virtual int update() = 0;
+    virtual void draw() = 0;
+};
+
+class Timer{
+ public:
+        //Initializes variables
+        Timer();
+
+        //The various clock actions
+        void start();
+        void stop();
+        Uint32 restart();
+
+        //Checks the status of the timer
+        bool isStarted();
+
+    private:
+        //The clock time when the timer started
+        Uint32 mStartTicks;
+
+        bool mStarted;
 };
 
 #endif

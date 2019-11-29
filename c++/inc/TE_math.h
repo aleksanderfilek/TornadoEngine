@@ -1,6 +1,5 @@
-#ifndef VECTOR_H_
-#define VECTOR_H_
-
+#ifndef TEMATH_H_
+#define TEMATH_H_
 #include<cmath>
 
 struct Vector2f{
@@ -76,6 +75,4 @@ struct Vector2i{
         return *this;
     }
 };
-
-
 #endif

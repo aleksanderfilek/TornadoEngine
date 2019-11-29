@@ -1,7 +1,8 @@
-#ifndef TEXTURE_H_
-#define TEXTURE_H_
+#ifndef TEGRAPHICS_H_
+#define TEGRAPHICS_H_
 
 #include<SDL2/SDL.h>
+#include<SDL2/SDL_main.h>
 #include<SDL2/SDL_image.h>
 
 class Texture{
@@ -44,5 +45,6 @@ public:
     SDL_Point getScale(){return scale;};
     SDL_Texture *getTexture(){return texture;};
 };
+
 
 #endif
