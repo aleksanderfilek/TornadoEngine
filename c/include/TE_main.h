@@ -5,17 +5,19 @@
 
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_main.h>
+#include<SDL2/SDL_image.h>
+#include<SDL2/SDL_ttf.h>
 
 typedef struct{
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Event event;
 
-    int widht, height;
+    int width, height;
 }TornadoEngine;
 
 uint8_t TE_init(TornadoEngine *engine, const char *title, int width, int height);
-void TE_close();
+void TE_close(TornadoEngine *engine);
 
 typedef struct{
     void (*start)();
@@ -25,18 +27,17 @@ typedef struct{
 }State;
 
 typedef struct{
-    enum{
+    enum TimerState{
         stop = 0,
-        start = 1,
-        pause = 2
-    }TimerState;
+        start = 1
+    };
 
     Uint32 startTicks;
     uint8_t state;
 }Timer;
 
-void startTimer();
-void closeTimer();
-Uint32 restartTimer();
+void startTimer(Timer *timer);
+Uint32 stopTimer(Timer *timer);
+Uint32 restartTimer(Timer *timer);
 
 #endif
