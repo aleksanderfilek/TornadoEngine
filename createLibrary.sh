@@ -1,4 +1,4 @@
 #!/bin/bash
-g++ -c -Iinc src/TornadoEngine.cpp src/Button.cpp src/Mouse.cpp src/Text.cpp src/Texture.cpp src/Timer.cpp -lSDL2 -lSDL2main -lSDL2_image -lSDL2_ttf
-ar rvs lib/TornadoEngine.a TornadoEngine.o Button.o Mouse.o Text.o Texture.o Timer.o
-rm TornadoEngine.o Button.o Mouse.o Text.o Texture.o Timer.o
+gcc -c -Iinclude src/TE_main.c src/TE_graphics.c src/TE_math.c src/TE_ecs.c  -lSDL2 -lSDL2main -lSDL2_image -lSDL2_ttf
+ar rvs lib/TornadoEngine.a TE_main.o TE_graphics.o TE_math.o TE_ecs.o
+rm TE_main.o TE_graphics.o TE_math.o TE_ecs.o

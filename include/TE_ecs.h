@@ -5,6 +5,6 @@
 
 #include"TE_graphics.h"
 
-void Ecs_Tex_draw(SDL_Renderer *renderer, Texture *textureStructs);
+void Ecs_Tex_draw(SDL_Renderer *renderer,const Texture *textureStructs, int number);
 
 #endif

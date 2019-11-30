@@ -26,7 +26,7 @@ typedef struct{
     Texture *texture;
 }Text;
 
-TTF_Font *Text_load(SDL_Renderer *renderer, const char *path);
+TTF_Font *Text_load(SDL_Renderer *renderer, const char *path, int size);
 void Text_setFont(Text *textStruct, TTF_Font *font);
 void Text_setText(SDL_Renderer *renderer, Text *textStruct, const char *newText);
 void Text_free(Text *textStruct);
