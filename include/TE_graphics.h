@@ -10,8 +10,10 @@ typedef struct{
     SDL_Texture *texture;
     SDL_Rect sourceRect;
     SDL_Rect destinationRect;
+    SDL_Point scale;
 }Texture;
 
+//TODO: init texture function, where are set default things
 SDL_Texture *Tex_load(SDL_Renderer *renderer, const char *path);
 void Tex_setTexture(Texture *textureStruct, SDL_Texture *tex);
 void Tex_setSourceRect(Texture *textureStruct, SDL_Rect newSourceRect);
@@ -26,6 +28,7 @@ typedef struct{
     Texture *texture;
 }Text;
 
+//TODO: init text function
 TTF_Font *Text_load(SDL_Renderer *renderer, const char *path, int size);
 void Text_setFont(Text *textStruct, TTF_Font *font);
 void Text_setText(SDL_Renderer *renderer, Text *textStruct, const char *newText);

@@ -40,8 +40,8 @@ void Tex_setTexture(Texture *textureStruct, SDL_Texture *tex){
 
     textureStruct->destinationRect.x = 0;
     textureStruct->destinationRect.y = 0;
-    textureStruct->destinationRect.w = width;
-    textureStruct->destinationRect.h = height;
+    textureStruct->destinationRect.w = width * textureStruct->scale.x;
+    textureStruct->destinationRect.h = height * textureStruct->scale.y;
 }
 
 void Tex_setSourceRect(Texture *textureStruct, SDL_Rect newSourceRect){
@@ -54,6 +54,8 @@ void Tex_setPosition(Texture *textureStruct, int x, int y){
 }
 
 void Tex_setScale(Texture *textureStruct, int x, int y){
+    textureStruct->scale.x = x;
+    textureStruct->scale.y = y;
     int width = textureStruct->sourceRect.w * x;
     int height = textureStruct->sourceRect.h * y;
     textureStruct->destinationRect.w = width;
@@ -69,6 +71,8 @@ void Tex_free(Texture *textureStruct){
     textureStruct->texture = NULL;
     SDL_Rect src = {0,0,0,0};
     textureStruct->sourceRect = src;
+    SDL_Point scale = {1,1};
+    textureStruct->scale = scale;
 }
 
 TTF_Font *Text_load(SDL_Renderer *renderer, const char *path, int size){
