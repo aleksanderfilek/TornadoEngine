@@ -1,10 +1,10 @@
 #ifndef TEGRAPHICS_H_
 #define TEGRAPHICS_H_
 
-#include<SDL2/SDL.h>
-#include<SDL2/SDL_main.h>
-#include<SDL2/SDL_image.h>
-#include<SDL2/SDL_ttf.h>
+#include<SDL.h>
+#include<SDL_main.h>
+#include<SDL_image.h>
+#include<SDL_ttf.h>
 
 typedef struct{
     SDL_Texture *texture;
@@ -14,7 +14,8 @@ typedef struct{
 }Texture;
 
 //TODO: init texture function, where are set default things
-SDL_Texture *Tex_load(SDL_Renderer *renderer, const char *path);
+void Tex_init(SDL_Renderer *renderer, const char *texturePath, int posX, int posY, int scaleX, int scaleY);
+SDL_Texture *Tex_load(SDL_Renderer *renderer, const char *texturePath);
 void Tex_setTexture(Texture *textureStruct, SDL_Texture *tex);
 void Tex_setSourceRect(Texture *textureStruct, SDL_Rect newSourceRect);
 void Tex_setPosition(Texture *textureStruct, int x, int y);

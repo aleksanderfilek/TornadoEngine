@@ -2,6 +2,10 @@
 
 #include<stdio.h>
 
+void Tex_init(SDL_Renderer *renderer, const char *texturePath, int posX, int posY, int scaleX, int scaleY){
+
+}
+
 SDL_Texture *Tex_load(SDL_Renderer *renderer, const char *path){
     //The final texture
     SDL_Texture* newTexture = NULL;
