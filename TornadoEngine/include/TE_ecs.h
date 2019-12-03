@@ -16,9 +16,13 @@ void Ecs_Tex_Add(Texture texture);
 void Ecs_Tex_draw();
 void Ecs_Tex_free();
 
-Text *text;
-int textElementNumber = 0;
+Button *buttonSystem;
+int buttonElementNumber = 0;
 
+void Ecs_Btn_add(Button button);
 void Ecs_Btn_update(int mousePosX, int mousePosY, Button *buttonStructs, int number);
+void Ecs_Btn_free();
 
+
+void Ecs_clear();
 #endif

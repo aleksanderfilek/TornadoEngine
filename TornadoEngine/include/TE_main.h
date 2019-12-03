@@ -14,6 +14,9 @@ SDL_Event e;
 
 int screenWidth,screenHeight;
 
+State currentState;
+State nextState;
+
 uint8_t TE_init(const char *title, int width, int height);
 void TE_close();
 

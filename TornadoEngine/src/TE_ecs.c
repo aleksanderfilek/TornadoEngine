@@ -1,11 +1,28 @@
 #include"TE_ecs.h"
 
+void Ecs_Tex_add(Texture texture){
+    textureElementNumber++;
+    textureSystem = (Texture *)realloc(textureSystem,textureElementNumber*sizeof(Texture));
+    textureSystem[textureElementNumber] = texture;
+}
+
 void Ecs_Tex_draw(){
     int i;
     for(i = 0; i < textureElementNumber; i++){
         Texture tex = textureSystem[i];
         SDL_RenderCopy(renderer,tex.texture,&tex.sourceRect,&tex.destinationRect);
     }
+}
+
+void Ecs_Tex_free(){
+    free(textureSystem);
+    textureElementNumber = 0;
+}
+
+void Ecs_Btn_add(Button button){
+    buttonElementNumber++;
+    buttonSystem = (Button *)realloc(buttonSystem,buttonElementNumber*sizeof(Button));
+    buttonSystem[buttonElementNumber] = button;
 }
 
 void Ecs_Btn_update(int mousePosX, int mousePosY , Button *buttonStructs, int number){
@@ -31,4 +48,14 @@ void Ecs_Btn_update(int mousePosX, int mousePosY , Button *buttonStructs, int nu
             if(button.unhover)button.unhover();
         }
     }
+}
+
+void Ecs_Btn_free(){
+    free(buttonSystem);
+    buttonElementNumber = 0;
+}
+
+void Ecs_clear(){
+    Ecs_Btn_free();
+    Ecs_Tex_free();
 }
