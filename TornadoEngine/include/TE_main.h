@@ -8,16 +8,14 @@
 #include<SDL2/SDL_image.h>
 #include<SDL2/SDL_ttf.h>
 
-typedef struct{
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-    SDL_Event event;
+SDL_Window *window;
+SDL_Renderer *renderer;
+SDL_Event e;
 
-    int width, height;
-}TornadoEngine;
+int screenWidth,screenHeight;
 
-uint8_t TE_init(TornadoEngine *engine, const char *title, int width, int height);
-void TE_close(TornadoEngine *engine);
+uint8_t TE_init(const char *title, int width, int height);
+void TE_close();
 
 typedef struct{
     void (*start)();

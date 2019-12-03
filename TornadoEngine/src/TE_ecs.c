@@ -1,14 +1,14 @@
 #include"TE_ecs.h"
 
-void Ecs_Tex_draw(SDL_Renderer *renderer,const Texture *textureStructs, int number){
+void Ecs_Tex_draw(){
     int i;
-    for(i = 0; i < number; i++){
-        Texture tex = textureStructs[i];
+    for(i = 0; i < textureElementNumber; i++){
+        Texture tex = textureSystem[i];
         SDL_RenderCopy(renderer,tex.texture,&tex.sourceRect,&tex.destinationRect);
     }
 }
 
-void Ecs_Btn_update(SDL_Event *e,int mousePosX, int mousePosY , Button *buttonStructs, int number){
+void Ecs_Btn_update(int mousePosX, int mousePosY , Button *buttonStructs, int number){
     int i;
     Button button;
     for(i = 0; i < number; i++){
@@ -21,7 +21,7 @@ void Ecs_Btn_update(SDL_Event *e,int mousePosX, int mousePosY , Button *buttonSt
                 button.state = hovered;
                 if(button.hover)button.hover();
             }
-            if(e->type == SDL_MOUSEBUTTONDOWN){
+            if(e.type == SDL_MOUSEBUTTONDOWN){
                 button.state = clicked;
                 if(button.click)button.click();
             }

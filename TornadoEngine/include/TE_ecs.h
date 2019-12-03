@@ -6,7 +6,19 @@
 #include"TE_graphics.h"
 #include"TE_ui.h"
 
-void Ecs_Tex_draw(SDL_Renderer *renderer,const Texture *textureStructs, int number);
-void Ecs_Btn_update(SDL_Event *e, Button *buttonStructs, int number);
+extern SDL_Renderer *renderer;
+extern SDL_Event e;
+
+Texture *textureSystem;
+int textureElementNumber = 0;
+
+void Ecs_Tex_Add(Texture texture);
+void Ecs_Tex_draw();
+void Ecs_Tex_free();
+
+Text *text;
+int textElementNumber = 0;
+
+void Ecs_Btn_update(int mousePosX, int mousePosY, Button *buttonStructs, int number);
 
 #endif

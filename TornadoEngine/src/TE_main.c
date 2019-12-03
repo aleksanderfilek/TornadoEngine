@@ -2,22 +2,22 @@
 
 #include<stdio.h>
 
-uint8_t TE_init(TornadoEngine *engine, const char *title, int width, int height){
+uint8_t TE_init(const char *title, int Width, int Height){
     uint8_t success = 1;
     //Create window
-    engine->window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
-    if( engine->window == NULL )
+    window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Width, Height, SDL_WINDOW_SHOWN);
+    if( window == NULL )
     {
         printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
         success = -1;
     }
     else
     {
-        engine->width = width;
-        engine->height = height;
+        screenWidth = Width;
+        screenHeight = Height;
         //Create renderer for window
-        engine->renderer = SDL_CreateRenderer( engine->window, -1, SDL_RENDERER_ACCELERATED );
-        if( engine->renderer == NULL )
+        renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
+        if( renderer == NULL )
         {
             printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
             success = -1;
@@ -25,7 +25,7 @@ uint8_t TE_init(TornadoEngine *engine, const char *title, int width, int height)
         else
         {
             //Initialize renderer color
-            SDL_SetRenderDrawColor( engine->renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+            SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
             //Initialize PNG loading
             int imgFlags = IMG_INIT_PNG;
@@ -46,12 +46,12 @@ uint8_t TE_init(TornadoEngine *engine, const char *title, int width, int height)
     return success;
 }
 
-void TE_close(TornadoEngine *engine){
+void TE_close(){
     //Destroy window    
-    SDL_DestroyRenderer( engine->renderer );
-    SDL_DestroyWindow( engine->window );
-    engine->window = NULL;
-    engine->renderer = NULL;
+    SDL_DestroyRenderer( renderer );
+    SDL_DestroyWindow( window );
+    window = NULL;
+    renderer = NULL;
 
     //Quit SDL subsystems
     TTF_Quit();
