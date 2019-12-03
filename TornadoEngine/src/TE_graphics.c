@@ -2,19 +2,24 @@
 
 #include<stdio.h>
 
-void Tex_init(SDL_Renderer *renderer, const char *texturePath, int posX, int posY, int scaleX, int scaleY){
-
+Texture Tex_init(SDL_Renderer *renderer, const char *texturePath, int posX, int posY, int scaleX, int scaleY){
+    Texture texture;
+    SDL_Texture *tex = Tex_load(renderer,texturePath);
+    Tex_setTexture(&texture,tex);
+    Tex_setPosition(&texture,posX,posY);
+    Tex_setScale(&texture,scaleX,scaleY);
+    return texture;
 }
 
-SDL_Texture *Tex_load(SDL_Renderer *renderer, const char *path){
+SDL_Texture *Tex_load(SDL_Renderer *renderer, const char *texturePath){
     //The final texture
     SDL_Texture* newTexture = NULL;
 
     //Load image at specified path
-    SDL_Surface* loadedSurface = IMG_Load( path );
+    SDL_Surface* loadedSurface = IMG_Load( texturePath );
     if( loadedSurface == NULL )
     {
-        printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
+        printf( "Unable to load image %s! SDL_image Error: %s\n", texturePath, IMG_GetError() );
     }
     else
     {
@@ -22,7 +27,7 @@ SDL_Texture *Tex_load(SDL_Renderer *renderer, const char *path){
         newTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
         if( newTexture == NULL )
         {
-            printf( "Unable to create texture from %s! SDL Error: %s\n", path, SDL_GetError() );
+            printf( "Unable to create texture from %s! SDL Error: %s\n", texturePath, SDL_GetError() );
         }
 
         //Get rid of old loaded surface
@@ -79,7 +84,12 @@ void Tex_free(Texture *textureStruct){
     textureStruct->scale = scale;
 }
 
-TTF_Font *Text_load(SDL_Renderer *renderer, const char *path, int size){
+Text Text_init(SDL_Renderer *renderer, const char *fontPath, int size, const char *text ,int posX, int posY, int scaleX, int scaleY){
+    Text textStruct;
+    return textStruct;
+}
+
+TTF_Font *Text_loadFont(const char *path, int size){
     return TTF_OpenFont(path, size);
 }
 

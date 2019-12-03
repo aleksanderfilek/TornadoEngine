@@ -13,8 +13,7 @@ typedef struct{
     SDL_Point scale;
 }Texture;
 
-//TODO: init texture function, where are set default things
-void Tex_init(SDL_Renderer *renderer, const char *texturePath, int posX, int posY, int scaleX, int scaleY);
+Texture Tex_init(SDL_Renderer *renderer, const char *texturePath, int posX, int posY, int scaleX, int scaleY);
 SDL_Texture *Tex_load(SDL_Renderer *renderer, const char *texturePath);
 void Tex_setTexture(Texture *textureStruct, SDL_Texture *tex);
 void Tex_setSourceRect(Texture *textureStruct, SDL_Rect newSourceRect);
@@ -29,8 +28,8 @@ typedef struct{
     Texture *texture;
 }Text;
 
-//TODO: init text function
-TTF_Font *Text_load(SDL_Renderer *renderer, const char *path, int size);
+Text Text_init(SDL_Renderer *renderer, const char *fontPath, int size, const char *text ,int posX, int posY, int scaleX, int scaleY);
+TTF_Font *Text_loadFont(const char *path, int size);
 void Text_setFont(Text *textStruct, TTF_Font *font);
 void Text_setText(SDL_Renderer *renderer, Text *textStruct, const char *newText);
 void Text_free(Text *textStruct);
