@@ -17,5 +17,5 @@ typedef struct{
     void (*unhover)();
 }Button;
 
-//TODO: init button function
+Button *Btn_init(TTF_Font *font, const char *text, SDL_Texture *backgroundTexture, int posX, int posY, float scaleX, float scaleY);
 #endif

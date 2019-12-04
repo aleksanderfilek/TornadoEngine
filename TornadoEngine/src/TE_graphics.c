@@ -3,10 +3,10 @@
 #include<stdio.h>
 #include<string.h>
 
-Texture *Tex_init(SDL_Renderer *renderer, const char *texturePath, int posX, int posY, int scaleX, int scaleY){
+Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, float scaleY){
     Texture texture;
     if(texturePath != NULL){
-        SDL_Texture *tex = Tex_load(renderer,texturePath);
+        SDL_Texture *tex = Tex_load(texturePath);
         Tex_setTexture(&texture,tex);
     }
     Tex_setPosition(&texture,posX,posY);
@@ -15,7 +15,7 @@ Texture *Tex_init(SDL_Renderer *renderer, const char *texturePath, int posX, int
     return &texture;
 }
 
-SDL_Texture *Tex_load(SDL_Renderer *renderer, const char *texturePath){
+SDL_Texture *Tex_load(const char *texturePath){
     //The final texture
     SDL_Texture* newTexture = NULL;
 
@@ -66,17 +66,13 @@ void Tex_setPosition(Texture *textureStruct, int x, int y){
     textureStruct->destinationRect.y = y;
 }
 
-void Tex_setScale(Texture *textureStruct, int x, int y){
+void Tex_setScale(Texture *textureStruct, float x, float y){
     textureStruct->scale.x = x;
     textureStruct->scale.y = y;
-    int width = textureStruct->sourceRect.w * x;
-    int height = textureStruct->sourceRect.h * y;
+    int width = (int)(textureStruct->sourceRect.w * x);
+    int height = (int)(textureStruct->sourceRect.h * y);
     textureStruct->destinationRect.w = width;
     textureStruct->destinationRect.h = height;
-}
-
-void Tex_draw(Texture *textureStruct, SDL_Renderer *renderer){
-        SDL_RenderCopy(renderer,textureStruct->texture,&textureStruct->sourceRect,&textureStruct->destinationRect);
 }
 
 void Tex_free(Texture *textureStruct){
@@ -84,13 +80,13 @@ void Tex_free(Texture *textureStruct){
     textureStruct->texture = NULL;
     SDL_Rect src = {0,0,0,0};
     textureStruct->sourceRect = src;
-    SDL_Point scale = {1,1};
+    Vector2f scale = {1,1};
     textureStruct->scale = scale;
 }
 
-Text *Text_init(SDL_Renderer *renderer, const char *fontPath, int size, const char *text ,int posX, int posY, int scaleX, int scaleY){
+Text *Text_init(TTF_Font *font, const char *text ,int posX, int posY, float scaleX, float scaleY){
     Text textStruct;
-    textStruct.font = Text_loadFont(fontPath,size);
+    textStruct.font = font;
     Text_setText(renderer,&textStruct,text);
     Tex_setPosition(&textStruct.texture,posX,posY);
     Tex_setScale(&textStruct.texture,scaleX,scaleY);
