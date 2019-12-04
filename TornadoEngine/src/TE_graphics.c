@@ -1,14 +1,18 @@
 #include"TE_graphics.h"
 
 #include<stdio.h>
+#include<string.h>
 
-Texture Tex_init(SDL_Renderer *renderer, const char *texturePath, int posX, int posY, int scaleX, int scaleY){
+Texture *Tex_init(SDL_Renderer *renderer, const char *texturePath, int posX, int posY, int scaleX, int scaleY){
     Texture texture;
-    SDL_Texture *tex = Tex_load(renderer,texturePath);
-    Tex_setTexture(&texture,tex);
+    if(texturePath != NULL){
+        SDL_Texture *tex = Tex_load(renderer,texturePath);
+        Tex_setTexture(&texture,tex);
+    }
     Tex_setPosition(&texture,posX,posY);
     Tex_setScale(&texture,scaleX,scaleY);
-    return texture;
+    Ecs_Tex_Add(texture);
+    return &texture;
 }
 
 SDL_Texture *Tex_load(SDL_Renderer *renderer, const char *texturePath){
@@ -84,9 +88,13 @@ void Tex_free(Texture *textureStruct){
     textureStruct->scale = scale;
 }
 
-Text Text_init(SDL_Renderer *renderer, const char *fontPath, int size, const char *text ,int posX, int posY, int scaleX, int scaleY){
+Text *Text_init(SDL_Renderer *renderer, const char *fontPath, int size, const char *text ,int posX, int posY, int scaleX, int scaleY){
     Text textStruct;
-    return textStruct;
+    textStruct.font = Text_loadFont(fontPath,size);
+    Text_setText(renderer,&textStruct,text);
+    Tex_setPosition(&textStruct.texture,posX,posY);
+    Tex_setScale(&textStruct.texture,scaleX,scaleY);
+    return &textStruct;
 }
 
 TTF_Font *Text_loadFont(const char *path, int size){
@@ -119,7 +127,7 @@ void Text_setText(SDL_Renderer *renderer, Text *textStruct, const char *newText)
         else
         {
             Tex_setTexture(textStruct->texture,mTexture);
-            textStruct->text = newText;
+            strcpy(textStruct->text,newText);
         }
 
         //Get rid of old surface
