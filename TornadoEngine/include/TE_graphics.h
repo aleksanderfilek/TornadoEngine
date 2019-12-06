@@ -11,6 +11,11 @@
 
 extern SDL_Renderer *renderer;
 
+SDL_Texture **layer;
+
+void Layer_init(int layerCount);
+void Layer_free();
+
 typedef struct{
     SDL_Texture *texture;
     SDL_Rect sourceRect;

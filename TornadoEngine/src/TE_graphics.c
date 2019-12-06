@@ -2,6 +2,27 @@
 
 #include<stdio.h>
 #include<string.h>
+#include<stdlib.h>
+
+void Layer_init(int layerCount){
+    layer = (SDL_Texture **)malloc(layerCount * sizeof(SDL_Texture *));
+    int w,h;
+    SDL_GetRendererOutputSize(renderer,&w,&h);
+    int i;
+    for(i = 0;i<layerCount;i++){
+        layer[i] = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,w,h);
+    }
+}
+
+void Layer_free(){
+    int layerCount = sizeof(layer)/sizeof(SDL_Texture*);
+    int i;
+    for(i = 0; i < layerCount; i++){
+        SDL_DestroyTexture(layer[i]);
+        layer[i] = NULL;
+    }
+    free(layer);
+}
 
 Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, float scaleY){
     Texture texture;
