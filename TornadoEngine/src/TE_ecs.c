@@ -1,9 +1,10 @@
 #include"TE_ecs.h"
 
-void Ecs_Tex_add(Texture texture){
+Texture *Ecs_Tex_add(Texture *texture){
     textureElementNumber++;
     textureSystem = (Texture *)realloc(textureSystem,textureElementNumber*sizeof(Texture));
-    textureSystem[textureElementNumber] = texture;
+    textureSystem[textureElementNumber] = *texture;
+    return &texture[textureElementNumber];
 }
 
 void Ecs_Tex_draw(){

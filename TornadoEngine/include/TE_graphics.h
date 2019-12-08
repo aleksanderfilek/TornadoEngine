@@ -21,9 +21,10 @@ typedef struct{
     SDL_Rect sourceRect;
     SDL_Rect destinationRect;
     Vector2f scale;
+    int layer;
 }Texture;
 
-Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, float scaleY);
+Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, float scaleY, int layer);
 SDL_Texture *Tex_load(const char *texturePath);
 void Tex_setTexture(Texture *textureStruct, SDL_Texture *tex);
 void Tex_setSourceRect(Texture *textureStruct, SDL_Rect newSourceRect);

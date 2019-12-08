@@ -24,7 +24,7 @@ void Layer_free(){
     free(layer);
 }
 
-Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, float scaleY){
+Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, float scaleY, int layer){
     Texture texture;
     if(texturePath != NULL){
         SDL_Texture *tex = Tex_load(texturePath);
@@ -32,8 +32,8 @@ Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, flo
     }
     Tex_setPosition(&texture,posX,posY);
     Tex_setScale(&texture,scaleX,scaleY);
-    Ecs_Tex_Add(texture);
-    return &texture;
+    texture.layer = layer;
+    return Ecs_Tex_Add(&texture);
 }
 
 SDL_Texture *Tex_load(const char *texturePath){
@@ -106,12 +106,14 @@ void Tex_free(Texture *textureStruct){
 }
 
 Text *Text_init(TTF_Font *font, const char *text ,int posX, int posY, float scaleX, float scaleY){
-    Text textStruct;
-    textStruct.font = font;
-    Text_setText(renderer,&textStruct,text);
-    Tex_setPosition(&textStruct.texture,posX,posY);
-    Tex_setScale(&textStruct.texture,scaleX,scaleY);
-    return &textStruct;
+    Text *textStruct = malloc(sizeof(Text));
+    Texture texture;
+    textStruct->font = font;
+    Text_setText(textStruct,text);
+    Tex_setPosition(&texture,posX,posY);
+    Tex_setScale(&texture,scaleX,scaleY);
+    textStruct->texture = Ecs_Tex_Add(&texture); 
+    return textStruct;
 }
 
 TTF_Font *Text_loadFont(const char *path, int size){
@@ -119,10 +121,10 @@ TTF_Font *Text_loadFont(const char *path, int size){
 }
 
 void Text_setFont(Text *textStruct, TTF_Font *font){
-
+    Text_setText(textStruct,textStruct->text);
 }
 
-void Text_setText(SDL_Renderer *renderer, Text *textStruct, const char *newText){
+void Text_setText(Text *textStruct, const char *newText){
     //Get rid of preexisting texture
     Text_free(textStruct);
 

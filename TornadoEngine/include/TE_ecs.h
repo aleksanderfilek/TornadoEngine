@@ -12,7 +12,7 @@ extern SDL_Event e;
 Texture *textureSystem;
 int textureElementNumber = 0;
 
-void Ecs_Tex_Add(Texture texture);
+Texture *Ecs_Tex_Add(Texture *texture);
 void Ecs_Tex_draw();
 void Ecs_Tex_free();
 
