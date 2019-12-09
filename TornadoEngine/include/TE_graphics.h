@@ -11,11 +11,6 @@
 
 extern SDL_Renderer *renderer;
 
-SDL_Texture **layer;
-
-void Layer_init(int layerCount);
-void Layer_free();
-
 typedef struct{
     SDL_Texture *texture;
     SDL_Rect sourceRect;
@@ -29,7 +24,7 @@ SDL_Texture *Tex_load(const char *texturePath);
 void Tex_setTexture(Texture *textureStruct, SDL_Texture *tex);
 void Tex_setSourceRect(Texture *textureStruct, SDL_Rect newSourceRect);
 void Tex_setPosition(Texture *textureStruct, int x, int y);
-void Tex_setScale(Texture *textureStruct, float x, floats y);
+void Tex_setScale(Texture *textureStruct, float x, float y);
 void Tex_free(Texture *textureStruct);
 
 typedef struct{
@@ -44,4 +39,14 @@ void Text_setFont(Text *textStruct, TTF_Font *font);
 void Text_setText(Text *textStruct, const char *newText);
 void Text_free(Text *textStruct);
 
+Texture **textureSystem;
+int textureElementNumber = 0;
+int layerNumber = 0;
+
+void Layer_init(int layerCount);
+void Layer_free();
+
+Texture *Ecs_Tex_Add(Texture *texture);
+void Ecs_Tex_draw();
+void Ecs_Tex_free();
 #endif

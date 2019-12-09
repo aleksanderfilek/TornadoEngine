@@ -4,26 +4,6 @@
 #include<string.h>
 #include<stdlib.h>
 
-void Layer_init(int layerCount){
-    layer = (SDL_Texture **)malloc(layerCount * sizeof(SDL_Texture *));
-    int w,h;
-    SDL_GetRendererOutputSize(renderer,&w,&h);
-    int i;
-    for(i = 0;i<layerCount;i++){
-        layer[i] = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,w,h);
-    }
-}
-
-void Layer_free(){
-    int layerCount = sizeof(layer)/sizeof(SDL_Texture*);
-    int i;
-    for(i = 0; i < layerCount; i++){
-        SDL_DestroyTexture(layer[i]);
-        layer[i] = NULL;
-    }
-    free(layer);
-}
-
 Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, float scaleY, int layer){
     Texture texture;
     if(texturePath != NULL){
@@ -158,4 +138,45 @@ void Text_free(Text *textStruct){
     Tex_free(textStruct->texture);
     TTF_CloseFont(textStruct->font);
     textStruct->font = NULL;
+}
+
+Texture *Ecs_Tex_add(Texture *texture){
+    textureElementNumber++;
+    int layer = texture->layer;
+    textureSystem[layer] = (Texture *)realloc(textureSystem,textureElementNumber*sizeof(Texture));
+    textureSystem[layer][textureElementNumber] = *texture;
+    return &texture[textureElementNumber];
+}
+
+void Ecs_Tex_draw(){
+    int j;
+    for(j = 0; j < layerNumber; j++){
+        int i;
+        for(i = 0; i < textureElementNumber; i++){
+            Texture tex = textureSystem[j][i];
+            SDL_RenderCopy(renderer,tex.texture,&tex.sourceRect,&tex.destinationRect);
+        }
+    }
+}
+
+void Ecs_Tex_free(){
+    int j;
+    for(j=0; j < layerNumber; j++){
+        int i;
+        for(i = 0; i < textureElementNumber; i++){
+            Tex_free(&textureSystem[i]);
+        }
+        free(textureSystem[j]);
+    }
+    textureElementNumber = 0;
+}
+
+void Layer_init(int layerCount){
+    textureSystem = (Texture **)malloc(layerCount * sizeof(Texture *));
+}
+
+void Layer_free(){
+    Ecs_Tex_free();
+    free(textureSystem);
+    layerNumber = 0;
 }

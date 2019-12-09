@@ -12,6 +12,5 @@ Button *Btn_init(TTF_Font *font, const char *text, SDL_Texture *backgroundTextur
     Tex_setPosition(button.text->texture,posX,posY);
     Tex_setScale(button.text->texture,scaleX,scaleY);
 
-    Ecs_Btn_add(&button);
-    return &button;
+    return Ecs_Btn_add(&button);
 }

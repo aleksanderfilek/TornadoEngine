@@ -12,7 +12,7 @@
 
 SDL_Window *window;
 SDL_Renderer *renderer;
-SDL_Event e;
+SDL_Event event;
 
 int screenWidth,screenHeight;
 
