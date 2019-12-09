@@ -4,6 +4,43 @@
 #include<string.h>
 #include<stdlib.h>
 
+extern SDL_Renderer *renderer;
+
+Texture **textureSystem;
+int textureElementNumber = 0;
+int layerNumber = 0;
+
+Texture *Ecs_Tex_add(Texture *texture){
+    textureElementNumber++;
+    int layer = texture->layer;
+    textureSystem[layer] = (Texture *)realloc(textureSystem,textureElementNumber*sizeof(Texture));
+    textureSystem[layer][textureElementNumber] = *texture;
+    return &texture[textureElementNumber];
+}
+
+void Ecs_Tex_draw(){
+    int j;
+    for(j = 0; j < layerNumber; j++){
+        int i;
+        for(i = 0; i < textureElementNumber; i++){
+            Texture tex = textureSystem[j][i];
+            SDL_RenderCopy(renderer,tex.texture,&tex.sourceRect,&tex.destinationRect);
+        }
+    }
+}
+
+void Ecs_Tex_free(){
+    int j;
+    for(j=0; j < layerNumber; j++){
+        int i;
+        for(i = 0; i < textureElementNumber; i++){
+            Tex_free(&textureSystem[j][i]);
+        }
+        free(textureSystem[j]);
+    }
+    textureElementNumber = 0;
+}
+
 Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, float scaleY, int layer){
     Texture texture;
     if(texturePath != NULL){
@@ -138,37 +175,6 @@ void Text_free(Text *textStruct){
     Tex_free(textStruct->texture);
     TTF_CloseFont(textStruct->font);
     textStruct->font = NULL;
-}
-
-Texture *Ecs_Tex_add(Texture *texture){
-    textureElementNumber++;
-    int layer = texture->layer;
-    textureSystem[layer] = (Texture *)realloc(textureSystem,textureElementNumber*sizeof(Texture));
-    textureSystem[layer][textureElementNumber] = *texture;
-    return &texture[textureElementNumber];
-}
-
-void Ecs_Tex_draw(){
-    int j;
-    for(j = 0; j < layerNumber; j++){
-        int i;
-        for(i = 0; i < textureElementNumber; i++){
-            Texture tex = textureSystem[j][i];
-            SDL_RenderCopy(renderer,tex.texture,&tex.sourceRect,&tex.destinationRect);
-        }
-    }
-}
-
-void Ecs_Tex_free(){
-    int j;
-    for(j=0; j < layerNumber; j++){
-        int i;
-        for(i = 0; i < textureElementNumber; i++){
-            Tex_free(&textureSystem[i]);
-        }
-        free(textureSystem[j]);
-    }
-    textureElementNumber = 0;
 }
 
 void Layer_init(int layerCount){

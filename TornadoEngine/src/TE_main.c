@@ -2,6 +2,15 @@
 
 #include<stdio.h>
 
+SDL_Window *window;
+SDL_Renderer *renderer;
+SDL_Event event;
+
+int screenWidth,screenHeight;
+
+State currentState;
+State nextState;
+
 uint8_t TE_init(const char *title, int Width, int Height){
     uint8_t success = 1;
     //Create window
@@ -63,19 +72,19 @@ void TE_close(){
 
 void startTimer(Timer *timer){
     timer->startTicks = SDL_GetTicks();
-    timer->state = start;
+    timer->state = 1;
 }
 
 Uint32 stopTimer(Timer *timer){
     Uint32 time = SDL_GetTicks() - timer->startTicks;
     timer->startTicks = 0;
-    timer->state = stop;
+    timer->state = 0;
     return time;
 }
 
 Uint32 restartTimer(Timer *timer){
     Uint32 time = SDL_GetTicks() - timer->startTicks;
     timer->startTicks = SDL_GetTicks();
-    timer->state = start;
+    timer->state = 1;
     return time;
 }

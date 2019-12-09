@@ -7,9 +7,6 @@
 #include<SDL_ttf.h>
 
 #include"TE_math.h"
-#include"TE_ecs.h"
-
-extern SDL_Renderer *renderer;
 
 typedef struct{
     SDL_Texture *texture;
@@ -39,9 +36,6 @@ void Text_setFont(Text *textStruct, TTF_Font *font);
 void Text_setText(Text *textStruct, const char *newText);
 void Text_free(Text *textStruct);
 
-Texture **textureSystem;
-int textureElementNumber = 0;
-int layerNumber = 0;
 
 void Layer_init(int layerCount);
 void Layer_free();

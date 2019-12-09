@@ -10,14 +10,6 @@
 
 #include"TE_graphics.h"
 
-SDL_Window *window;
-SDL_Renderer *renderer;
-SDL_Event event;
-
-int screenWidth,screenHeight;
-
-State currentState;
-State nextState;
 
 uint8_t TE_init(const char *title, int width, int height);
 void TE_close();
@@ -29,14 +21,10 @@ typedef struct{
     void (*close)();
 }State;
 
-typedef struct{
-    enum TimerState{
-        stop = 0,
-        start = 1
-    };
 
-    Uint32 startTicks;
+typedef struct{
     uint8_t state;
+    Uint32 startTicks;
 }Timer;
 
 void startTimer(Timer *timer);
