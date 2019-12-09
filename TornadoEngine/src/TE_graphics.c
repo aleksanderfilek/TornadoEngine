@@ -50,7 +50,7 @@ Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, flo
     Tex_setPosition(&texture,posX,posY);
     Tex_setScale(&texture,scaleX,scaleY);
     texture.layer = layer;
-    return Ecs_Tex_Add(&texture);
+    return NULL;//Ecs_Tex_Add(&texture);
 }
 
 SDL_Texture *Tex_load(const char *texturePath){
@@ -129,7 +129,7 @@ Text *Text_init(TTF_Font *font, const char *text ,int posX, int posY, float scal
     Text_setText(textStruct,text);
     Tex_setPosition(&texture,posX,posY);
     Tex_setScale(&texture,scaleX,scaleY);
-    textStruct->texture = Ecs_Tex_Add(&texture); 
+    textStruct->texture = NULL;//Ecs_Tex_Add(&texture); 
     return textStruct;
 }
 

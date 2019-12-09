@@ -15,6 +15,7 @@ typedef struct{
     Vector2f scale;
     int layer;
 }Texture;
+Texture *Ecs_Tex_Add(Texture *texture);
 
 Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, float scaleY, int layer);
 SDL_Texture *Tex_load(const char *texturePath);
