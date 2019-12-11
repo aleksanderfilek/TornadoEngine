@@ -6,6 +6,102 @@
 
 extern SDL_Renderer *renderer;
 
+Texture *textureSystem;
+int textureSystemLength = 0;
+int textureSystemCapacity = 0;
+
+static Texture *insertTexture(const Texture *texture){
+    if(textureSystemLength >= textureSystemCapacity){
+        textureSystemCapacity += 5;
+        textureSystem = (Texture *)realloc(textureSystem,textureSystemCapacity * sizeof(Texture));
+    }
+
+    int i;
+    for(i = textureSystemLength - 1; (i >= 0 && textureSystem->layer > texture->layer); i--){
+        textureSystem[i+1] = textureSystem[i];
+    }
+    textureSystem[i] = *texture;
+
+    return &textureSystem[i];
+}
+
+void Tex_init(){
+    textureSystemCapacity = 10;
+    textureSystem = (Texture *)realloc(textureSystem,textureSystemCapacity * sizeof(Texture));
+}
+
+Texture *Tex_Create(const char *path, int posX, int posY, uint8_t layer){
+    Texture texture;
+    texture.texture = Tex_load(path);
+    texture.layer = layer;
+    Tex_setPosition(&texture,posX,posY);
+    Tex_setScale(&texture,1.0f,1.0f);
+
+    return insertTexture(&texture);
+}
+
+Texture *Tex_CreateFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer){
+    Texture texture;
+    Tex_setTexture(&texture, sdlTexture);
+    texture.layer = layer;
+    Tex_setPosition(&texture,posX,posY);
+    Tex_setScale(&texture,1.0f,1.0f);
+
+    return insertTexture(&texture);
+}
+
+void Tex_setTexture(Texture *texture, SDL_Texture *sdlTexture){
+    if(texture->texture != NULL){
+        SDL_DestroyTexture(texture->texture);
+    }
+    texture->texture = sdlTexture;
+    int w,h;
+    SDL_QueryTexture(sdlTexture,NULL,NULL,&w,&h);
+    Tex_setSourceRect(texture,0,0,w,h);
+    Tex_setScale(texture,texture->scale.x,texture->scale.y);
+}
+
+void Tex_setSourceRect(Texture *texture, int x, int y, int w, int h){
+    texture->sourceRect.x = x;
+    texture->sourceRect.y = y;
+    texture->sourceRect.w = w;
+    texture->sourceRect.h = h;
+}
+
+void Tex_setPosition(Texture *texture,int posX, int posY){
+    texture->destinationRect.x = posX;
+    texture->destinationRect.y = posY;
+}
+
+void Tex_move(Texture *texture, int offsetX, int offsetY){
+    texture->destinationRect.x += offsetX;
+    texture->destinationRect.y += offsetY;
+}
+
+void Tex_setScale(Texture *texture, float scaleX, float scaleY){
+    texture->scale.x = scaleX;
+    texture->scale.y = scaleY;
+    texture->destinationRect.x = scaleX * textureSystem->sourceRect.w;
+    texture->destinationRect.y = scaleY * textureSystem->sourceRect.h;
+}
+
+void Tex_draw(){
+    int i;
+    Texture texture;
+    for(i = 0; i < textureSystemLength; i++){
+        texture = textureSystem[i];
+        SDL_RenderCopy(renderer,texture.texture,&texture.sourceRect,&texture.destinationRect);
+    }
+}
+
+void Tex_free(){
+    int i;
+    for(i = textureSystemLength-1; i>=0;i--){
+        SDL_DestroyTexture(textureSystem[i].texture);
+    }
+    free(textureSystem);
+}
+/*
 Texture **textureSystem;
 int textureElementNumber = 0;
 int layerNumber = 0;
@@ -186,3 +282,4 @@ void Layer_free(){
     free(textureSystem);
     layerNumber = 0;
 }
+*/

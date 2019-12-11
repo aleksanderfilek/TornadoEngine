@@ -13,8 +13,22 @@ typedef struct{
     SDL_Rect sourceRect;
     SDL_Rect destinationRect;
     Vector2f scale;
-    int layer;
+    uint8_t layer;
 }Texture;
+
+void Tex_init();
+SDL_Texture *Tex_load(const char *texturePath);
+Texture *Tex_Create(const char *path, int posX, int posY, uint8_t layer);
+Texture *Tex_CreateFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer);
+void Tex_setTexture(Texture *texture, SDL_Texture *sdlTexture);
+void Tex_setSourceRect(Texture *texture, int x, int y, int w, int h);
+void Tex_setPosition(Texture *texture,int posX, int posY);
+void Tex_move(Texture *texture, int offsetX, int offsetY);
+void Tex_setScale(Texture *texture, float scaleX, float scaleY);
+void Tex_draw();
+void Tex_free();
+
+/*
 Texture *Ecs_Tex_Add(Texture *texture);
 
 Texture *Tex_init(const char *texturePath, int posX, int posY, float scaleX, float scaleY, int layer);
@@ -44,4 +58,5 @@ void Layer_free();
 Texture *Ecs_Tex_Add(Texture *texture);
 void Ecs_Tex_draw();
 void Ecs_Tex_free();
+*/
 #endif
