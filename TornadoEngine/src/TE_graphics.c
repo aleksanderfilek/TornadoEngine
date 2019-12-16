@@ -14,6 +14,7 @@ static int addTexture(const Texture *texture){
     if(textureSystemLength >= textureSystemCapacity){
         textureSystemCapacity += 5;
         textureSystem = (Texture *)realloc(textureSystem,textureSystemCapacity * sizeof(Texture));
+        printf("Reserve memory");
     }
 
     textureSystem[textureSystemLength++] = *texture;
@@ -23,12 +24,12 @@ static int addTexture(const Texture *texture){
 
 int Tex_Create(const char *path, int posX, int posY, uint8_t layer){
     Texture texture;
-    texture.texture = Tex_load(path);
     texture.layer = layer;
+    Tex_setTexture(&texture,Tex_load(path));
     Tex_setPosition(&texture,posX,posY);
     Tex_setScale(&texture, 1.0f, 1.0f);
-
-    return addTexture(&texture);
+    int index = addTexture(&texture);
+    return index;
 }
 
 int Tex_CreateFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer){
@@ -46,12 +47,12 @@ SDL_Texture *Tex_load(const char *path){
 
     SDL_Surface *loadedSurface = IMG_Load(path);
     if(loadedSurface == NULL){
-
+        printf("Unable to load image %s! SDL_image Error: %s\n",path,IMG_GetError());
     }
     else{
         newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
         if(newTexture == NULL){
-
+            printf("Unable to create texture from %s! SDL_image Error: %s\n",path,IMG_GetError());
         }
 
         SDL_FreeSurface(loadedSurface);
@@ -90,8 +91,8 @@ void Tex_move(Texture *texture, int offsetX, int offsetY){
 void Tex_setScale(Texture *texture, float scaleX, float scaleY){
     texture->scale.x = scaleX;
     texture->scale.y = scaleY;
-    texture->destinationRect.x = scaleX * textureSystem->sourceRect.w;
-    texture->destinationRect.y = scaleY * textureSystem->sourceRect.h;
+    texture->destinationRect.w = (int)(scaleX * texture->sourceRect.w);
+    texture->destinationRect.h = (int)(scaleY * texture->sourceRect.h);
 }
 
 static int textureCompare(const void *a, const void *b){
@@ -104,15 +105,17 @@ static int textureCompare(const void *a, const void *b){
 }
 
 void Tex_draw(){
-    Texture textures[textureSystemLength];
-    memcpy(textures,textureSystem,textureSystemLength*sizeof(Texture));
-    qsort(textures,textureSystemLength,sizeof(Texture),textureCompare);
+    SDL_RenderClear(renderer);
+    //Texture textures[1];
+    //memcpy(textures,textureSystem,textureSystemLength*sizeof(Texture));
+    //qsort(textures,textureSystemLength,sizeof(Texture),textureCompare);
     int i;
     Texture texture;
     for(i = 0; i < textureSystemLength; i++){
-        texture = textures[i];
+        texture = textureSystem[i];
         SDL_RenderCopy(renderer,texture.texture,&texture.sourceRect,&texture.destinationRect);
     }
+    SDL_RenderPresent(renderer);
 }
 
 void Tex_free(){

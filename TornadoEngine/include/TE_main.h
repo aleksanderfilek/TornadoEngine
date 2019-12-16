@@ -8,9 +8,6 @@
 #include<SDL_image.h>
 #include<SDL_ttf.h>
 
-#include"TE_graphics.h"
-
-
 uint8_t TE_init(const char *title, int width, int height);
 void TE_close();
 
