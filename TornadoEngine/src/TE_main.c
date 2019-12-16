@@ -43,9 +43,6 @@ uint8_t TE_init(const char *title, int Width, int Height){
                 printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
                 success = -1;
             }
-            else{
-                Layer_init(1);
-            }
             //Initialize SDL_ttf
             if( TTF_Init() == -1 )
             {

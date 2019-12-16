@@ -10,7 +10,7 @@ Texture *textureSystem;
 int textureSystemLength = 0;
 int textureSystemCapacity = 0;
 
-static Texture *addTexture(const Texture *texture){
+static int addTexture(const Texture *texture){
     if(textureSystemLength >= textureSystemCapacity){
         textureSystemCapacity += 5;
         textureSystem = (Texture *)realloc(textureSystem,textureSystemCapacity * sizeof(Texture));
@@ -39,6 +39,24 @@ int Tex_CreateFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t
     Tex_setScale(&texture,1.0f,1.0f);
 
     return addTexture(&texture);
+}
+
+SDL_Texture *Tex_load(const char *path){
+    SDL_Texture *newTexture = NULL;
+
+    SDL_Surface *loadedSurface = IMG_Load(path);
+    if(loadedSurface == NULL){
+
+    }
+    else{
+        newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+        if(newTexture == NULL){
+
+        }
+
+        SDL_FreeSurface(loadedSurface);
+    }
+    return newTexture;
 }
 
 void Tex_setTexture(Texture *texture, SDL_Texture *sdlTexture){

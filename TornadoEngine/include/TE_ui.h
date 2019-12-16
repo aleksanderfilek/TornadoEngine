@@ -9,7 +9,7 @@ typedef struct{
         hovered = 1,
         clicked = 2
     }state;
-    Text *text;
+    //Text *text;
     Texture *texture;
     void (*click)();
     void (*hover)();
