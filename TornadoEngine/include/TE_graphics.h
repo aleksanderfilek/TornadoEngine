@@ -26,4 +26,19 @@ void Tex_move(Texture *texture, int offsetX, int offsetY);
 void Tex_setScale(Texture *texture, float scaleX, float scaleY);
 void Tex_draw();
 void Tex_free();
+
+typedef struct{
+    SDL_Texture *tilesheet;
+    Vector2i position;
+    Vector2f scale;
+    int tileSize;
+    Vector2i tileMapSize;
+    uint8_t *tileplan;
+}Tilemap;
+
+void Tile_init(const char *path, int posX, int posY, int tileSize, int tileMapWidth, int tileMapHeight);
+void Tile_setPosition();
+void Tile_setScale();
+void Tile_draw();
+void Tile_free();
 #endif

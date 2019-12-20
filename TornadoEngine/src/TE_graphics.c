@@ -27,7 +27,6 @@ int Tex_Create(const char *path, int posX, int posY, uint8_t layer){
     Tex_setPosition(&texture,posX,posY);
     Tex_setScale(&texture, 1.0f, 1.0f);
     int index = addTexture(&texture);
-    printf("%d\n",textureSystemLength);
     return index;
 }
 
@@ -103,23 +102,23 @@ int textureCompare(const void *a, const void *b){
     if(_a.layer < _b.layer) return -1;
     else if(_a.layer == _b.layer) return 0;
     else return 1;
-
 }
 
 void Tex_draw(){
     SDL_RenderClear(renderer);
-   // Texture *textures = malloc(textureSystemLength*sizeof(Texture));
-   // memcpy(textures,textureSystem,textureSystemLength*sizeof(Texture));
-   // qsort(textures,textureSystemLength,sizeof(Texture),textureCompare);
+    Texture *textures = malloc(textureSystemLength*sizeof(Texture));
+    memcpy(textures,textureSystem,textureSystemLength*sizeof(Texture));
+    qsort(textures,textureSystemLength,sizeof(Texture),textureCompare);
 
+    Texture texture;
     int i;
     for(i = 0; i < textureSystemLength; i++){
-        Texture texture = textureSystem[i];
+        texture = textures[i];
         SDL_RenderCopy(renderer,texture.texture,&texture.sourceRect,&texture.destinationRect);
         SDL_Delay(1000);
     }
     SDL_RenderPresent(renderer);
-    //free(textures);
+    free(textures);
 }
 
 void Tex_free(){
