@@ -37,11 +37,11 @@ typedef struct{
 }Tilemap;
 
 int Tile_createFromArray(const char *path, uint8_t *plan, int posX, int posY, int tileSize, int tileMapWidth, int tileMapHeight);
-int Tile_createFromFile(const char *path, const char *plan, int posX, int posY, int tileSize, int tileMapWidth, int tileMapHeight);
+int Tile_createFromFile(const char *path, const char *plan, int posX, int posY);
 
 void Tile_setPosition(int tilemap, int posX, int posY);
 void Tile_setScale(int tilemap, float scaleX, float scaleY);
-void Tile_setElement(int tilemap, uint8_t element);
+void Tile_setElement(int tilemap, int elementIndex, uint8_t element);
 void Tile_draw();
 void Tile_free();
 #endif
