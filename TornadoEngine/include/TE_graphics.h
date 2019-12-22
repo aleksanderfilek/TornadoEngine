@@ -17,8 +17,8 @@ typedef struct{
 }Texture;
 
 SDL_Texture *Tex_load(const char *texturePath);
-int Tex_Create(const char *path, int posX, int posY, uint8_t layer);
-int Tex_CreateFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer);
+Texture *Tex_Create(const char *path, int posX, int posY, uint8_t layer);
+Texture *Tex_CreateFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer);
 void Tex_setTexture(Texture *texture, SDL_Texture *sdlTexture);
 void Tex_setSourceRect(Texture *texture, int x, int y, int w, int h);
 void Tex_setPosition(Texture *texture,int posX, int posY);

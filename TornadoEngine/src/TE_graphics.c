@@ -10,27 +10,26 @@ Texture *textureSystem;
 int textureSystemLength = 0;
 int textureSystemCapacity = 0;
 
-static int addTexture(const Texture *texture){
+static Texture *addTexture(const Texture *texture){
     if(textureSystemLength >= textureSystemCapacity){
         textureSystemCapacity += 5;
         textureSystem = (Texture *)realloc(textureSystem,textureSystemCapacity * sizeof(Texture));
     }
 
     textureSystem[textureSystemLength++] = *texture;
-    return textureSystemLength-1;
+    return &textureSystem[textureSystemLength-1];
 }
 
-int Tex_Create(const char *path, int posX, int posY, uint8_t layer){
+Texture *Tex_Create(const char *path, int posX, int posY, uint8_t layer){
     Texture texture;
     texture.layer = layer;
     Tex_setTexture(&texture,Tex_load(path));
     Tex_setPosition(&texture,posX,posY);
     Tex_setScale(&texture, 1.0f, 1.0f);
-    int index = addTexture(&texture);
-    return index;
+    return addTexture(&texture);
 }
 
-int Tex_CreateFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer){
+Texture *Tex_CreateFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer){
     Texture texture;
     Tex_setTexture(&texture, sdlTexture);
     texture.layer = layer;
@@ -115,7 +114,6 @@ void Tex_draw(){
     for(i = 0; i < textureSystemLength; i++){
         texture = textures[i];
         SDL_RenderCopy(renderer,texture.texture,&texture.sourceRect,&texture.destinationRect);
-        SDL_Delay(1000);
     }
     SDL_RenderPresent(renderer);
     free(textures);
