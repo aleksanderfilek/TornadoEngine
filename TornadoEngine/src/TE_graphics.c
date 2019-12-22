@@ -20,7 +20,7 @@ static Texture *addTexture(const Texture *texture){
     return &textureSystem[textureSystemLength-1];
 }
 
-Texture *Tex_Create(const char *path, int posX, int posY, uint8_t layer){
+Texture *Tex_create(const char *path, int posX, int posY, uint8_t layer){
     Texture texture;
     texture.layer = layer;
     Tex_setTexture(&texture,Tex_load(path));
@@ -29,7 +29,7 @@ Texture *Tex_Create(const char *path, int posX, int posY, uint8_t layer){
     return addTexture(&texture);
 }
 
-Texture *Tex_CreateFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer){
+Texture *Tex_createFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer){
     Texture texture;
     Tex_setTexture(&texture, sdlTexture);
     texture.layer = layer;
@@ -126,3 +126,72 @@ void Tex_free(){
     }
     free(textureSystem);
 }
+
+Tilemap *tilemapSystem;
+int tilemapSystemLength = 0;
+
+static int createTilemap(const char *path, int posX, int posY, int tileSize, int tileMapWidth, int tileMapHeight){
+    tilemapSystemLength++;
+    tilemapSystem = (Tilemap *)realloc(tilemapSystem, tilemapSystemLength*sizeof(Tilemap));
+
+    Tilemap tilemap;
+    tilemap.position.x = posX;
+    tilemap.position.y = posY;
+    tilemap.scale.x = 1;
+    tilemap.scale.y = 1;
+    tilemap.tileSize = tileSize;
+    tilemap.tileMapSize.x = tileMapWidth;
+    tilemap.tileMapSize.y = tileMapHeight;
+
+    tilemap.tilesheet = Tex_load(path);
+    tilemapSystem[tilemapSystemLength-1] = tilemap;
+
+    return tilemapSystemLength-1;
+}
+
+int Tile_createFromArray(const char *path, uint8_t *plan, int posX, int posY, int tileSize, int tileMapWidth, int tileMapHeight){
+    int index = createTilemap(path, posX, posY, tileSize, tileMapWidth, tileMapHeight);
+
+    if(plan != NULL){
+        int number = tileMapWidth * tileMapHeight;
+        tilemapSystem[index].tileplan = malloc(number * sizeof(uint8_t));
+        memcpy(tilemapSystem[index].tileplan,plan,number);
+
+        free(plan);
+        plan = NULL;
+    }
+
+    return index;
+}
+
+int Tile_createFromFile(const char *path, const char *planPath, int posX, int posY, int tileSize, int tileMapWidth, int tileMapHeight){
+    int index = createTilemap(path, posX, posY, tileSize, tileMapWidth, tileMapHeight);
+
+    FILE *file;
+    file = fopen(planPath,"r");
+
+    fclose(file);
+    
+    return index;
+}
+
+void Tile_setPosition(int tilemap, int posX, int posY){
+
+}
+
+void Tile_setScale(int tilemap, float scaleX, float scaleY){
+
+}
+
+void Tile_setElement(int tilemap, uint8_t element){
+
+}
+
+void Tile_draw(){
+
+}
+
+void Tile_free(){
+
+}
+
