@@ -172,7 +172,7 @@ int Tile_createFromFile(const char *path, const char *planPath, int posX, int po
 
     int i;
     for(i = 0; i < number; i++){
-        fscanf(file,"%d",&plan[i]);
+        fscanf(file,"%hhd",&plan[i]);
     }
 
     fclose(file);
@@ -202,17 +202,27 @@ void Tile_draw(){
     for(i = 0; i < tilemapSystemLength; i++){
         tilemap = tilemapSystem[i];
         SDL_Rect srcRect = {0,0,tilemap.tileSize,tilemap.tileSize};
-        SDL_Rect dstRect = {tilemap.position.x,tilemap.position.y,tilemap.tileSize,tilemap.tileSize};
+        SDL_Rect dstRect = {
+            tilemap.position.x,
+            tilemap.position.y,
+            (int)(tilemap.tileSize * tilemap.scale.x),
+            (int)(tilemap.tileSize * tilemap.scale.y)
+            };
         int number = tilemap.tileMapSize.x * tilemap.tileMapSize.y;
+        int w,h;
+        SDL_QueryTexture(tilemap.tilesheet,NULL,NULL,&w,&h);
+        w /= tilemap.tileSize;
+        h /= tilemap.tileSize;
         int x,y;
         for(y = 0; y < tilemap.tileMapSize.y; y++){
             for(x = 0; x < tilemap.tileMapSize.x; x++){
-                dstRect.x += tilemap.tileSize;
-                //zmiana sourceRectu'u
+                dstRect.x += (int)(tilemap.tileSize * tilemap.scale.x);
+                srcRect.x = tilemap.tileSize * (tilemap.tileplan[tilemap.tileMapSize.x*y + x] % w);
+                srcRect.y = tilemap.tileSize * (tilemap.tileplan[tilemap.tileMapSize.x*y + x] / w);
                 SDL_RenderCopy(renderer, tilemap.tilesheet,&srcRect,&dstRect);
             }
-            dstRect.x = 0;
-            dstRect.y += tilemap.tileSize;
+            dstRect.x = tilemap.position.x;
+            dstRect.y += (int)(tilemap.tileSize* tilemap.scale.y);
         }
     }
 }
