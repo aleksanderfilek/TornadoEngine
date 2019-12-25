@@ -17,20 +17,20 @@ typedef struct{
 }Texture;
 
 SDL_Texture *Tex_load(const char *texturePath);
-Texture *Tex_create(const char *path, int posX, int posY, uint8_t layer);
-Texture *Tex_createFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer);
-void Tex_setTexture(Texture *texture, SDL_Texture *sdlTexture);
-void Tex_setSourceRect(Texture *texture, int x, int y, int w, int h);
-void Tex_setPosition(Texture *texture,int posX, int posY);
-void Tex_move(Texture *texture, int offsetX, int offsetY);
-void Tex_setScale(Texture *texture, float scaleX, float scaleY);
+int Tex_create(const char *path, int posX, int posY, uint8_t layer);
+int Tex_createFromSdlTexture(SDL_Texture *sdlTexture,int posX, int posY, uint8_t layer);
+void Tex_setTexture(int textureIndex, SDL_Texture *sdlTexture);
+void Tex_setSourceRect(int textureIndex, int x, int y, int w, int h);
+void Tex_setPosition(int textureIndex,int posX, int posY);
+void Tex_getPosition(int textureIndex, int *x, int *y);
+void Tex_move(int textureIndex, int offsetX, int offsetY);
+void Tex_setScale(int textureIndex, float scaleX, float scaleY);
 void Tex_draw();
 void Tex_free();
 
 typedef struct{
+    int textureIndex;
     SDL_Texture *tilesheet;
-    Vector2i position;
-    Vector2f scale;
     int tileSize;
     Vector2i tileMapSize;
     uint8_t *tileplan;
