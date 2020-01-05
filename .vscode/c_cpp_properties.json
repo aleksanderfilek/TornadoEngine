@@ -4,8 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/TornadoEngine/include/**",
-                "${workspaceFolder}/SDL/include/**"
+                "${workspaceFolder}/inc/**",
+                "${workspaceFolder}/SDL/include/**",
+                "${workspaceFolder}/GLEW/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
