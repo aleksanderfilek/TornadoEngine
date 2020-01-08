@@ -15,6 +15,9 @@ public:
     ~TornadoEngine();
 
     SDL_Window *GetWindow(){return window;};
+    void Start();
+    virtual void OnStart() = 0;
+    virtual void OnUpdate() = 0;
 };
 
 class State{

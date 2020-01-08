@@ -32,6 +32,10 @@ TornadoEngine::~TornadoEngine(){
     SDL_Quit();
 }
 
+void TornadoEngine::Start(){
+    OnStart();
+}
+
 Timer::Timer(){
     this->startTicks = SDL_GetTicks();
 }

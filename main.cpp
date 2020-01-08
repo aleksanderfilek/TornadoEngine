@@ -1,6 +1,17 @@
 #include"TE.h"
 #include"TE_graphics.h"
 
+class TornadoEngine{
+protected:
+    virtual void OnStart(){
+
+    }
+
+    virtual void OnUpdate(){
+        
+    }
+};
+
 int main(int argc, char **argv){
     TornadoEngine engine("Title",640, 480);
     Graphics_Init();
