@@ -1,4 +1,4 @@
-#include"TE_main.h"
+#include"TE.h"
 #include"TE_graphics.h"
 
 int main(int argc, char **argv){

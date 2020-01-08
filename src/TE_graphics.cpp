@@ -145,3 +145,7 @@ void Tex_DrawEx(Texture *texture, shader Shader, vector2 position, vector2 scale
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
 }
+
+void SetBackgroundColor(float r, float g, float b, float a){
+    glClearColor(r,g,b,a);
+}

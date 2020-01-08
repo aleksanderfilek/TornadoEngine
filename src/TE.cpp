@@ -1,4 +1,4 @@
-#include"TE_main.h"
+#include"TE.h"
 
 TornadoEngine::TornadoEngine(const char *title, int width, int height){
     SDL_Init(SDL_INIT_VIDEO);

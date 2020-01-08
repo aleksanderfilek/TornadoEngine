@@ -1,5 +1,5 @@
-#ifndef TEMAIN_H_
-#define TEMAIN_H_
+#ifndef TE_H_
+#define TE_H_
 
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_main.h>

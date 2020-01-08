@@ -21,17 +21,6 @@ void Graphics_Close();
 typedef unsigned int shader;
 shader Shader_Load(const char *vertexSourcePath, const char *fragmentSourcePath);
 
-class Material{
-private:
-    shader program;
-    std::vector<GLuint> textures;
-public:
-    Material(shader Program);
-    ~Material();
-
-    void Use();
-};
-
 struct Texture{
     GLuint id;
     vector2 size;
@@ -39,7 +28,7 @@ struct Texture{
 
 Texture Tex_Load(const char *path);
 void Tex_Draw(Texture *texture, shader Shader, vector2 position);
-void Tex_DrawEx(Texture *texture, shader Shader, vector2 position, vector2 scale, vector4 srcRect); //TODO: add sourceRect 
+void Tex_DrawEx(Texture *texture, shader Shader, vector2 position, vector2 scale, vector4 srcRect);
 
-
+void SetBackgroundColor(float r, float g, float b, float a);
 #endif
