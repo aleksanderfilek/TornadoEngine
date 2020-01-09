@@ -11,6 +11,8 @@ const GLfloat vertices[]{
 
 GLuint VAO, VBO, EBO;
 
+GLuint textureCount = 0;
+
 void Graphics_Init(){
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -92,7 +94,7 @@ Texture Tex_Load(const char *path){
         std::cout<<"Texture could not be load"<<std::endl;
     }
     else{
-        GLuint texId;
+        GLuint texId = textureCount++;
         glGenTextures(1, &texId);
         glBindTexture(GL_TEXTURE_2D, texId);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

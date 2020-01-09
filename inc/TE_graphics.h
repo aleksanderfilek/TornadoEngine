@@ -29,6 +29,8 @@ struct Texture{
 Texture Tex_Load(const char *path);
 void Tex_Draw(Texture *texture, shader Shader, vector2 position);
 void Tex_DrawEx(Texture *texture, shader Shader, vector2 position, vector2 scale, vector4 srcRect);
+//TODO: add this function
+void Tex_Destroy(Texture texture);
 
 void SetBackgroundColor(float r, float g, float b, float a);
 #endif
