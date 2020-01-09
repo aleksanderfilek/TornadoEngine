@@ -1,6 +1,10 @@
 #include"TE.h"
 
-TornadoEngine::TornadoEngine(const char *title, int width, int height){
+TornadoEngine::TornadoEngine(){
+
+}
+
+void TornadoEngine::CreateGame(const char *title, int width, int height){
     SDL_Init(SDL_INIT_VIDEO);
 
     window = SDL_CreateWindow(
@@ -34,6 +38,28 @@ TornadoEngine::~TornadoEngine(){
 
 void TornadoEngine::Start(){
     OnStart();
+
+    Timer timer;
+    double elapsedTime = 0;
+
+    bool quit = false;
+    while (!quit)
+    {
+        while(SDL_PollEvent(&this->event)){
+            if(this->event.type == SDL_QUIT){
+                quit = true;
+            }
+        }
+        OnUpdate(elapsedTime);
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        OnDraw();
+        SDL_GL_SwapWindow(this->window);
+
+        elapsedTime = timer.restart();
+    }
+
+    OnExit();
 }
 
 Timer::Timer(){

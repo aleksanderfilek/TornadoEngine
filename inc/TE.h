@@ -10,14 +10,20 @@ class TornadoEngine{
 private:
     SDL_Window *window;
     SDL_GLContext glContext;
+    SDL_Event event;
 public:
-    TornadoEngine(const char *title, int width, int height);
+    TornadoEngine();
     ~TornadoEngine();
 
-    SDL_Window *GetWindow(){return window;};
+    void CreateGame(const char *title, int width, int height);
     void Start();
+
+    SDL_Window *GetWindow(){return window;};
+
     virtual void OnStart() = 0;
-    virtual void OnUpdate() = 0;
+    virtual void OnUpdate(double elapsedTime) = 0;
+    virtual void OnDraw() = 0;
+    virtual void OnExit() = 0;
 };
 
 class State{

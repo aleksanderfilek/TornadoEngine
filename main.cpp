@@ -1,69 +1,53 @@
 #include"TE.h"
 #include"TE_graphics.h"
 
-class TornadoEngine{
-protected:
-    virtual void OnStart(){
-
-    }
-
-    virtual void OnUpdate(){
-        
-    }
-};
-
-int main(int argc, char **argv){
-    TornadoEngine engine("Title",640, 480);
-    Graphics_Init();
-
-    Texture tex = Tex_Load("wall.jpg");
+class Game:public TornadoEngine{
+private:
+    shader Shader;
+    Texture tex;
     vector2 position = {120.0f, 120.0f};
     vector2 scale = {2.0f,2.0f};
     vector4 srcRect = {0.0f,0.0f,1.0f,1.0f};
+protected:
+    virtual void OnStart(){
+        Graphics_Init();
+        tex = Tex_Load("wall.jpg");
+        Shader = Shader_Load("vertex.vs","fragment.frag");
+    }
 
-    Timer timer;
-    double deltaTime = 0.0f;
-
-    shader Shader = Shader_Load("vertex.vs","fragment.frag");
-
-    glUseProgram(Shader);
-
-    SDL_Event event;
-    bool quit = false;
-    while(!quit){
-        while(SDL_PollEvent(&event)){
-            if(event.type == SDL_QUIT){
-                quit = true;
-            }
-        }
+    virtual void OnUpdate(double elapsedTime){
+        glUseProgram(Shader);
         const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
 
         if( currentKeyStates[ SDL_SCANCODE_LEFT ] )
         {
-            srcRect.x += (float)(0.5f * deltaTime);
+            srcRect.x += (float)(0.5f * elapsedTime);
         }
         else if( currentKeyStates[ SDL_SCANCODE_RIGHT ] ){
-            srcRect.x -= (float)(0.5f * deltaTime);
+            srcRect.x -= (float)(0.5f * elapsedTime);
         }
 
         if( currentKeyStates[ SDL_SCANCODE_UP ] )
         {
-            srcRect.y += (float)(0.5f * deltaTime);
+            srcRect.y += (float)(0.5f * elapsedTime);
         }
         else if( currentKeyStates[ SDL_SCANCODE_DOWN ] ){
-            srcRect.y -= (float)(0.5f * deltaTime);
+            srcRect.y -= (float)(0.5f * elapsedTime);
         }
-
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        Tex_DrawEx(&tex,Shader,position,scale,srcRect);
-
-        SDL_GL_SwapWindow(engine.GetWindow());
-
-        deltaTime = timer.restart();
     }
 
+    virtual void OnDraw(){
+        Tex_DrawEx(&tex,Shader,position,scale,srcRect);
+    }
 
-    Graphics_Close();
+    virtual void OnExit(){
+        Graphics_Close();
+    }
+};
+
+int main(int argc, char **argv){
+    Game game;
+    game.CreateGame("Title",640,480);
+    game.Start();
     return 0;
 }
