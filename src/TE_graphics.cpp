@@ -122,7 +122,7 @@ void Tex_Draw(Texture *texture, shader Shader, vector2 position){
     GLuint posLoc = glGetUniformLocation(Shader,"position");
     glUniform2f(posLoc,position.x,position.y);
     GLuint sizeLoc = glGetUniformLocation(Shader,"size");
-    glUniform2f(sizeLoc,64.0f,64.0f);
+    glUniform2f(sizeLoc,(GLfloat)texture->size.x,(GLfloat)texture->size.y);
 
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
