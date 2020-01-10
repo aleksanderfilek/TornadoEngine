@@ -6,6 +6,7 @@
 #include<sstream>
 #include<iostream>
 #include<vector>
+#include<unordered_map>
 
 #include<SDL.h>
 #include<SDL_main.h>
@@ -18,19 +19,41 @@
 void Graphics_Init();
 void Graphics_Close();
 
-typedef unsigned int shader;
-shader Shader_Load(const char *vertexSourcePath, const char *fragmentSourcePath);
 
-struct Texture{
-    GLuint id;
-    vector2 size;
+struct Shader{
+    int ID;
+    std::unordered_map<std::string,GLuint> uniformLocation;
 };
 
-Texture Tex_Load(const char *path);
-void Tex_Draw(Texture *texture, shader Shader, vector2 position);
-void Tex_DrawEx(Texture *texture, shader Shader, vector2 position, vector2 scale, vector4 srcRect);
-//TODO: add this function
-void Tex_Destroy(Texture texture);
+Shader Shader_Load(const char *vertexSourcePath, const char *fragmentSourcePath);
+
+class Material{
+private:
+    Shader programShader;
+public:
+    Material();
+    ~Material();
+
+    void Use();
+
+    void BindTexture(int texture);
+    void SetFloat(std::string uniformName, float value);
+    void SetVector2(std::string uniformName, vector2 value);
+    void SetVector3(std::string uniformName, vector3 value);
+    void SetVector4(std::string uniformName, vector4 value);
+    void SetMat2x2(std::string uniformName, mat2x2 value);
+    void SetMat3x3(std::string uniformName, mat3x3 value);
+    void SetMat4x4(std::string uniformName, mat4x4 value);
+};
+
+class Mesh{
+    GLuint ID;
+    vector3 *vertices;
+    int *triangles;
+    vector2 *uvs;
+};
+
+void CreateMesh(Mesh *mesh, vector3 *vertices, vector3 *triangles, vector3 *uvs);
 
 void SetBackgroundColor(float r, float g, float b, float a);
 #endif

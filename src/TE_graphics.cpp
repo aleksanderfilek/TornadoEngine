@@ -88,6 +88,9 @@ shader Shader_Load(const char *vertexSourcePath, const char *fragmentSourcePath)
     return program;
 }
 
+void Material::Use(){
+}
+
 Texture Tex_Load(const char *path){
     SDL_Surface *surface = IMG_Load(path);
     if(surface == NULL){
