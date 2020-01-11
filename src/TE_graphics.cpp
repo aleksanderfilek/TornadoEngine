@@ -37,7 +37,7 @@ void Graphics_Close(){
     glDeleteBuffers(1, &EBO);
 }
 
-shader Shader_Load(const char *vertexSourcePath, const char *fragmentSourcePath){
+void Shader::Load(const char *vertexSourcePath, const char *fragmentSourcePath){
     std::string vertexCode;
     std::string fragmentCode;
     std::ifstream vShaderFile;
@@ -85,10 +85,11 @@ shader Shader_Load(const char *vertexSourcePath, const char *fragmentSourcePath)
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 
-    return program;
+    this->ID = program;
 }
 
 void Material::Use(){
+    glUseProgram(this->programShader.ID);
 }
 
 Texture Tex_Load(const char *path){
