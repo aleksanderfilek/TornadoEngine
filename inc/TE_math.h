@@ -8,6 +8,8 @@ struct vector2
 
 typedef vector2 mat2x2[2];
 
+
+
 struct vector3{
     float x,y,z;
 };
@@ -20,5 +22,9 @@ struct vector4
 };
 
 typedef vector4 mat4x4[4];
+
+float *matrix_ptr(mat2x2 matrix);
+float *matrix_ptr(mat3x3 matrix);
+float *matrix_ptr(mat4x4 matrix);
 
 #endif

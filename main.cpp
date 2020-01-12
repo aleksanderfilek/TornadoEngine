@@ -3,45 +3,38 @@
 
 class Game:public TornadoEngine{
 private:
-    shader Shader;
-    Texture tex;
-    vector2 position = {120.0f, 120.0f};
-    vector2 scale = {2.0f,2.0f};
-    vector4 srcRect = {0.0f,0.0f,1.0f,1.0f};
+    Graphics graphics;
+    Mesh mesh;
+    Shader program;
 protected:
     virtual void OnStart(){
-        Graphics_Init();
-        tex = Tex_Load("wall.jpg");
-        Shader = Shader_Load("vertex.vs","fragment.frag");
+        program.Load("vertex.vs","fragment.frag");
+
+        GLfloat vertices[] = {
+        -0.5f, -0.5f, 0.0f, // Left  
+         0.5f, -0.5f, 0.0f, // Right 
+         0.0f,  0.5f, 0.0f,  // Top   
+        };
+
+        int indices[]{
+            0, 1, 2
+        };
+
+        mesh.SetVertices(vertices,18);
+        mesh.SetIndices(indices, 3);
+        mesh.Generate();
     }
 
     virtual void OnUpdate(double elapsedTime){
-        glUseProgram(Shader);
-        const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
-
-        if( currentKeyStates[ SDL_SCANCODE_LEFT ] )
-        {
-            srcRect.x += (float)(0.5f * elapsedTime);
-        }
-        else if( currentKeyStates[ SDL_SCANCODE_RIGHT ] ){
-            srcRect.x -= (float)(0.5f * elapsedTime);
-        }
-
-        if( currentKeyStates[ SDL_SCANCODE_UP ] )
-        {
-            srcRect.y += (float)(0.5f * elapsedTime);
-        }
-        else if( currentKeyStates[ SDL_SCANCODE_DOWN ] ){
-            srcRect.y -= (float)(0.5f * elapsedTime);
-        }
+       
     }
 
     virtual void OnDraw(){
-        Tex_DrawEx(&tex,Shader,position,scale,srcRect);
+        glUseProgram(program.ID);
+        graphics.Draw(mesh);
     }
 
     virtual void OnExit(){
-        Graphics_Close();
     }
 };
 

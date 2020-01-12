@@ -28,6 +28,7 @@ void TornadoEngine::CreateGame(const char *title, int width, int height){
 
     glViewport(0,0,width, height);
     glClearColor(1.0f,1.0f,1.0f,1.0f);
+    glEnable(GL_DEPTH_TEST);
 }
 
 TornadoEngine::~TornadoEngine(){
@@ -52,7 +53,7 @@ void TornadoEngine::Start(){
         }
         OnUpdate(elapsedTime);
 
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         OnDraw();
         SDL_GL_SwapWindow(this->window);
 
