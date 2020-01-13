@@ -10,6 +10,18 @@ Graphics::~Graphics(){
 
 }
 
+void Graphics::InstantiateMesh(Mesh &mesh){
+    glBindVertexArray(mesh.GetId());
+}
+
+void Graphics::DeinstantiateMesh(){
+    glBindVertexArray(0);
+}
+
+ void Graphics::DrawInstantiatedMesh(){
+    glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
+ }
+
 void Graphics::Draw(Mesh &mesh){
     glBindVertexArray(mesh.GetId());
     glDrawElements(GL_TRIANGLES,3,GL_UNSIGNED_INT,0);
@@ -97,84 +109,9 @@ Texture Tex_Load(const char *path){
     return {0,vec};
 }
 
-Material::Material(){
-
-}
-
-Material::~Material(){
-
-}
-
-void Material::Use(){
-    glUseProgram(this->programShader.ID);
-
-    // MaterialProperty mat;
-    // for(int i = 0; i < this->property.size; i++){
-    //     mat = this->property[i];
-    //     switch (mat.type)
-    //     {
-    //     case 0:
-    //         glUniform1f(mat.location,mat.Value.Float);
-    //         break;
-    //     case 1:
-    //         glUniform2f(mat.location,mat.Value.Vector2.x,mat.Value.Vector2.y);
-    //         break;
-    //     case 2:
-    //         glUniform3f(mat.location,mat.Value.Vector3.x,mat.Value.Vector3.y,mat.Value.Vector3.z);
-    //         break;
-    //     case 3:
-    //         glUniform4f(mat.location,mat.Value.Vector4.x,mat.Value.Vector4.y,mat.Value.Vector4.z,mat.Value.Vector4.w);
-    //         break;
-    //     case 4:
-    //         glUniformMatrix2fv(mat.location,1,GL_FALSE,matrix_ptr(mat.Value.Mat2x2));
-    //         break;
-    //     case 5:
-    //         glUniformMatrix3fv(mat.location,1,GL_FALSE,matrix_ptr(mat.Value.Mat3x3));
-    //         break;
-    //     case 6:
-    //         glUniformMatrix4fv(mat.location,1,GL_FALSE,matrix_ptr(mat.Value.Mat4x4));
-    //         break;
-    //     default:
-    //         break;
-    //     }
-    // }
-}
-
-void Material::BindTexture(Texture texture, bool Static){
-
-}
-
-void Material::SetFloat(std::string uniformName, float value, bool Static){
-
-}
-
-void Material::SetVector2(std::string uniformName, vector2 value, bool Static){
-
-}
-
-void Material::SetVector3(std::string uniformName, vector3 value, bool Static){
-
-}
-
-void Material::SetVector4(std::string uniformName, vector4 value, bool Static){
-
-}
-
-void Material::SetMat2x2(std::string uniformName, mat2x2 value, bool Static){
-
-}
-
-void Material::SetMat3x3(std::string uniformName, mat3x3 value, bool Static){
-
-}
-
-void Material::SetMat4x4(std::string uniformName, mat4x4 value, bool Static){
-
-}
-
 Mesh::Mesh(){
-    this->uvsCount = 6;
-    uvs = new float[6]{0};
+    this->uvsCount = 8;
+    uvs = new float[8]{0};
 }
 
 Mesh::~Mesh(){
@@ -198,28 +135,22 @@ void Mesh::Generate(){
         data[i + 4] = this->uvs[u + 1];
     }
 
-    GLuint Indices[this->indicesCount];
-    for(int i = 0; i < this->indicesCount; i++){
-        Indices[i] = this->indices[i];
-    }
-
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
-    // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indicesCount * sizeof(int), this->indices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3*sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
 }

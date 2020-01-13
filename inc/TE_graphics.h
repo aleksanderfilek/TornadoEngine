@@ -44,33 +44,6 @@ union value{
     mat4x4 Mat4x4;
 };
 
-struct MaterialProperty{
-    GLuint location;
-    int type;
-    value Value;
-};
-
-class Material{
-private:
-    Shader programShader;
-    std::vector<MaterialProperty> property;
-    Texture texture;
-public:
-    Material();
-    ~Material();
-
-    void Use();
-
-    void BindTexture(Texture texture, bool Static);
-    void SetFloat(std::string uniformName, float value, bool Static);
-    void SetVector2(std::string uniformName, vector2 value, bool Static);
-    void SetVector3(std::string uniformName, vector3 value, bool Static);
-    void SetVector4(std::string uniformName, vector4 value, bool Static);
-    void SetMat2x2(std::string uniformName, mat2x2 value, bool Static);
-    void SetMat3x3(std::string uniformName, mat3x3 value, bool Static);
-    void SetMat4x4(std::string uniformName, mat4x4 value, bool Static);
-};
-
 class Mesh{
 private:
     GLuint VAO,VBO, EBO;
@@ -103,6 +76,10 @@ class Graphics{
     public:
         Graphics();
         ~Graphics();
+
+        void InstantiateMesh(Mesh &mesh);
+        void DeinstantiateMesh();
+        void DrawInstantiatedMesh();
 
         void Draw(Mesh &mesh);
 };
