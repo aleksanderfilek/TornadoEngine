@@ -124,6 +124,36 @@ Mesh::~Mesh(){
     free(this->indices);
 }
 
+void Mesh::LoadObj(std::string path){
+    std::ifstream objFile;
+    objFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    int i = 0;
+    try{
+        objFile.open(path);
+        // while(!objFile.eof()){
+        //     char dataType;
+        //     i++;
+        //     objFile>>dataType;
+        //     std::cout<<dataType<<std::endl;
+        //     // switch(dataType){
+        //     //     case '#':
+        //     //         break;
+        //     //     case 'v':
+        //     //         objFile.ignore(80,'\n');
+        //     //         break;
+        //     //     case 'f':
+        //     //         objFile.ignore(80,'\n');
+        //     //         break;
+        //     // }
+        // }
+        objFile.close();
+    }    
+    catch(std::ifstream::failure e){
+        std::cout<<"ERROR::OBJ_MODEL::FILE_NOT_SUCCESFULLY_READ"<<std::endl;
+    }
+    std::cout<<i<<std::endl;
+}
+
 void Mesh::Generate(){
     GLfloat data[this->verticesCount + this->uvsCount];
 
