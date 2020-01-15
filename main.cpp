@@ -3,10 +3,9 @@
 
 class Game:public TornadoEngine{
 private:
-
+    Mesh mesh;
 protected:
     virtual void OnStart(){
-        Mesh mesh;
         mesh.LoadObj("Cube.obj");
     }
 

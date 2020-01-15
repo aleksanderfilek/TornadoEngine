@@ -50,22 +50,22 @@ private:
     GLuint verticesCount;
     GLuint indicesCount;
     GLuint uvsCount;
-    float *vertices;
-    int *indices;
-    float *uvs;
+    vector3 *vertices;
+    vector3 *indices;
+    vector2 *uvs;
 public: 
     Mesh();
     ~Mesh();
 
-    void SetVertices(float *_vertices, unsigned int count);
-    void SetIndices(int *_indices, unsigned int count);
-    void SetUvs(float *_uvs, unsigned int count);
+    void SetVertices(vector3 *_vertices, unsigned int count);
+    void SetIndices(vector3 *_indices, unsigned int count);
+    void SetUvs(vector2 *_uvs, unsigned int count);
     
-    void GetVertices(float *_vertices, unsigned int *count);
-    void GetIndices(float *_indices, unsigned int *count);
-    void GetUvs(float *_uvs, unsigned int *count);
+    void GetVertices(vector3 *_vertices, unsigned int *count);
+    void GetIndices(vector3 *_indices, unsigned int *count);
+    void GetUvs(vector2 *_uvs, unsigned int *count);
 
-    void LoadObj(std::string path);
+    bool LoadObj(std::string path);
 
     void Generate();
     GLuint GetId(){return VAO;};

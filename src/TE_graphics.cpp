@@ -111,7 +111,7 @@ Texture Tex_Load(const char *path){
 
 Mesh::Mesh(){
     this->uvsCount = 8;
-    uvs = new float[8]{0};
+    // uvs = new float[8]{0};
 }
 
 Mesh::~Mesh(){
@@ -124,45 +124,65 @@ Mesh::~Mesh(){
     free(this->indices);
 }
 
-void Mesh::LoadObj(std::string path){
-    std::ifstream objFile;
-    objFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    int i = 0;
-    try{
-        objFile.open(path);
-        // while(!objFile.eof()){
-        //     char dataType;
-        //     i++;
-        //     objFile>>dataType;
-        //     std::cout<<dataType<<std::endl;
-        //     // switch(dataType){
-        //     //     case '#':
-        //     //         break;
-        //     //     case 'v':
-        //     //         objFile.ignore(80,'\n');
-        //     //         break;
-        //     //     case 'f':
-        //     //         objFile.ignore(80,'\n');
-        //     //         break;
-        //     // }
-        // }
-        objFile.close();
-    }    
-    catch(std::ifstream::failure e){
-        std::cout<<"ERROR::OBJ_MODEL::FILE_NOT_SUCCESFULLY_READ"<<std::endl;
+bool Mesh::LoadObj(std::string path){
+    std::ifstream objFile(path);
+
+    if(!objFile.is_open())
+        return false;
+
+    std::vector<vector3> _vertices;
+    std::vector<vector3> _indices;
+    std::vector<vector2> _uvs;
+
+    while(!objFile.eof()){
+        char line[128];
+        objFile.getline(line,128);
+
+        std::stringstream s;
+        s<<line;
+
+        char junk;
+
+        if(line[0] == 'v'){
+            if(line[1] == ' '){
+                vector3 v;
+                s>>junk>>v.x>>v.y>>v.z;
+                _vertices.push_back(v);
+            }
+            else if(line[1] == 't'){
+                vector2 u;
+                s>>junk>>u.x>>u.y;
+                _uvs.push_back(u);
+            }
+        }
+        else if(line[0] = 'f'){
+            vector3 f;
+            s>>junk>>f.x>>f.y>>f.z;
+            _indices.push_back(f);
+        }
     }
-    std::cout<<i<<std::endl;
+    
+    objFile.close();
+
+    this->vertices = _vertices.data();
+    this->verticesCount = _vertices.size();
+    this->indices = _indices.data();
+    this->indicesCount = _indices.size();
+    this->uvs = _uvs.data();
+    this->uvsCount = _uvs.size();
+
+    return true;
 }
 
 void Mesh::Generate(){
     GLfloat data[this->verticesCount + this->uvsCount];
 
-    for(int i = 0, v = 0, u = 0; i < this->verticesCount + this->uvsCount; i+=5, v+=3, u+=2){
-        data[i + 0] = this->vertices[v + 0];
-        data[i + 1] = this->vertices[v + 1];
-        data[i + 2] = this->vertices[v + 2];
-        data[i + 3] = this->uvs[u + 0];
-        data[i + 4] = this->uvs[u + 1];
+    for(int i = 0, v = 0, u = 0; i < this->verticesCount + this->uvsCount; i+=5, u+=2){
+        // data[i + 0] = this->vertices[v + 0];
+        // data[i + 1] = this->vertices[v + 1];
+        // data[i + 2] = this->vertices[v + 2];
+        // data[i + 3] = this->uvs[u + 0];
+        // data[i + 4] = this->uvs[u + 1];
     }
 
     glGenVertexArrays(1, &VAO);
@@ -185,20 +205,22 @@ void Mesh::Generate(){
     glBindVertexArray(0);
 }
 
-void Mesh::SetVertices(float *_vertices, unsigned int count){
+void Mesh::SetVertices(vector3 *_vertices, unsigned int count){
     this->verticesCount = count;
-    vertices = new float[count];
-    for(int i = 0; i < count;i++){
+    vertices = new vector3[count];
+    for(int i = 0; i < count;i+=3){
         this->vertices[i] = _vertices[i];
     }
 }
 
-void Mesh::SetIndices(int *_indices, unsigned int count){
+void Mesh::SetIndices(vector3 *_indices, unsigned int count){
     this->indicesCount = count;
-    indices = new int[count];
+    indices = new vector3[count];
     for(int i = 0; i < count;i++){
         this->indices[i] = _indices[i];
-    }}
+    }
+}
+
 
 void SetBackgroundColor(float r, float g, float b, float a){
     glClearColor(r,g,b,a);
