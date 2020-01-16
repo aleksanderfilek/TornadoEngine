@@ -24,7 +24,7 @@ void Graphics::DeinstantiateMesh(){
 
 void Graphics::Draw(Mesh &mesh){
     glBindVertexArray(mesh.GetId());
-    glDrawElements(GL_TRIANGLES,3,GL_UNSIGNED_INT,0);
+    glDrawElements(GL_TRIANGLES, mesh.GetIndicesCount(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 
@@ -100,127 +100,112 @@ Texture Tex_Load(const char *path){
         int h = surface->h;
 
         SDL_FreeSurface(surface);
-        vector2 vec;
+        vector2ui vec;
         vec.x = w;
         vec.y = h;
         return {texId,vec};
     }
-    vector2 vec;
+    vector2ui vec;
     return {0,vec};
 }
 
 Mesh::Mesh(){
-    this->uvsCount = 8;
-    // uvs = new float[8]{0};
+
 }
 
 Mesh::~Mesh(){
     glDeleteVertexArrays(1, &this->VAO);
     glDeleteBuffers(1, &this->VBO);
     glDeleteBuffers(1, &this->EBO);
-
-    free(this->vertices);
-    free(this->uvs);
-    free(this->indices);
 }
 
 bool Mesh::LoadObj(std::string path){
-    std::ifstream objFile(path);
+    // std::ifstream objFile(path);
 
-    if(!objFile.is_open())
-        return false;
+    // if(!objFile.is_open())
+    //     return false;
 
-    std::vector<vector3> _vertices;
-    std::vector<vector3> _indices;
-    std::vector<vector2> _uvs;
+    // std::vector<vector3> _vertices;
+    // std::vector<vector3> _indices;
+    // std::vector<vector2> _uvs;
 
-    while(!objFile.eof()){
-        char line[128];
-        objFile.getline(line,128);
+    // while(!objFile.eof()){
+    //     char line[128];
+    //     objFile.getline(line,128);
 
-        std::stringstream s;
-        s<<line;
+    //     std::stringstream s;
+    //     s<<line;
 
-        char junk;
+    //     char junk;
 
-        if(line[0] == 'v'){
-            if(line[1] == ' '){
-                vector3 v;
-                s>>junk>>v.x>>v.y>>v.z;
-                _vertices.push_back(v);
-            }
-            else if(line[1] == 't'){
-                vector2 u;
-                s>>junk>>u.x>>u.y;
-                _uvs.push_back(u);
-            }
-        }
-        else if(line[0] = 'f'){
-            vector3 f;
-            s>>junk>>f.x>>f.y>>f.z;
-            _indices.push_back(f);
-        }
-    }
+    //     if(line[0] == 'v'){
+    //         if(line[1] == ' '){
+    //             vector3 v;
+    //             s>>junk>>v.x>>v.y>>v.z;
+    //             _vertices.push_back(v);
+    //         }
+    //         else if(line[1] == 't'){
+    //             vector2 u;
+    //             s>>junk>>u.x>>u.y;
+    //             _uvs.push_back(u);
+    //         }
+    //     }
+    //     else if(line[0] = 'f'){
+    //         vector3 f;
+    //         s>>junk>>f.x>>f.y>>f.z;
+    //         _indices.push_back(f);
+    //     }
+    // }
     
-    objFile.close();
+    // objFile.close();
 
-    this->vertices = _vertices.data();
-    this->verticesCount = _vertices.size();
-    this->indices = _indices.data();
-    this->indicesCount = _indices.size();
-    this->uvs = _uvs.data();
-    this->uvsCount = _uvs.size();
+    // this->vertices = _vertices.data();
+    // this->verticesCount = _vertices.size();
+    // this->indices = _indices.data();
+    // this->indicesCount = _indices.size();
+    // this->uvs = _uvs.data();
+    // this->uvsCount = _uvs.size();
+
+    // this->Generate();
 
     return true;
 }
 
-void Mesh::Generate(){
-    GLfloat data[this->verticesCount + this->uvsCount];
+void Mesh::Generate(vector3f *_vertices,unsigned int _verticesCount , vector2f *_uvs, unsigned int _uvsCount, vector3ui *_indices, unsigned int _indicesCount){
 
-    for(int i = 0, v = 0, u = 0; i < this->verticesCount + this->uvsCount; i+=5, u+=2){
-        // data[i + 0] = this->vertices[v + 0];
-        // data[i + 1] = this->vertices[v + 1];
-        // data[i + 2] = this->vertices[v + 2];
-        // data[i + 3] = this->uvs[u + 0];
-        // data[i + 4] = this->uvs[u + 1];
-    }
+        vertex _vertex[_verticesCount];
 
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    glBindVertexArray(VAO);
+        for(int i = 0; i < _verticesCount; i++){
+            _vertex[i].position.x = _vertices[i].x;
+            _vertex[i].position.y = _vertices[i].y;
+            _vertex[i].position.z = _vertices[i].z;
+            _vertex[i].uv.x = _uvs[i].x;
+            _vertex[i].uv.y = _uvs[i].y;
+        }
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indicesCount * sizeof(int), this->indices, GL_STATIC_DRAW);
+        this->indicesCount = 3*_indicesCount;
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3*sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+        glGenBuffers(1,&EBO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(VAO);
 
-    glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER,VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(_vertex),_vertex,GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indicesCount*sizeof(vector3ui),_indices,GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,5*sizeof(GLfloat),(void*)0);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,5*sizeof(GLfloat),(void*)(3*sizeof(GLfloat)));
+        glEnableVertexAttribArray(1);
+
+        glBindBuffer(GL_ARRAY_BUFFER,0);
+        
+        glBindVertexArray(0);
 }
-
-void Mesh::SetVertices(vector3 *_vertices, unsigned int count){
-    this->verticesCount = count;
-    vertices = new vector3[count];
-    for(int i = 0; i < count;i+=3){
-        this->vertices[i] = _vertices[i];
-    }
-}
-
-void Mesh::SetIndices(vector3 *_indices, unsigned int count){
-    this->indicesCount = count;
-    indices = new vector3[count];
-    for(int i = 0; i < count;i++){
-        this->indices[i] = _indices[i];
-    }
-}
-
 
 void SetBackgroundColor(float r, float g, float b, float a){
     glClearColor(r,g,b,a);

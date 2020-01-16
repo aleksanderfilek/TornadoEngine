@@ -1,27 +1,41 @@
 #ifndef TEMATH_H_
 #define TEMATH_H_
 
-struct vector2
+struct vector2f
 {
     float x,y;
 };
 
-typedef vector2 mat2x2[2];
+typedef vector2f mat2x2[2];
 
+struct vector2i{
+    int x,y;
+};
 
+struct vector2ui{
+    unsigned int x,y;
+};
 
-struct vector3{
+struct vector3f{
     float x,y,z;
 };
 
-typedef vector3 mat3x3[3];
+struct vector3i{
+    int x,y,z;
+};
 
-struct vector4
+struct vector3ui{
+    unsigned int x,y,z;
+};
+
+typedef vector3f mat3x3[3];
+
+struct vector4f
 {
     float x,y,z,w;
 };
 
-typedef vector4 mat4x4[4];
+typedef vector4f mat4x4[4];
 
 float *matrix_ptr(mat2x2 matrix);
 float *matrix_ptr(mat3x3 matrix);

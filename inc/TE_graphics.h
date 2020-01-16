@@ -20,7 +20,7 @@
 
 struct Texture{
     GLuint id;
-    vector2 size;
+    vector2ui size;
 };
 
 Texture Tex_Load(const char *path);
@@ -33,43 +33,25 @@ public:
     void Load(const char *vertexSourcePath, const char *fragmentSourcePath);
 };
 
-//zapytać się czy taki czy w klasach
-union value{
-    float Float;
-    vector2 Vector2;
-    vector3 Vector3;
-    vector4 Vector4;
-    mat2x2 Mat2x2;
-    mat3x3 Mat3x3;
-    mat4x4 Mat4x4;
+struct vertex{
+    vector3f position;
+    vector2f uv;
 };
 
 class Mesh{
 private:
-    GLuint VAO,VBO, EBO;
-    GLuint verticesCount;
+    GLuint VAO, VBO, EBO;
     GLuint indicesCount;
-    GLuint uvsCount;
-    vector3 *vertices;
-    vector3 *indices;
-    vector2 *uvs;
 public: 
     Mesh();
     ~Mesh();
 
-    void SetVertices(vector3 *_vertices, unsigned int count);
-    void SetIndices(vector3 *_indices, unsigned int count);
-    void SetUvs(vector2 *_uvs, unsigned int count);
-    
-    void GetVertices(vector3 *_vertices, unsigned int *count);
-    void GetIndices(vector3 *_indices, unsigned int *count);
-    void GetUvs(vector2 *_uvs, unsigned int *count);
-
+    void Generate(vector3f *_vertices,unsigned int _verticesCount , vector2f *_uvs, unsigned int _uvsCount, vector3ui *_indices, unsigned int _indicesCount);
     bool LoadObj(std::string path);
 
     void Generate();
     GLuint GetId(){return VAO;};
-    GLuint GetVerticesCount(){return verticesCount;};
+    GLuint GetIndicesCount(){return indicesCount;};
 };
 
 class Graphics{
