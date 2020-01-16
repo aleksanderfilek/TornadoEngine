@@ -125,40 +125,50 @@ bool Mesh::LoadObj(std::string path){
     // if(!objFile.is_open())
     //     return false;
 
-    // std::vector<vector3> _vertices;
-    // std::vector<vector3> _indices;
-    // std::vector<vector2> _uvs;
+    std::vector<vector3f> temp_vertices;
+    std::vector<vector2f> temp_uvs;
 
-    // while(!objFile.eof()){
-    //     char line[128];
-    //     objFile.getline(line,128);
+    struct vertexInfo{
+        int v;
+        unsigned int u;
+    };
+    std::vector<vertexInfo> _info;
 
-    //     std::stringstream s;
-    //     s<<line;
+    FILE *file = fopen(path.c_str(),"r");
+    if(file == NULL){
+        std::cout<<"Imposible to open the file !"<<std::endl;
+        return false;
+    }
 
-    //     char junk;
+    while(1){
+        char lineHeader[128];
+        int res = fscanf(file, "%s", lineHeader);
+        if (res == EOF)
+            break; 
 
-    //     if(line[0] == 'v'){
-    //         if(line[1] == ' '){
-    //             vector3 v;
-    //             s>>junk>>v.x>>v.y>>v.z;
-    //             _vertices.push_back(v);
-    //         }
-    //         else if(line[1] == 't'){
-    //             vector2 u;
-    //             s>>junk>>u.x>>u.y;
-    //             _uvs.push_back(u);
-    //         }
-    //     }
-    //     else if(line[0] = 'f'){
-    //         vector3 f;
-    //         s>>junk>>f.x>>f.y>>f.z;
-    //         _indices.push_back(f);
-    //     }
-    // }
-    
-    // objFile.close();
+        if ( strcmp( lineHeader, "v" ) == 0 ){
+            vector3f vertex;
+            fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
+            temp_vertices.push_back(vertex);
+        }else if ( strcmp( lineHeader, "vt" ) == 0 ){
+            vector2f uv;
+            fscanf(file, "%f %f\n", &uv.x, &uv.y );
+            temp_uvs.push_back(uv);
+        }
+        else if(strcmp(lineHeader, "f") == 0){
+            vertexInfo f0, f1, f2;
+            fscanf(file, "%d/%d %d/%d %d/%d\n",&f0.v,&f0.u,&f1.v,&f1.u,&f2.v,&f2.u);
+            _info.push_back(f0);
+            _info.push_back(f1);
+            _info.push_back(f2);
+        }
+    }
 
+    fclose(file);
+
+    temp_vertices.clear();
+    temp_uvs.clear();
+    _info.clear();
     // this->vertices = _vertices.data();
     // this->verticesCount = _vertices.size();
     // this->indices = _indices.data();

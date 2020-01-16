@@ -9,25 +9,25 @@ private:
 protected:
     virtual void OnStart(){
         program.Load("vertex.vs","fragment.frag");
-        //mesh.LoadObj("Cube.obj");
+        mesh.LoadObj("Cube.obj");
 
-        vector3f vertices[3]{
-            {-1.0f, 1.0f, 0.0f},
-            {-1.0f, -1.0f, 0.0f},
-            {1.0f, -1.0f, 0.0f}
-        };
+        // vector3f vertices[3]{
+        //     {-1.0f, 1.0f, 0.0f},
+        //     {-1.0f, -1.0f, 0.0f},
+        //     {1.0f, -1.0f, 0.0f}
+        // };
 
-        vector2f uvs[3]{
-            {0.0f,0.0f},
-            {0.0f,0.0f},
-            {0.0f,0.0f}
-        };
+        // vector2f uvs[3]{
+        //     {0.0f,0.0f},
+        //     {0.0f,0.0f},
+        //     {0.0f,0.0f}
+        // };
 
-        vector3ui indices[1]{
-            {0, 1, 2}
-        };
+        // vector3ui indices[1]{
+        //     {0, 1, 2}
+        // };
 
-        mesh.Generate(vertices,3,uvs,3,indices,1);
+        //mesh.Generate(vertices,3,uvs,3,indices,1);
         SetBackgroundColor(1.0f,0.0f,0.0f,1.0f);
     }
 
