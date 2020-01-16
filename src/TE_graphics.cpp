@@ -120,17 +120,12 @@ Mesh::~Mesh(){
 }
 
 bool Mesh::LoadObj(std::string path){
-    // std::ifstream objFile(path);
-
-    // if(!objFile.is_open())
-    //     return false;
 
     std::vector<vector3f> temp_vertices;
     std::vector<vector2f> temp_uvs;
 
     struct vertexInfo{
-        int v;
-        unsigned int u;
+        unsigned int v,u;
     };
     std::vector<vertexInfo> _info;
 
@@ -166,17 +161,26 @@ bool Mesh::LoadObj(std::string path){
 
     fclose(file);
 
+    std::vector<vector3f> _vertices;
+    std::vector<vector2f> _uvs;
+    std::vector<vector3ui> _indices;
+
+    for(unsigned int i = 0; i < _info.size(); i+=3){
+        _vertices.push_back(temp_vertices[_info[i].v - 1]);
+        _uvs.push_back(temp_uvs[_info[i].u - 1]);
+        _vertices.push_back(temp_vertices[_info[i + 1].v - 1]);
+        _uvs.push_back(temp_uvs[_info[i + 1].u - 1]);
+        _vertices.push_back(temp_vertices[_info[i + 2].v - 1]);
+        _uvs.push_back(temp_uvs[_info[i + 2].u - 1]);
+
+        _indices.push_back({3*i, 3*i+1, 3*i+2});
+    }
+
     temp_vertices.clear();
     temp_uvs.clear();
     _info.clear();
-    // this->vertices = _vertices.data();
-    // this->verticesCount = _vertices.size();
-    // this->indices = _indices.data();
-    // this->indicesCount = _indices.size();
-    // this->uvs = _uvs.data();
-    // this->uvsCount = _uvs.size();
 
-    // this->Generate();
+    this->Generate(_vertices.data(),_vertices.size(),_uvs.data(),_uvs.size(),_indices.data(),_indices.size());
 
     return true;
 }

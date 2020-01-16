@@ -37,10 +37,12 @@ struct vector4f
 
 typedef vector4f mat4x4[4];
 
-float *matrix_ptr(mat2x2 matrix);
-float *matrix_ptr(mat3x3 matrix);
-float *matrix_ptr(mat4x4 matrix);
+const float *matrix_ptr(mat2x2 matrix);
+const float *matrix_ptr(mat3x3 matrix);
+const float *matrix_ptr(mat4x4 matrix);
 
-
-
+void matrix_identity(mat4x4 &matrix);
+void matrix_translate(mat4x4 &matrix, vector3f translation);
+void matrix_scale(mat4x4 &matrix, vector3f scale);
+void matrix_rotate(mat4x4 &matrix, vector3f rotation);
 #endif
