@@ -7,44 +7,83 @@ private:
     Mesh mesh;
     Shader program;
     mat4x4 model;
+    float angle;
+    GLuint modelLoc;
 protected:
     virtual void OnStart(){
         program.Load("vertex.vs","fragment.frag");
         //mesh.LoadObj("Cube.obj");
 
-        matrix_identity(model);
-        matrix_translate(model,{0.0f,-0.5f,0.0f});
-        matrix_scale(model,{0.25f,0.25f,0.25f});
-
         glUseProgram(program.ID);
-        GLuint modelLoc = glGetUniformLocation(program.ID,"model");
-        glUniformMatrix4fv(modelLoc,1,GL_FALSE,&model[0].x);
+        modelLoc = glGetUniformLocation(program.ID,"model");
+        GLuint projectionLoc = glGetUniformLocation(program.ID,"projection");
 
-        vector3f vertices[3]{ 
-            {-1.0f, 1.0f, 0.0f},
-            {-1.0f, -1.0f, 0.0f},
-            {1.0f, -1.0f, 0.0f}
+        mat4x4 projection = {
+            {0.769f,0.0f,0.0f,0.0f},
+            {0.0f, 0.577f,0.0f,0.0f},
+            {0.0f,0.0f,1.002f, 1.0f},
+            {0.0f,0.0f,-0.2f,0.0f}
         };
 
-        vector2f uvs[3]{
-            {0.0f,0.0f},
-            {0.0f,0.0f},
-            {0.0f,0.0f}
+        glUniformMatrix4fv(projectionLoc,1,GL_FALSE,&projection[0].x);
+
+        vector3f vertices[]{ 
+            {-1.0f, 1.0f, 1.0f},
+            {1.0f, 1.0f, 1.0f},
+            {-1.0f, -1.0f, 1.0f},
+
+            {1.0f, 1.0f, 1.0f},
+            {1.0f, -1.0f, 1.0f},
+            {-1.0f, -1.0f, 1.0f},
+
+            {-1.0f, 1.0f, -1.0f},
+            {1.0f, 1.0f, -1.0f},
+            {-1.0f, -1.0f, -1.0f},
+
+            {1.0f, 1.0f, -1.0f},
+            {1.0f, -1.0f, -1.0f},
+            {-1.0f, -1.0f, -1.0f}
         };
 
-        vector3ui indices[1]{
-            {0, 1, 2}
+        vector2f uvs[]{
+            {1.0f,0.0f},
+            {1.0f,0.0f},
+            {1.0f,0.0f},
+
+            {0.0f,1.0f},
+            {0.0f,1.0f},
+            {0.0f,1.0f},
+
+            {0.5f,0.0f},
+            {0.5f,0.0f},
+            {0.5f,0.0f},
+
+            {0.0f,0.5f},
+            {0.0f,0.5f},
+            {0.0f,0.5f}
         };
 
-        mesh.Generate(vertices,3,uvs,3,indices,1);
-        SetBackgroundColor(1.0f,0.0f,0.0f,1.0f);
+        vector3ui indices[]{
+            {0, 1, 2},
+            {3, 4, 5},
+            {6, 7, 8},
+            {9, 10, 11}
+        };
+
+        mesh.Generate(vertices,12,uvs,12,indices,4);
     }
 
     virtual void OnUpdate(double elapsedTime){
-
+        angle += (float)elapsedTime;
+                matrix_identity(model);
+        matrix_scale(model,{0.2f,0.2f,0.2f});
+        matrix_translate(model, {0.0f,2.0f,2.0f});
+        matrix_rotate(model,{0.0f,0.0f,angle});
     }
 
     virtual void OnDraw(){
+
+        glUniformMatrix4fv(modelLoc,1,GL_FALSE,&model[0].x);
         graphics.Draw(mesh);
     }
 

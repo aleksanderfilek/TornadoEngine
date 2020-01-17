@@ -187,14 +187,15 @@ bool Mesh::LoadObj(std::string path){
 
 void Mesh::Generate(vector3f *_vertices,unsigned int _verticesCount , vector2f *_uvs, unsigned int _uvsCount, vector3ui *_indices, unsigned int _indicesCount){
 
-        vertex _vertex[_verticesCount];
+        GLfloat _vertex[_verticesCount*3 + _uvsCount*2];
 
         for(int i = 0; i < _verticesCount; i++){
-            _vertex[i].position.x = _vertices[i].x;
-            _vertex[i].position.y = _vertices[i].y;
-            _vertex[i].position.z = _vertices[i].z;
-            _vertex[i].uv.x = _uvs[i].x;
-            _vertex[i].uv.y = _uvs[i].y;
+            _vertex[5*i] = _vertices[i].x;
+            _vertex[5*i + 1] = _vertices[i].y;
+            _vertex[5*i + 2] = _vertices[i].z;
+            _vertex[5*i + 3] = _uvs[i].x;
+            _vertex[5*i + 4] = _uvs[i].y;
+            std::cout<<_vertex[5*i]<<"/"<<_vertex[5*i+1]<<"/"<<_vertex[5*i+2]<<"/"<<_vertex[5*i+3]<<"/"<<_vertex[5*i+4]<<std::endl;
         }
 
         this->indicesCount = 3*_indicesCount;

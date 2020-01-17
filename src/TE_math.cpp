@@ -1,6 +1,7 @@
 #include"TE_math.h"
 
 #include<stdlib.h>
+#include<cmath>
 
 // float *matrix_ptr(mat2x2 matrix){
 //     float *mat = (float *)malloc(4 * sizeof(float));
@@ -55,7 +56,15 @@ void matrix_scale(mat4x4 &matrix, vector3f scale){
 }
 
 void matrix_rotate(mat4x4 &matrix, vector3f rotation){
-    
+    matrix[0].x += cosf(rotation.y)*cosf(rotation.z);
+    matrix[0].y += (cosf(rotation.x)*sinf(rotation.z) + sinf(rotation.x)*sinf(rotation.y)*cosf(rotation.z));
+    matrix[0].z += (sinf(rotation.x)*sinf(rotation.z) - cosf(rotation.x)*sinf(rotation.y)*cosf(rotation.z));
+    matrix[1].x += -cosf(rotation.y)*sinf(rotation.z);
+    matrix[1].y += (cosf(rotation.x)*cosf(rotation.z) - sinf(rotation.x)*sinf(rotation.y)*sinf(rotation.z));
+    matrix[1].z += (sinf(rotation.x)*cosf(rotation.z) + cosf(rotation.x)*sinf(rotation.y)*sinf(rotation.z));
+    matrix[2].x += sinf(rotation.y);
+    matrix[2].y += -sinf(rotation.x)*cosf(rotation.y);
+    matrix[2].z += cosf(rotation.x)*cosf(rotation.y);
 }
 
 
