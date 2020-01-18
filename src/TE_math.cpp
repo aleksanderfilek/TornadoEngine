@@ -1,7 +1,6 @@
 #include"TE_math.h"
 
 #include<stdlib.h>
-#include<cmath>
 
 // float *matrix_ptr(mat2x2 matrix){
 //     float *mat = (float *)malloc(4 * sizeof(float));
@@ -36,6 +35,14 @@
 //     return mat;
 // }
 
+vector3f crossProduct(const vector3f &vectorA, const vector3f &vectorB){
+    vector3f vec;
+    vec.x = vectorA.y*vectorB.z - vectorA.z*vectorB.y;
+    vec.y = vectorA.z*vectorB.x - vectorA.x*vectorB.z;
+    vec.z = vectorA.x*vectorB.y - vectorA.y*vectorB.x;
+    return vec;
+}
+
 void matrix_projection(mat4x4 &matrix, int width, int height, float FOV, float near, float far){
     float aspectRatio = (float)height/(float)width;
     float tg = tanf(FOV*0.5f/180.0f*3.141596f);
@@ -63,6 +70,31 @@ void matrix_orthographic(mat4x4 &matrix, int width, int height, float near, floa
     matrix[2].z = -2.0f/(far-near);
     matrix[3].z = -(far+near)/(far-near);
     matrix[2].w = 1.0f;
+}
+
+void matrix_lookAt(mat4x4 &matrix, vector3f &eye, vector3f &center, vector3f &up){
+
+
+    matrix[0].x = 1.0f;
+    matrix[1].x = 0.0f;
+    matrix[2].x = 0.0f;
+    matrix[3].x = 0.0f;
+    matrix[0].y = 0.0f;
+    matrix[1].y = 1.0f;
+    matrix[2].y = 0.0f;
+    matrix[3].y = 0.0f;
+    matrix[0].z = 0.0f;
+    matrix[1].z = 0.0f;
+    matrix[2].z = 1.0f;
+    matrix[3].z = 0.0f;
+    matrix[0].w = 0.0f;
+    matrix[1].w = 0.0f;
+    matrix[2].w = 0.0f;
+    matrix[3].w = 1.0f;
+
+    vector3f p = {-eye.x, -eye.y, -eye.z};
+
+    matrix_translate(matrix,p);
 }
 
 void matrix_identity(mat4x4 &matrix){
