@@ -24,6 +24,8 @@ struct Texture{
 };
 
 Texture Tex_Load(const char *path);
+//TODO: function to set texture in GPU
+void BindTexture(GLuint &index,const Texture &texture);
 
 class Shader{
 public:

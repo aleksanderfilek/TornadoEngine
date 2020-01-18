@@ -17,10 +17,14 @@ private:
 
     GLuint lookLoc;
     float speed = 1.0f;
+
+    Texture texture;
 protected:
     virtual void OnStart(){
+        texture = Tex_Load("Floor.png");
+
         program.Load("vertex.vs","fragment.frag");
-        mesh.LoadObj("Fighter.obj");
+        mesh.LoadObj("Floor.obj");
 
         glUseProgram(program.ID);
         modelLoc = glGetUniformLocation(program.ID,"model");
@@ -107,9 +111,7 @@ protected:
     virtual void OnUpdate(double elapsedTime){
         angle += (float)elapsedTime;
         matrix_identity(model);
-        matrix_scale(model,{0.2f,0.2f,0.2f});
-        matrix_rotateAxisY(model, angle);
-        matrix_translate(model,{0.0f, 0.0f, 3.0f});
+        matrix_translate(model,{0.0f, -1.0f, 0.0f});
 
         const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
         if( currentKeyStates[ SDL_SCANCODE_LEFT ] )
