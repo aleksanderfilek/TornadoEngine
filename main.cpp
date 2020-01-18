@@ -20,7 +20,7 @@ private:
 protected:
     virtual void OnStart(){
         program.Load("vertex.vs","fragment.frag");
-        //mesh.LoadObj("Cube.obj");
+        mesh.LoadObj("Fighter.obj");
 
         glUseProgram(program.ID);
         modelLoc = glGetUniformLocation(program.ID,"model");
@@ -35,72 +35,72 @@ protected:
 
         lookLoc = glGetUniformLocation(program.ID,"lookAt");
 
-        vector3f vertices[]{ 
-            //FRONT
-            {-1.0f, 1.0f, 1.0f},
-            {1.0f, 1.0f, 1.0f},
-            {-1.0f, -1.0f, 1.0f},
+        // vector3f vertices[]{ 
+        //     //FRONT
+        //     {-1.0f, 1.0f, 1.0f},
+        //     {1.0f, 1.0f, 1.0f},
+        //     {-1.0f, -1.0f, 1.0f},
 
-            {1.0f, 1.0f, 1.0f},
-            {1.0f, -1.0f, 1.0f},
-            {-1.0f, -1.0f, 1.0f},
+        //     {1.0f, 1.0f, 1.0f},
+        //     {1.0f, -1.0f, 1.0f},
+        //     {-1.0f, -1.0f, 1.0f},
 
-            //BACK
-            {-1.0f, 1.0f, -1.0f},
-            {1.0f, 1.0f, -1.0f},
-            {-1.0f, -1.0f, -1.0f},
+        //     //BACK
+        //     {-1.0f, 1.0f, -1.0f},
+        //     {1.0f, 1.0f, -1.0f},
+        //     {-1.0f, -1.0f, -1.0f},
 
-            {1.0f, 1.0f, -1.0f},
-            {1.0f, -1.0f, -1.0f},
-            {-1.0f, -1.0f, -1.0f},
+        //     {1.0f, 1.0f, -1.0f},
+        //     {1.0f, -1.0f, -1.0f},
+        //     {-1.0f, -1.0f, -1.0f},
 
-            //TOP
-            {-1.0f, 1.0f, 1.0f},
-            {1.0f, 1.0f, -1.0f},
-            {1.0f, 1.0f, 1.0f},
+        //     //TOP
+        //     {-1.0f, 1.0f, 1.0f},
+        //     {1.0f, 1.0f, -1.0f},
+        //     {1.0f, 1.0f, 1.0f},
         
-            {-1.0f, 1.0f, 1.0f},
-            {-1.0f, 1.0f, -1.0f},
-            {1.0f, 1.0f, -1.0f},
-        };
+        //     {-1.0f, 1.0f, 1.0f},
+        //     {-1.0f, 1.0f, -1.0f},
+        //     {1.0f, 1.0f, -1.0f},
+        // };
 
-        vector2f uvs[]{
-            {1.0f,0.0f},
-            {1.0f,0.0f},
-            {1.0f,0.0f},
+        // vector2f uvs[]{
+        //     {1.0f,0.0f},
+        //     {1.0f,0.0f},
+        //     {1.0f,0.0f},
 
-            {0.0f,1.0f},
-            {0.0f,1.0f},
-            {0.0f,1.0f},
+        //     {0.0f,1.0f},
+        //     {0.0f,1.0f},
+        //     {0.0f,1.0f},
 
-            {0.5f,0.0f},
-            {0.5f,0.0f},
-            {0.5f,0.0f},
+        //     {0.5f,0.0f},
+        //     {0.5f,0.0f},
+        //     {0.5f,0.0f},
 
-            {0.0f,0.5f},
-            {0.0f,0.5f},
-            {0.0f,0.5f},
+        //     {0.0f,0.5f},
+        //     {0.0f,0.5f},
+        //     {0.0f,0.5f},
 
             
-            {0.25f,0.25f},
-            {0.25f,0.25f},
-            {0.25f,0.25f},
+        //     {0.25f,0.25f},
+        //     {0.25f,0.25f},
+        //     {0.25f,0.25f},
 
-            {0.5f,0.5f},
-            {0.5f,0.5f},
-            {0.5f,0.5f}
-        };
+        //     {0.5f,0.5f},
+        //     {0.5f,0.5f},
+        //     {0.5f,0.5f}
+        // };
 
-        vector3ui indices[]{
-            {0, 1, 2},
-            {3, 4, 5},
-            {6, 7, 8},
-            {9, 10, 11},
-            {12, 13, 14},
-            {15, 16, 17}
-        };
+        // vector3ui indices[]{
+        //     {0, 1, 2},
+        //     {3, 4, 5},
+        //     {6, 7, 8},
+        //     {9, 10, 11},
+        //     {12, 13, 14},
+        //     {15, 16, 17}
+        // };
 
-        mesh.Generate(vertices,18,uvs,18,indices,6);
+        // mesh.Generate(vertices,18,uvs,18,indices,6);
   
     }
 
@@ -130,7 +130,7 @@ protected:
             eye-={0.0f,0.0f,speed * (float)elapsedTime};
         }
         matrix_lookAt(lookAt,eye,target,up);
-        std::cout<<eye.x<<" / "<<eye.y<<" / "<<eye.z<<std::endl;
+        //std::cout<<eye.x<<" / "<<eye.y<<" / "<<eye.z<<std::endl;
     }
     virtual void OnDraw(){
         glUniformMatrix4fv(modelLoc,1,GL_FALSE,&model[0].x);  
