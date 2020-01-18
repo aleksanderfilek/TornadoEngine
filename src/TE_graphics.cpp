@@ -195,7 +195,7 @@ void Mesh::Generate(vector3f *_vertices,unsigned int _verticesCount , vector2f *
             _vertex[5*i + 2] = _vertices[i].z;
             _vertex[5*i + 3] = _uvs[i].x;
             _vertex[5*i + 4] = _uvs[i].y;
-            std::cout<<_vertex[5*i]<<"/"<<_vertex[5*i+1]<<"/"<<_vertex[5*i+2]<<"/"<<_vertex[5*i+3]<<"/"<<_vertex[5*i+4]<<std::endl;
+            //std::cout<<_vertex[5*i]<<"/"<<_vertex[5*i+1]<<"/"<<_vertex[5*i+2]<<"/"<<_vertex[5*i+3]<<"/"<<_vertex[5*i+4]<<std::endl;
         }
 
         this->indicesCount = 3*_indicesCount;

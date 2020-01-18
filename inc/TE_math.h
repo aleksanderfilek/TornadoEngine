@@ -42,7 +42,13 @@ const float *matrix_ptr(mat3x3 matrix);
 const float *matrix_ptr(mat4x4 matrix);
 
 void matrix_identity(mat4x4 &matrix);
+void matrix_projection(mat4x4 &matrix, int width, int height, float FOV, float near, float far);
+void matrix_orthographic(mat4x4 &matrix, int width, int height, float near, float far);
+
 void matrix_translate(mat4x4 &matrix, vector3f translation);
 void matrix_scale(mat4x4 &matrix, vector3f scale);
+void matrix_rotateAxisX(mat4x4 &matrix, float angle);
+void matrix_rotateAxisY(mat4x4 &matrix, float angle);
+void matrix_rotateAxisZ(mat4x4 &matrix, float angle);
 void matrix_rotate(mat4x4 &matrix, vector3f rotation);
 #endif

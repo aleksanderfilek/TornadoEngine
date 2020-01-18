@@ -18,16 +18,15 @@ protected:
         modelLoc = glGetUniformLocation(program.ID,"model");
         GLuint projectionLoc = glGetUniformLocation(program.ID,"projection");
 
-        mat4x4 projection = {
-            {0.769f,0.0f,0.0f,0.0f},
-            {0.0f, 0.577f,0.0f,0.0f},
-            {0.0f,0.0f,1.002f, 1.0f},
-            {0.0f,0.0f,-0.2f,0.0f}
-        };
+        mat4x4 projection;
+        matrix_projection(projection,800,600,120.0f,0.1f,100.0f);
+        for(int i = 0;i < 4; i++)
+            std::cout<<projection[i].x<<"  "<<projection[i].y<<"  "<<projection[i].z<<"  "<<projection[i].w<<std::endl;
 
         glUniformMatrix4fv(projectionLoc,1,GL_FALSE,&projection[0].x);
 
         vector3f vertices[]{ 
+            //FRONT
             {-1.0f, 1.0f, 1.0f},
             {1.0f, 1.0f, 1.0f},
             {-1.0f, -1.0f, 1.0f},
@@ -36,13 +35,23 @@ protected:
             {1.0f, -1.0f, 1.0f},
             {-1.0f, -1.0f, 1.0f},
 
+            //BACK
             {-1.0f, 1.0f, -1.0f},
             {1.0f, 1.0f, -1.0f},
             {-1.0f, -1.0f, -1.0f},
 
             {1.0f, 1.0f, -1.0f},
             {1.0f, -1.0f, -1.0f},
-            {-1.0f, -1.0f, -1.0f}
+            {-1.0f, -1.0f, -1.0f},
+
+            //TOP
+            {-1.0f, 1.0f, 1.0f},
+            {1.0f, 1.0f, -1.0f},
+            {1.0f, 1.0f, 1.0f},
+        
+            {-1.0f, 1.0f, 1.0f},
+            {-1.0f, 1.0f, -1.0f},
+            {1.0f, 1.0f, -1.0f},
         };
 
         vector2f uvs[]{
@@ -60,30 +69,41 @@ protected:
 
             {0.0f,0.5f},
             {0.0f,0.5f},
-            {0.0f,0.5f}
+            {0.0f,0.5f},
+
+            
+            {0.25f,0.25f},
+            {0.25f,0.25f},
+            {0.25f,0.25f},
+
+            {0.5f,0.5f},
+            {0.5f,0.5f},
+            {0.5f,0.5f}
         };
 
         vector3ui indices[]{
             {0, 1, 2},
             {3, 4, 5},
             {6, 7, 8},
-            {9, 10, 11}
+            {9, 10, 11},
+            {12, 13, 14},
+            {15, 16, 17}
         };
 
-        mesh.Generate(vertices,12,uvs,12,indices,4);
+        mesh.Generate(vertices,18,uvs,18,indices,6);
+  
     }
 
     virtual void OnUpdate(double elapsedTime){
         angle += (float)elapsedTime;
-                matrix_identity(model);
+        matrix_identity(model);
         matrix_scale(model,{0.2f,0.2f,0.2f});
-        matrix_translate(model, {0.0f,2.0f,2.0f});
-        matrix_rotate(model,{0.0f,0.0f,angle});
+        matrix_rotate(model,{angle,angle*2.0f,angle*3.0f});
+        matrix_translate(model, {0.0f,0.0f,3.0f});
     }
-
     virtual void OnDraw(){
+        glUniformMatrix4fv(modelLoc,1,GL_FALSE,&model[0].x);  
 
-        glUniformMatrix4fv(modelLoc,1,GL_FALSE,&model[0].x);
         graphics.Draw(mesh);
     }
 

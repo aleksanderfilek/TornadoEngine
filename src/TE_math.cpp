@@ -36,6 +36,35 @@
 //     return mat;
 // }
 
+void matrix_projection(mat4x4 &matrix, int width, int height, float FOV, float near, float far){
+    float aspectRatio = (float)height/(float)width;
+    float tg = tanf(FOV*0.5f/180.0f*3.141596f);
+    matrix[0].x = aspectRatio*tg;
+    matrix[0].y = 0.0f;
+    matrix[0].z = 0.0f;
+    matrix[0].w = 0.0f;
+    matrix[1].x = 0.0f;
+    matrix[1].y = tg;
+    matrix[1].z = 0.0f;
+    matrix[1].w = 0.0f;
+    matrix[2].x = 0.0f;
+    matrix[2].y = 0.0f;
+    matrix[2].z = far/(far-near);
+    matrix[2].w = 1.0f;
+    matrix[3].x = 0.0f;
+    matrix[3].y = 0.0f;
+    matrix[3].z = -(far*near)/(far-near);
+    matrix[3].w = 0.0f;
+}
+
+void matrix_orthographic(mat4x4 &matrix, int width, int height, float near, float far){
+    matrix[0].x = 1.0f/(float)width;
+    matrix[1].y = 1.0f/(float)height;
+    matrix[2].z = -2.0f/(far-near);
+    matrix[3].z = -(far+near)/(far-near);
+    matrix[2].w = 1.0f;
+}
+
 void matrix_identity(mat4x4 &matrix){
     matrix[0] = {1.0f, 0.0f, 0.0f, 0.0f};
     matrix[1] = {0.0f, 1.0f, 0.0f, 0.0f};
@@ -55,17 +84,69 @@ void matrix_scale(mat4x4 &matrix, vector3f scale){
     matrix[2].z *= scale.z;
 }
 
-void matrix_rotate(mat4x4 &matrix, vector3f rotation){
-    matrix[0].x += cosf(rotation.y)*cosf(rotation.z);
-    matrix[0].y += (cosf(rotation.x)*sinf(rotation.z) + sinf(rotation.x)*sinf(rotation.y)*cosf(rotation.z));
-    matrix[0].z += (sinf(rotation.x)*sinf(rotation.z) - cosf(rotation.x)*sinf(rotation.y)*cosf(rotation.z));
-    matrix[1].x += -cosf(rotation.y)*sinf(rotation.z);
-    matrix[1].y += (cosf(rotation.x)*cosf(rotation.z) - sinf(rotation.x)*sinf(rotation.y)*sinf(rotation.z));
-    matrix[1].z += (sinf(rotation.x)*cosf(rotation.z) + cosf(rotation.x)*sinf(rotation.y)*sinf(rotation.z));
-    matrix[2].x += sinf(rotation.y);
-    matrix[2].y += -sinf(rotation.x)*cosf(rotation.y);
-    matrix[2].z += cosf(rotation.x)*cosf(rotation.y);
+void matrix_rotateAxisX(mat4x4 &matrix, float angle){
+    float a = matrix[0].y, b = matrix[0].z;
+    matrix[0].y = a*cosf(angle) - b*sinf(angle);
+    matrix[0].z = a*sinf(angle) + b*cosf(angle);
+    a = matrix[1].y;
+    b = matrix[1].z;
+    matrix[1].y = a*cosf(angle) - b*sinf(angle);
+    matrix[1].z = a*sinf(angle) + b*cosf(angle);
+    a = matrix[2].y;
+    b = matrix[2].z;
+    matrix[2].y = a*cosf(angle) - b*sinf(angle);
+    matrix[2].z = a*sinf(angle) + b*cosf(angle);
+    a = matrix[3].y;
+    b = matrix[3].z;   
+    matrix[3].y = a*cosf(angle) - b*sinf(angle);
+    matrix[3].z = a*sinf(angle) + b*cosf(angle);
 }
+
+void matrix_rotateAxisY(mat4x4 &matrix, float angle){
+    float a = matrix[0].x, b = matrix[0].z;
+    matrix[0].x = a*cosf(angle) + b*sinf(angle);
+    matrix[0].z = -a*sinf(angle) + b*cosf(angle);
+    a = matrix[1].x;
+    b = matrix[1].z;
+    matrix[1].x = a*cosf(angle) + b*sinf(angle);
+    matrix[1].z = -a*sinf(angle) + b*cosf(angle);
+    a = matrix[2].x;
+    b = matrix[2].z;
+    matrix[2].x = a*cosf(angle) + b*sinf(angle);
+    matrix[2].z = -a*sinf(angle) + b*cosf(angle);
+    a = matrix[3].x;
+    b = matrix[3].z;   
+    matrix[3].x = a*cosf(angle) + b*sinf(angle);
+    matrix[3].z = -a*sinf(angle) + b*cosf(angle);
+}
+
+void matrix_rotateAxisZ(mat4x4 &matrix, float angle){
+    float a = matrix[0].x, b = matrix[0].y;
+    matrix[0].x = a*cosf(angle) + b*sinf(angle);
+    matrix[0].y = -a*sinf(angle) + b*cosf(angle);
+    a = matrix[1].x;
+    b = matrix[1].y;
+    matrix[1].x = a*cosf(angle) + b*sinf(angle);
+    matrix[1].y = -a*sinf(angle) + b*cosf(angle);
+    a = matrix[2].x;
+    b = matrix[2].y;
+    matrix[2].x = a*cosf(angle) + b*sinf(angle);
+    matrix[2].y = -a*sinf(angle) + b*cosf(angle);
+    a = matrix[3].x;
+    b = matrix[3].y;   
+    matrix[3].x = a*cosf(angle) + b*sinf(angle);
+    matrix[3].y = -a*sinf(angle) + b*cosf(angle);
+}
+
+void matrix_rotate(mat4x4 &matrix, vector3f rotation){
+    if(rotation.x != 0.0f)
+        matrix_rotateAxisX(matrix,rotation.x);
+    if(rotation.y != 0.0f)
+        matrix_rotateAxisY(matrix,rotation.y);
+    if(rotation.z != 0.0f)
+        matrix_rotateAxisZ(matrix,rotation.z);
+}
+
 
 
 
