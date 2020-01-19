@@ -16,12 +16,24 @@ private:
     vector3f up = {0.0f, 1.0f, 0.0f};
 
     GLuint lookLoc;
-    float speed = 1.0f;
+    float speed = 4.0f;
+
+    float jumpForce = 5.0f;
+    float velocityY = 0.0f;
+    float gravity = 9.81f;
 
     Texture texture;
+    Texture texture1;
+
+    Texture currentTexture;
+
+    vector2i mouse;
 protected:
     virtual void OnStart(){
-        texture = Tex_Load("Floor.png");
+        texture = Tex_Load("wall.jpg");
+        texture1 = Tex_Load("Floor.png");
+        
+        currentTexture = texture;
 
         program.Load("vertex.vs","fragment.frag");
         mesh.LoadObj("Floor.obj");
@@ -131,13 +143,37 @@ protected:
         {
             eye-={0.0f,0.0f,speed * (float)elapsedTime};
         }
+
+
+        if( currentKeyStates[ SDL_SCANCODE_SPACE ] && velocityY == 0.0f)
+        {
+            velocityY = jumpForce;
+        }
+
+        eye+={0.0f, velocityY * (float)elapsedTime,0.0f};
+
+        if(eye.y <= 0.0f){
+            velocityY = 0.0f;
+        }else{
+            velocityY -= (float)elapsedTime * gravity;
+        }
+
+
+        if(currentKeyStates[SDL_SCANCODE_RETURN]){
+            if(currentTexture.id == texture.id)
+                currentTexture = texture1;
+            else 
+                currentTexture = texture;
+
+        }
+
         matrix_lookAt(lookAt,eye,target,up);
-        //std::cout<<eye.x<<" / "<<eye.y<<" / "<<eye.z<<std::endl;
     }
     virtual void OnDraw(){
         glUniformMatrix4fv(modelLoc,1,GL_FALSE,&model[0].x);  
         glUniformMatrix4fv(lookLoc,1,GL_FALSE,&lookAt[0].x);
 
+        glBindTexture(GL_TEXTURE_2D,currentTexture.id);
         graphics.Draw(mesh);
     }
 

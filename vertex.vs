@@ -6,10 +6,10 @@ uniform mat4 lookAt;
 uniform mat4 projection;
 uniform mat4 model;
 
-out vec4 ourColor;
+out vec2 TexCoord;
 
 void main()
 {
-	ourColor = vec4(texCoord.x,texCoord.y,1.0,1.0);
+	TexCoord = texCoord;
 	gl_Position = projection * lookAt * model * vec4(position, 1);
 }
