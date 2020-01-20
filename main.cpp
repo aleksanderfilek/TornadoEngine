@@ -23,18 +23,11 @@ private:
     float gravity = 9.81f;
 
     Texture texture;
-    Texture texture1;
 
-    Texture currentTexture;
-
-    vector2i mouse;
 protected:
     virtual void OnStart(){
         texture = Tex_Load("wall.jpg");
-        texture1 = Tex_Load("Floor.png");
         
-        currentTexture = texture;
-
         program.Load("vertex.vs","fragment.frag");
         mesh.LoadObj("Floor.obj");
 
@@ -90,22 +83,13 @@ protected:
             velocityY -= (float)elapsedTime * gravity;
         }
 
-
-        if(currentKeyStates[SDL_SCANCODE_RETURN]){
-            if(currentTexture.id == texture.id)
-                currentTexture = texture1;
-            else 
-                currentTexture = texture;
-
-        }
-
         matrix_lookAt(lookAt,eye,target,up);
     }
     virtual void OnDraw(){
         glUniformMatrix4fv(modelLoc,1,GL_FALSE,&model[0].x);  
         glUniformMatrix4fv(lookLoc,1,GL_FALSE,&lookAt[0].x);
 
-        glBindTexture(GL_TEXTURE_2D,currentTexture.id);
+        glBindTexture(GL_TEXTURE_2D,texture.id);
         graphics.Draw(mesh);
     }
 
