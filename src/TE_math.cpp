@@ -105,25 +105,21 @@ void matrix_lookAt(mat4x4 &matrix, vector3f &eye, vector3f &target, vector3f &up
     u = crossProduct(s, f);
 
     matrix[0].x = s.x;
-    matrix[1].x = s.y;
-    matrix[2].x = s.z;
-    matrix[3].x = 0.0f;
-    matrix[0].y = u.x;
+    matrix[0].y = s.y;
+    matrix[0].z = s.z;
+    matrix[3].x = -dotProduct(s,eye);
+    matrix[1].x = u.x;
     matrix[1].y = u.y;
-    matrix[2].y = u.z;
-    matrix[3].y = 0.0f;
-    matrix[0].z = -f.x;
-    matrix[1].z = -f.y;
+    matrix[1].z = u.z;
+    matrix[3].y =  -dotProduct(u,eye);
+    matrix[2].x = -f.x;
+    matrix[2].y = -f.y;
     matrix[2].z = -f.z;
-    matrix[3].z = 0.0f;
+    matrix[3].z = -dotProduct(f,eye);
     matrix[0].w = 0.0f;
     matrix[1].w = 0.0f;
     matrix[2].w = 0.0f;
     matrix[3].w = 1.0f;
-
-    vector3f p = {-dotProduct(s,eye), -dotProduct(u,eye), -dotProduct(f,eye)};
-    //vector3f p = {-eye.x, -eye.y, -eye.z};
-    matrix_translate(matrix,p);
 }
 
 void matrix_identity(mat4x4 &matrix){
