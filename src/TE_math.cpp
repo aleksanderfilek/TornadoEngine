@@ -2,6 +2,18 @@
 
 #include<stdlib.h>
 
+float vector2f::length(){
+    float l = x*x + y*y;
+    return sqrtf(l);
+}
+
+void vector2f::normalize(){
+    float l = length();
+    x/=l;
+    y/=l;
+}
+
+
 // float *matrix_ptr(mat2x2 matrix){
 //     float *mat = (float *)malloc(4 * sizeof(float));
 //     mat[0] = matrix[0].x;
@@ -35,6 +47,10 @@
 //     return mat;
 // }
 
+float DegreeToRadians(float degree){
+    return (degree*PI)/180.0f;
+}
+
 vector3f crossProduct(const vector3f &vectorA, const vector3f &vectorB){
     vector3f vec;
     vec.x = vectorA.y*vectorB.z - vectorA.z*vectorB.y;
@@ -43,9 +59,16 @@ vector3f crossProduct(const vector3f &vectorA, const vector3f &vectorB){
     return vec;
 }
 
+float dotProduct(const vector3f &vectorA, const vector3f &vectorB){
+    float x = vectorA.x*vectorB.x;
+    float y = vectorA.y*vectorB.y;
+    float z = vectorA.z*vectorB.z;
+    return x+y+z;
+}
+
 void matrix_projection(mat4x4 &matrix, int width, int height, float FOV, float near, float far){
     float aspectRatio = (float)height/(float)width;
-    float tg = tanf(FOV*0.5f/180.0f*3.141596f);
+    float tg = tanf(FOV*0.5f/180.0f*PI);
     matrix[0].x = aspectRatio*tg;
     matrix[0].y = 0.0f;
     matrix[0].z = 0.0f;
@@ -72,28 +95,34 @@ void matrix_orthographic(mat4x4 &matrix, int width, int height, float near, floa
     matrix[2].w = 1.0f;
 }
 
-void matrix_lookAt(mat4x4 &matrix, vector3f &eye, vector3f &center, vector3f &up){
+void matrix_lookAt(mat4x4 &matrix, vector3f &eye, vector3f &target, vector3f &up){
 
+    vector3f f = target - eye;
+    f.normalize();
+    vector3f u = up;
+    u.normalize();
+    vector3f s = crossProduct(f, u);
+    u = crossProduct(s, f);
 
-    matrix[0].x = 1.0f;
-    matrix[1].x = 0.0f;
-    matrix[2].x = 0.0f;
+    matrix[0].x = s.x;
+    matrix[1].x = s.y;
+    matrix[2].x = s.z;
     matrix[3].x = 0.0f;
-    matrix[0].y = 0.0f;
-    matrix[1].y = 1.0f;
-    matrix[2].y = 0.0f;
+    matrix[0].y = u.x;
+    matrix[1].y = u.y;
+    matrix[2].y = u.z;
     matrix[3].y = 0.0f;
-    matrix[0].z = 0.0f;
-    matrix[1].z = 0.0f;
-    matrix[2].z = 1.0f;
+    matrix[0].z = -f.x;
+    matrix[1].z = -f.y;
+    matrix[2].z = -f.z;
     matrix[3].z = 0.0f;
     matrix[0].w = 0.0f;
     matrix[1].w = 0.0f;
     matrix[2].w = 0.0f;
     matrix[3].w = 1.0f;
 
-    vector3f p = {-eye.x, -eye.y, -eye.z};
-
+    vector3f p = {-dotProduct(s,eye), -dotProduct(u,eye), -dotProduct(f,eye)};
+    //vector3f p = {-eye.x, -eye.y, -eye.z};
     matrix_translate(matrix,p);
 }
 

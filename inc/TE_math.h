@@ -3,20 +3,14 @@
 
 #include<cmath>
 
+#define PI 3.141596f
+
 struct vector2f
 {
     float x,y;
 
-    float length(){
-        float l = x*x + y*y;
-        return sqrtf(l);
-    }
-
-    void normalize(){
-        float l = length();
-        x/=l;
-        y/=l;
-    }
+    float length();
+    void normalize();
 
     static vector2f normalized(vector2f &vector){
         vector2f vec;
@@ -79,6 +73,13 @@ struct vector3f{
         vec.z = z - rhs.z;
         return vec;
     }
+    vector3f operator+(const vector3f& rhs){
+        vector3f vec;
+        vec.x = x + rhs.x;
+        vec.y = y + rhs.y;
+        vec.z = z + rhs.z;
+        return vec;
+    }
     vector3f& operator+=(const vector3f& rhs){
         x += rhs.x;
         y += rhs.y;
@@ -95,7 +96,10 @@ struct vector3f{
 
 };
 
+float DegreeToRadians(float degree);
+
 vector3f crossProduct(const vector3f &vectorA, const vector3f &vectorB);
+float dotProduct(const vector3f &vectorA, const vector3f &vectorB);
 
 struct vector3i{
     int x,y,z;
@@ -122,7 +126,7 @@ void matrix_identity(mat4x4 &matrix);
 
 void matrix_projection(mat4x4 &matrix, int width, int height, float FOV, float near, float far);
 void matrix_orthographic(mat4x4 &matrix, int width, int height, float near, float far);
-void matrix_lookAt(mat4x4 &matrix, vector3f &eye, vector3f &center, vector3f &up);
+void matrix_lookAt(mat4x4 &matrix, vector3f &eye, vector3f &target, vector3f &up);
 
 void matrix_translate(mat4x4 &matrix, vector3f translation);
 void matrix_scale(mat4x4 &matrix, vector3f scale);

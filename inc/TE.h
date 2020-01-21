@@ -21,7 +21,7 @@ public:
     SDL_Window *GetWindow(){return window;};
 
     virtual void OnStart() = 0;
-    virtual void OnUpdate(double elapsedTime) = 0;
+    virtual void OnUpdate(float elapsedTime) = 0;
     virtual void OnDraw() = 0;
     virtual void OnExit() = 0;
 };
@@ -40,10 +40,10 @@ private:
 public:
     Timer();
     ~Timer(){};
-    double restart();
+    float restart();
 
-    double timeInMilliseconds(){
-        return (double)(startTicks - SDL_GetTicks())/1000.0f;
+    float timeInMilliseconds(){
+        return (float)(startTicks - SDL_GetTicks())/1000.0f;
         };
 };
 #endif

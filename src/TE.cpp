@@ -29,6 +29,8 @@ void TornadoEngine::CreateGame(const char *title, int width, int height){
     glViewport(0,0,width, height);
     glClearColor(1.0f,1.0f,1.0f,1.0f);
     glEnable(GL_DEPTH_TEST);
+
+    SDL_WarpMouseInWindow(this->window,width/2,height/2);
 }
 
 TornadoEngine::~TornadoEngine(){
@@ -41,7 +43,7 @@ void TornadoEngine::Start(){
     OnStart();
 
     Timer timer;
-    double elapsedTime = 0;
+    float elapsedTime = 0;
 
     bool quit = false;
     while (!quit)
@@ -67,8 +69,8 @@ Timer::Timer(){
     this->startTicks = SDL_GetTicks();
 }
 
-double Timer::restart(){
-    double t = (double)(SDL_GetTicks() - this->startTicks)/1000.0f;
+float Timer::restart(){
+    float t = (float)(SDL_GetTicks() - this->startTicks)/1000.0f;
     this->startTicks = SDL_GetTicks();
     return t;
 }
