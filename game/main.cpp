@@ -2,31 +2,25 @@
 #include"TE_graphics.h"
 
 #include"Player.h"
+#include"Level.h"
 
 class Game:public TornadoEngine{
 private:
     Graphics graphics;
-    Mesh mesh;
     Shader program;
-    mat4x4 model;
     GLuint modelLoc;
-
     mat4x4 lookAt;
-
     GLuint lookLoc;
-
-    Texture texture;
 
     Player player;
 
     vector3f up = {0.0f, 1.0f, 0.0f};
 
+    Level *level;
+
 protected:
-    virtual void OnStart(){
-        texture = Tex_Load("res/wall.jpg");
-        
+    virtual void OnStart(){        
         program.Load("res/vertex.vs","res/fragment.frag");
-        mesh.LoadObj("res/Floor.obj");
 
         glUseProgram(program.ID);
         modelLoc = glGetUniformLocation(program.ID,"model");
@@ -39,11 +33,7 @@ protected:
 
         lookLoc = glGetUniformLocation(program.ID,"lookAt");
 
-        vector3f eye = {0.0f, 0.0f, 0.0f};
-        vector3f center = {0.0f, 0.0f, 1.0f};
-
-        matrix_identity(model);
-        matrix_translate(model,{0.0f, -1.0f, 0.0f});
+        level = new Level("res/Level.bmp");
     }
 
     virtual void OnUpdate(float elapsedTime){
@@ -55,14 +45,13 @@ protected:
         matrix_lookAt(lookAt,eye,target,up);
     }
     virtual void OnDraw(){
-        glUniformMatrix4fv(modelLoc,1,GL_FALSE,&model[0].x);  
         glUniformMatrix4fv(lookLoc,1,GL_FALSE,&lookAt[0].x);
 
-        glBindTexture(GL_TEXTURE_2D,texture.id);
-        graphics.Draw(mesh);
+        level->Draw(graphics, modelLoc);
     }
 
     virtual void OnExit(){
+        delete level;
     }
 };
 

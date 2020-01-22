@@ -41,6 +41,8 @@ void Player::Update(float elapsedTime, vector3f& eyeposition, vector3f& forward)
     position += {x,0.0f,y};
     eyeposition = position;
 
+    //std::cout<<position.x<<" / "<<position.y<<" / "<<position.z<<std::endl;
+
     if(currentKeyStates[SDL_SCANCODE_A]){
         rotation.x -= rotationSpeed*elapsedTime;
     }
