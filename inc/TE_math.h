@@ -51,65 +51,42 @@ struct vector2ui{
 struct vector3f{
     float x,y,z;
 
-    float length(){
-        float l = x*x + y*y +z*z;
-        return sqrtf(l);
-    }
+    float length();
+    void normalize();
 
-    void normalize(){
-        float l = length();
-        x/=l;
-        y/=l;
-        z/=l;
-    }
-
-    static vector3f normalized(vector3f &vector){
-        vector3f vec;
-        float l = vector.length();
-        vec.x = vector.x/l;
-        vec.y = vector.y/l;
-        vec.z = vector.z/l;
-        return vec;
-    }
-    vector3f operator-(const vector3f& rhs){
-        vector3f vec;
-        vec.x = x - rhs.x;
-        vec.y = y - rhs.y;
-        vec.z = z - rhs.z;
-        return vec;
-    }
-    vector3f operator+(const vector3f& rhs){
-        vector3f vec;
-        vec.x = x + rhs.x;
-        vec.y = y + rhs.y;
-        vec.z = z + rhs.z;
-        return vec;
-    }
-    vector3f& operator+=(const vector3f& rhs){
-        x += rhs.x;
-        y += rhs.y;
-        z += rhs.z;
-        return *this;
-    }
-
-    vector3f& operator-=(const vector3f& rhs){
-        x -= rhs.x;
-        y -= rhs.y;
-        z -= rhs.z;
-        return *this;
-    }
-
+    vector3f operator-(const vector3f& rhs);
+    vector3f operator+(const vector3f& rhs);
+    vector3f& operator=(const vector3f& rhs);
+    vector3f& operator+=(const vector3f& rhs);
+    vector3f& operator-=(const vector3f& rhs);
 };
 
+vector3f normalized(vector3f &vector);
 vector3f crossProduct(const vector3f &vectorA, const vector3f &vectorB);
 float dotProduct(const vector3f &vectorA, const vector3f &vectorB);
 
 struct vector3i{
     int x,y,z;
+    
+    float length();
+
+    vector3f operator-(const vector3f& rhs);
+    vector3f operator+(const vector3f& rhs);
+    vector3f& operator=(const vector3f& rhs);
+    vector3f& operator+=(const vector3f& rhs);
+    vector3f& operator-=(const vector3f& rhs);
 };
 
 struct vector3ui{
     unsigned int x,y,z;
+
+    float length();
+
+    vector3f operator-(const vector3f& rhs);
+    vector3f operator+(const vector3f& rhs);
+    vector3f& operator=(const vector3f& rhs);
+    vector3f& operator+=(const vector3f& rhs);
+    vector3f& operator-=(const vector3f& rhs);
 };
 
 typedef vector3f mat3x3[3];
@@ -117,6 +94,15 @@ typedef vector3f mat3x3[3];
 struct vector4f
 {
     float x,y,z,w;
+
+    float length();
+    void normalize();
+
+    vector3f operator-(const vector3f& rhs);
+    vector3f operator+(const vector3f& rhs);
+    vector3f& operator=(const vector3f& rhs);
+    vector3f& operator+=(const vector3f& rhs);
+    vector3f& operator-=(const vector3f& rhs);
 };
 
 typedef vector4f mat4x4[4];

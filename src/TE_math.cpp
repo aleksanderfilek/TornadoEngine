@@ -129,6 +129,59 @@ vector2ui& vector2ui::operator-=(const vector2ui& rhs){
     return *this;
 }
 
+float vector3f::length(){
+    float l = x*x + y*y +z*z;
+    return sqrtf(l);
+}
+
+void vector3f::normalize(){
+    float l = length();
+    x/=l;
+    y/=l;
+    z/=l;
+}
+
+vector3f normalized(vector3f &vector){
+    vector3f vec;
+    float l = vector.length();
+    vec.x = vector.x/l;
+    vec.y = vector.y/l;
+    vec.z = vector.z/l;
+    return vec;
+}
+vector3f vector3f::operator-(const vector3f& rhs){
+    vector3f vec;
+    vec.x = x - rhs.x;
+    vec.y = y - rhs.y;
+    vec.z = z - rhs.z;
+    return vec;
+}
+vector3f vector3f::operator+(const vector3f& rhs){
+    vector3f vec;
+    vec.x = x + rhs.x;
+    vec.y = y + rhs.y;
+    vec.z = z + rhs.z;
+    return vec;
+}
+vector3f& vector3f::operator=(const vector3f& rhs){
+    x = rhs.x;
+    y = rhs.y;
+    z = rhs.z;
+    return *this;
+}
+vector3f& vector3f::operator+=(const vector3f& rhs){
+    x += rhs.x;
+    y += rhs.y;
+    z += rhs.z;
+    return *this;
+}
+
+vector3f& vector3f::operator-=(const vector3f& rhs){
+    x -= rhs.x;
+    y -= rhs.y;
+    z -= rhs.z;
+    return *this;
+}
 
 float degreeToRadians(float degree){
     return (degree * PI)/180.0f;
