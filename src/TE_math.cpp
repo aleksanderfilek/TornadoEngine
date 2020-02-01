@@ -13,42 +13,129 @@ void vector2f::normalize(){
     y/=l;
 }
 
+vector2f vector2f::operator+(const vector2f& rhs){
+    vector2f vec;
+    vec.x += rhs.x;
+    vec.y += rhs.y;
+    return vec;
+}
 
-// float *matrix_ptr(mat2x2 matrix){
-//     float *mat = (float *)malloc(4 * sizeof(float));
-//     mat[0] = matrix[0].x;
-//     mat[1] = matrix[0].y;
-//     mat[2] = matrix[1].x;
-//     mat[3] = matrix[1].y;
-//     return mat;
-// }
+vector2f vector2f::operator-(const vector2f& rhs){
+    vector2f vec;
+    vec.x -= rhs.x;
+    vec.y -= rhs.y;
+    return vec;
+}
 
-// float *matrix_ptr(mat3x3 matrix){
-//     float *mat = (float *)malloc(9 * sizeof(float));
-//     mat[0] = matrix[0].x;
-//     mat[1] = matrix[0].y;
-//     mat[2] = matrix[0].z;
-//     mat[3] = matrix[1].x;
-//     mat[4] = matrix[1].y;
-//     mat[5] = matrix[1].z;    
-//     mat[6] = matrix[2].x;
-//     mat[7] = matrix[2].y;
-//     mat[8] = matrix[2].z;
-//     return mat;
-// }
-// const float *matrix_ptr(mat4x4 matrix){
-//     const float *mat[] = {
-//         matrix[0].x,matrix[0].y,matrix[0].z, matrix[0].w,
-//         matrix[1].x,matrix[1].y,matrix[1].z, matrix[1].w,
-//         matrix[2].x,matrix[2].y,matrix[2].z, matrix[2].w,
-//         matrix[3].x,matrix[3].y,matrix[3].z, matrix[3].w,
-//     };
+vector2f& vector2f::operator=(const vector2f& rhs){
+    x = rhs.x;
+    y = rhs.y;
+    return *this;
+}
 
-//     return mat;
-// }
+vector2f& vector2f::operator+=(const vector2f& rhs){
+        x += rhs.x;
+        y += rhs.y;
+        return *this;
+}
 
-float DegreeToRadians(float degree){
-    return (degree*PI)/180.0f;
+vector2f& vector2f::operator-=(const vector2f& rhs){
+    x -= rhs.x;
+    y -= rhs.y;
+    return *this;
+}
+
+vector2f normalized(vector2f &vector){
+    vector2f vec;
+    float l = vector.length();
+    vec.x = vector.x/l;
+    vec.y = vector.y/l;
+    return vec;
+}
+
+float vector2i::length(){
+    float l = x*x + y*y;
+    return sqrtf(l);
+}
+
+
+vector2i vector2i::operator+(const vector2i& rhs){
+    vector2i vec;
+    vec.x += rhs.x;
+    vec.y += rhs.y;
+    return vec;
+}
+
+vector2i vector2i::operator-(const vector2i& rhs){
+    vector2i vec;
+    vec.x -= rhs.x;
+    vec.y -= rhs.y;
+    return vec;
+}
+
+vector2i& vector2i::operator=(const vector2i& rhs){
+    x = rhs.x;
+    y = rhs.y;
+    return *this;
+}
+
+vector2i& vector2i::operator+=(const vector2i& rhs){
+        x += rhs.x;
+        y += rhs.y;
+        return *this;
+}
+
+vector2i& vector2i::operator-=(const vector2i& rhs){
+    x -= rhs.x;
+    y -= rhs.y;
+    return *this;
+}
+
+float vector2ui::length(){
+    float l = x*x + y*y;
+    return sqrtf(l);
+}
+
+
+vector2ui vector2ui::operator+(const vector2ui& rhs){
+    vector2ui vec;
+    vec.x += rhs.x;
+    vec.y += rhs.y;
+    return vec;
+}
+
+vector2ui vector2ui::operator-(const vector2ui& rhs){
+    vector2ui vec;
+    vec.x -= rhs.x;
+    vec.y -= rhs.y;
+    return vec;
+}
+
+vector2ui& vector2ui::operator=(const vector2ui& rhs){
+    x = rhs.x;
+    y = rhs.y;
+    return *this;
+}
+
+vector2ui& vector2ui::operator+=(const vector2ui& rhs){
+        x += rhs.x;
+        y += rhs.y;
+        return *this;
+}
+
+vector2ui& vector2ui::operator-=(const vector2ui& rhs){
+    x -= rhs.x;
+    y -= rhs.y;
+    return *this;
+}
+
+
+float degreeToRadians(float degree){
+    return (degree * PI)/180.0f;
+}
+
+float radiansToDegree(float radians){
+    return (180.0f * radians)/PI;
 }
 
 vector3f crossProduct(const vector3f &vectorA, const vector3f &vectorB){

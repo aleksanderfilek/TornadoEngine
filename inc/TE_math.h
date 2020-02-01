@@ -12,35 +12,40 @@ struct vector2f
     float length();
     void normalize();
 
-    static vector2f normalized(vector2f &vector){
-        vector2f vec;
-        float l = vector.length();
-        vec.x = vector.x/l;
-        vec.y = vector.y/l;
-        return vec;
-    }
-
-    vector2f& operator+=(const vector2f& rhs){
-        x += rhs.x;
-        y += rhs.y;
-        return *this;
-    }
-
-    vector2f& operator-=(const vector2f& rhs){
-        x -= rhs.x;
-        y -= rhs.y;
-        return *this;
-    }
+    vector2f operator+(const vector2f& rhs);
+    vector2f operator-(const vector2f& rhs);
+    vector2f& operator=(const vector2f& rhs);
+    vector2f& operator+=(const vector2f& rhs);
+    vector2f& operator-=(const vector2f& rhs);
 };
+
+static vector2f normalized(vector2f &vector);
+static vector2f crossProduct(vector2f &vectorA, vector2f &vectorB);
 
 typedef vector2f mat2x2[2];
 
 struct vector2i{
     int x,y;
+
+    float length();
+
+    vector2i operator+(const vector2i& rhs);
+    vector2i operator-(const vector2i& rhs);
+    vector2i& operator=(const vector2i& rhs);
+    vector2i& operator+=(const vector2i& rhs);
+    vector2i& operator-=(const vector2i& rhs);
 };
 
 struct vector2ui{
     unsigned int x,y;
+
+    float length();
+
+    vector2ui operator+(const vector2ui& rhs);
+    vector2ui operator-(const vector2ui& rhs);
+    vector2ui& operator=(const vector2ui& rhs);
+    vector2ui& operator+=(const vector2ui& rhs);
+    vector2ui& operator-=(const vector2ui& rhs);
 };
 
 struct vector3f{
@@ -96,8 +101,6 @@ struct vector3f{
 
 };
 
-float DegreeToRadians(float degree);
-
 vector3f crossProduct(const vector3f &vectorA, const vector3f &vectorB);
 float dotProduct(const vector3f &vectorA, const vector3f &vectorB);
 
@@ -117,6 +120,9 @@ struct vector4f
 };
 
 typedef vector4f mat4x4[4];
+
+float degreeToRadians(float degree);
+float radiansToDegree(float radians);
 
 const float *matrix_ptr(mat2x2 matrix);
 const float *matrix_ptr(mat3x3 matrix);
