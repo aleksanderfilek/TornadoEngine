@@ -15,8 +15,8 @@ void TornadoEngine::CreateGame(const char *title, int width, int height){
         height,
         SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, 
                         SDL_GL_CONTEXT_PROFILE_CORE);
@@ -57,6 +57,9 @@ void TornadoEngine::Start(){
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         OnDraw();
+        #ifdef DEBUG
+        OnDebug();
+        #endif
         SDL_GL_SwapWindow(this->window);
 
         elapsedTime = timer.restart();

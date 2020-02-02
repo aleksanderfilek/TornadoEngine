@@ -421,7 +421,3 @@ void matrix_rotate(mat4x4 &matrix, vector3f rotation){
     if(rotation.z != 0.0f)
         matrix_rotateAxisZ(matrix,rotation.z);
 }
-
-
-
-

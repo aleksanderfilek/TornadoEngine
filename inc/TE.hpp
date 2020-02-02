@@ -6,6 +6,12 @@
 #include<GL/glew.h>
 #include<SDL2/SDL_opengl.h>
 
+#include"TE_graphics.hpp"
+#include"TE_math.hpp"
+#include"TE_ecs.hpp"
+#include"TE_audio.hpp"
+#include"TE_debug.hpp"
+
 class TornadoEngine{
 private:
     SDL_Window *window;
@@ -23,6 +29,9 @@ public:
     virtual void OnStart() = 0;
     virtual void OnUpdate(float elapsedTime) = 0;
     virtual void OnDraw() = 0;
+    #ifdef DEBUG
+    virtual void OnDebug() = 0;
+    #endif
     virtual void OnExit() = 0;
 };
 
