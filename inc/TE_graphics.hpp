@@ -16,7 +16,7 @@
 #include<GL/glew.h>
 #include<SDL_opengl.h>
 
-#include<TE_math.h>
+#include<TE_math.hpp>
 
 struct Texture{
     GLuint id;

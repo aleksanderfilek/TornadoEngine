@@ -70,11 +70,11 @@ struct vector3i{
     
     float length();
 
-    vector3f operator-(const vector3f& rhs);
-    vector3f operator+(const vector3f& rhs);
-    vector3f& operator=(const vector3f& rhs);
-    vector3f& operator+=(const vector3f& rhs);
-    vector3f& operator-=(const vector3f& rhs);
+    vector3i operator-(const vector3i& rhs);
+    vector3i operator+(const vector3i& rhs);
+    vector3i& operator=(const vector3i& rhs);
+    vector3i& operator+=(const vector3i& rhs);
+    vector3i& operator-=(const vector3i& rhs);
 };
 
 struct vector3ui{
@@ -82,11 +82,11 @@ struct vector3ui{
 
     float length();
 
-    vector3f operator-(const vector3f& rhs);
-    vector3f operator+(const vector3f& rhs);
-    vector3f& operator=(const vector3f& rhs);
-    vector3f& operator+=(const vector3f& rhs);
-    vector3f& operator-=(const vector3f& rhs);
+    vector3ui operator-(const vector3ui& rhs);
+    vector3ui operator+(const vector3ui& rhs);
+    vector3ui& operator=(const vector3ui& rhs);
+    vector3ui& operator+=(const vector3ui& rhs);
+    vector3ui& operator-=(const vector3ui& rhs);
 };
 
 typedef vector3f mat3x3[3];

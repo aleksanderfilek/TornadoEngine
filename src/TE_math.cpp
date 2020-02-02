@@ -1,4 +1,4 @@
-#include"TE_math.h"
+#include"TE_math.hpp"
 
 #include<stdlib.h>
 
@@ -177,6 +177,84 @@ vector3f& vector3f::operator+=(const vector3f& rhs){
 }
 
 vector3f& vector3f::operator-=(const vector3f& rhs){
+    x -= rhs.x;
+    y -= rhs.y;
+    z -= rhs.z;
+    return *this;
+}
+
+float vector3i::length(){
+    float l = x*x + y*y +z*z;
+    return sqrtf(l);
+}
+
+vector3i vector3i::operator-(const vector3i& rhs){
+    vector3i vec;
+    vec.x = x - rhs.x;
+    vec.y = y - rhs.y;
+    vec.z = z - rhs.z;
+    return vec;
+}
+vector3i vector3i::operator+(const vector3i& rhs){
+    vector3i vec;
+    vec.x = x + rhs.x;
+    vec.y = y + rhs.y;
+    vec.z = z + rhs.z;
+    return vec;
+}
+vector3i& vector3i::operator=(const vector3i& rhs){
+    x = rhs.x;
+    y = rhs.y;
+    z = rhs.z;
+    return *this;
+}
+vector3i& vector3i::operator+=(const vector3i& rhs){
+    x += rhs.x;
+    y += rhs.y;
+    z += rhs.z;
+    return *this;
+}
+
+vector3i& vector3i::operator-=(const vector3i& rhs){
+    x -= rhs.x;
+    y -= rhs.y;
+    z -= rhs.z;
+    return *this;
+}
+
+float vector3ui::length(){
+    float l = x*x + y*y +z*z;
+    return sqrtf(l);
+}
+
+vector3ui vector3ui::operator-(const vector3ui& rhs){
+    vector3ui vec;
+    vec.x = x - rhs.x;
+    vec.y = y - rhs.y;
+    vec.z = z - rhs.z;
+    return vec;
+}
+vector3ui vector3ui::operator+(const vector3ui& rhs){
+    vector3ui vec;
+    vec.x = x + rhs.x;
+    vec.y = y + rhs.y;
+    vec.z = z + rhs.z;
+    return vec;
+}
+vector3ui& vector3ui::operator=(const vector3ui& rhs){
+    x = rhs.x;
+    y = rhs.y;
+    z = rhs.z;
+    return *this;
+}
+vector3ui& vector3ui::operator+=(const vector3ui& rhs){
+    x += rhs.x;
+    y += rhs.y;
+    z += rhs.z;
+    return *this;
+}
+
+vector3ui& vector3ui::operator-=(const vector3ui& rhs){
     x -= rhs.x;
     y -= rhs.y;
     z -= rhs.z;

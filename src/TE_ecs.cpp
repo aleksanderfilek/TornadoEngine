@@ -1,4 +1,4 @@
-#include"TE_ecs.h"
+#include"TE_ecs.hpp"
 
 EntityManager::EntityManager()
 {
