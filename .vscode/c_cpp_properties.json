@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/inc/**",
+                "${workspaceFolder}/TE/inc/**",
                 "${workspaceFolder}/SDL/include/**",
                 "${workspaceFolder}/GLEW/include/**"
             ],

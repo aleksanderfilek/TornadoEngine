@@ -13,10 +13,11 @@
 #include<SDL.h>
 #include<SDL_main.h>
 #include<SDL_image.h>
+#include<SDL_ttf.h>
 #include<GL/glew.h>
 #include<SDL_opengl.h>
 
-#include<TE_math.hpp>
+#include"TE_math.hpp"
 
 struct Texture{
     GLuint id;
@@ -69,4 +70,6 @@ class Graphics{
 };
 
 void SetBackgroundColor(float r, float g, float b, float a);
+
+typedef TTF_Font Font;
 #endif
