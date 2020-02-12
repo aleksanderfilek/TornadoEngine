@@ -5,7 +5,7 @@ TornadoEngine::TornadoEngine(){
 }
 
 void TornadoEngine::CreateGame(const char *title, int width, int height){
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_EVENTS);
 
     window = SDL_CreateWindow(
         title,
@@ -53,7 +53,7 @@ void TornadoEngine::Start(){
                 quit = true;
             }
         }
-        OnUpdate(elapsedTime);
+        quit = !OnUpdate(elapsedTime);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         OnDraw();
