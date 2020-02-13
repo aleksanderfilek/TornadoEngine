@@ -1,5 +1,5 @@
-#ifndef TE_H_
-#define TE_H_
+#ifndef TE_HPP_
+#define TE_HPP_
 
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_main.h>
