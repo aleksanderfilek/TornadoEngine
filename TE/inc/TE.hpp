@@ -12,6 +12,10 @@
 #include"TE_audio.hpp"
 #include"TE_debug.hpp"
 #include"TE_net.hpp"
+#include"TE_physics.hpp"
+#include"TE_components.hpp"
+#include"TE_animation.hpp"
+#include"TE_input.hpp"
 
 class TornadoEngine{
 private:
