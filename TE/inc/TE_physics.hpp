@@ -8,7 +8,7 @@ struct BoxCollider2D{
     vector2f size;
 };
 
-void CreateBoxCollider2D(vector2f _position, vector2f _size, bool isStatic);
+//void CreateBoxCollider2D(vector2f _position, vector2f _size, bool isStatic);
 bool BoxCollision2D(const BoxCollider2D &colliderA, const BoxCollider2D &colliderB);
 
 struct CircleCollider2D{
@@ -16,6 +16,8 @@ struct CircleCollider2D{
     float radius;
 };
 
-void CreateCircleCollider2D(vector2f _position, float _radius, bool isStatic);
+//void CreateCircleCollider2D(vector2f _position, float _radius, bool isStatic);
+bool CircleCollision2D(const CircleCollider2D &colliderA, const CircleCollider2D &colliderB);
 
+bool Box_CircleCollision2D(const BoxCollider2D &colliderA, const CircleCollider2D &colliderB);
 #endif
