@@ -32,7 +32,7 @@ public:
     SDL_Window *GetWindow(){return window;};
 
     virtual void OnStart() = 0;
-    virtual bool OnUpdate(float elapsedTime) = 0;
+    virtual void OnUpdate(float elapsedTime) = 0;
     virtual void OnDraw() = 0;
     #ifdef DEBUG
     virtual void OnDebug() = 0;
