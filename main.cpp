@@ -11,8 +11,8 @@ private:
     GLuint modelLoc;
 
     mat4x4 lookAt;
-    vector3f eye = {0.0f, 0.0f, 0.0f};
-    vector3f target = {0.0f, 0.0f, 1.0f};
+    vector3f eye = {0.0f, -1.0f, -1.0f};
+    vector3f target = {0.0f, 0.0f, 0.0f};
     vector3f up = {0.0f, 1.0f, 0.0f};
 
     GLuint lookLoc;
@@ -20,11 +20,11 @@ private:
 
     Texture texture;
 protected:
-    virtual void OnStart(){
+    void OnStart() override{
         texture = Tex_Load("Floor.png");
 
         program.Load("vertex.vs","fragment.frag");
-        mesh.LoadObj("Floor.obj");
+        mesh.LoadObj("Fighter.obj");
 
         glUseProgram(program.ID);
         modelLoc = glGetUniformLocation(program.ID,"model");
@@ -108,7 +108,7 @@ protected:
   
     }
 
-    virtual void OnUpdate(double elapsedTime){
+    void OnUpdate(double elapsedTime) override{
         angle += (float)elapsedTime;
         matrix_identity(model);
         matrix_translate(model,{0.0f, -1.0f, 0.0f});
@@ -134,14 +134,14 @@ protected:
         matrix_lookAt(lookAt,eye,target,up);
         //std::cout<<eye.x<<" / "<<eye.y<<" / "<<eye.z<<std::endl;
     }
-    virtual void OnDraw(){
+    void OnDraw() override{
         glUniformMatrix4fv(modelLoc,1,GL_FALSE,&model[0].x);  
         glUniformMatrix4fv(lookLoc,1,GL_FALSE,&lookAt[0].x);
 
         graphics.Draw(mesh);
     }
 
-    virtual void OnExit(){
+    virtual void OnExit() override{
     }
 };
 
