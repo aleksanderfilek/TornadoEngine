@@ -23,7 +23,7 @@ protected:
     void OnStart() override{
         texture = Tex_Load("Floor.png");
 
-        program.Load("vertex.vs","fragment.frag");
+        program.Load("vertex.vs");
         mesh.LoadObj("Fighter.obj");
 
         glUseProgram(program.ID);

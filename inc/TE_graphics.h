@@ -32,7 +32,7 @@ public:
     GLuint ID;
     std::unordered_map<std::string,GLuint> uniformLocation;
     //TODO: add uniform searching and combine shaders to one file
-    void Load(const char *shaderSourcePath);
+    void Load(const char *shaderSourcePath, int shaderType);
     void Load(const char *vertexSourcePath, const char *fragmentSourcePath);
     void Load(const char *vertexSourcePath, const char *fragmentSourcePath, const char *geometrySourcePath);
 };

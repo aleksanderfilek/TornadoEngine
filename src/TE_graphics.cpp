@@ -28,7 +28,7 @@ void Graphics::Draw(Mesh &mesh){
     glBindVertexArray(0);
 }
 
-void Shader::Load(const char *shaderSourcePath){
+void Shader::Load(const char *shaderSourcePath, int shaderType){
     std::string shaderCode;
     std::ifstream shaderFile;
 
@@ -52,7 +52,7 @@ void Shader::Load(const char *shaderSourcePath){
 
     GLchar shader;
 
-    shader = glCreateShader(GL_VERTEX_SHADER);
+    shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, &shaderCodeStr, NULL);
     glCompileShader(shader);
 
