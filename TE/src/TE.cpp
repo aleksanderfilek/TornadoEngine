@@ -46,6 +46,8 @@ TornadoEngine::~TornadoEngine(){
     SDL_Quit();
 
     input_Close();
+    Mix_CloseAudio();
+    audio_Close();
 }
 
 void TornadoEngine::Start(){
