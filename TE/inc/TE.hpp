@@ -5,6 +5,7 @@
 #include<SDL2/SDL_main.h>
 #include<GL/glew.h>
 #include<SDL2/SDL_opengl.h>
+#include"SDL_mixer.h"
 
 #include"TE_graphics.hpp"
 #include"TE_math.hpp"

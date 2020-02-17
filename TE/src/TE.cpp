@@ -5,7 +5,7 @@ TornadoEngine::TornadoEngine(){
 }
 
 void TornadoEngine::CreateGame(const char *title, int width, int height){
-    SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_EVENTS);
+    SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_EVENTS|SDL_INIT_AUDIO);
 
     window = SDL_CreateWindow(
         title,
@@ -33,6 +33,11 @@ void TornadoEngine::CreateGame(const char *title, int width, int height){
     SDL_WarpMouseInWindow(this->window,width/2,height/2);
 
     input_Start();
+
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+    {
+        printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+    }
 }
 
 TornadoEngine::~TornadoEngine(){
