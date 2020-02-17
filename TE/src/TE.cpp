@@ -31,12 +31,16 @@ void TornadoEngine::CreateGame(const char *title, int width, int height){
     glEnable(GL_DEPTH_TEST);
 
     SDL_WarpMouseInWindow(this->window,width/2,height/2);
+
+    input_Start();
 }
 
 TornadoEngine::~TornadoEngine(){
     SDL_GL_DeleteContext(this->glContext);
     SDL_DestroyWindow(this->window);
     SDL_Quit();
+
+    input_Close();
 }
 
 void TornadoEngine::Start(){
@@ -61,6 +65,8 @@ void TornadoEngine::Start(){
         OnDebug();
         #endif
         SDL_GL_SwapWindow(this->window);
+
+        input_Update();
 
         elapsedTime = timer.restart();
     }
