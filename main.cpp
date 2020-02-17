@@ -8,25 +8,27 @@ class Game:public TornadoEngine\
         }
 
         virtual void OnUpdate(float elapsedTime){
-            if(mouseButtonPressed(Left))
-                printf("Left pressed\n");
+            if(mouseButtonDown(Left))
+                printf("Left down\n");
             else if(mouseButtonUp(Left))
                 printf("Left up\n");
-            else if(mouseButtonDown(Left))
-                printf("Left down\n");
+            else if(mouseButtonPressed(Left))
+                printf("Left presses\n");
 
             if(mouseButtonDown(Right))
-                printf("right down\n");
+                printf("Right down\n");
+            else if(mouseButtonUp(Right))
+                printf("Right up\n");
+            else if(mouseButtonPressed(Right))
+                printf("Right presses\n");
 
-            if(mouseButtonUp(Right))
-                printf("right up\n");
+            if(mouseButtonDown(Middle))
+                printf("Middle down\n");
+            else if(mouseButtonUp(Middle))
+                printf("Middle up\n");
+            else if(mouseButtonPressed(Middle))
+                printf("Middle presses\n");
 
-            if(keyPressed(A))
-                printf("A pressed\n");
-            else if(keyUp(A))
-                printf("A up\n");
-            else if(keyDown(A))
-                printf("A down\n");
         }
 
         virtual void OnDraw(){

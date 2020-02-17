@@ -27,11 +27,11 @@ bool mouseButtonPressed(MouseButton mouseButton){
 }
 
 bool mouseButtonDown(MouseButton mouseButton){
-    return currentMouseState&SDL_BUTTON(mouseButton) && !previousMouseState&SDL_BUTTON(mouseButton);
+    return (currentMouseState&SDL_BUTTON(mouseButton)) && !(previousMouseState&SDL_BUTTON(mouseButton));
 }
 
 bool mouseButtonUp(MouseButton mouseButton){
-    return !currentMouseState&SDL_BUTTON(mouseButton) && previousMouseState&SDL_BUTTON(mouseButton);
+    return !(currentMouseState&SDL_BUTTON(mouseButton)) && (previousMouseState&SDL_BUTTON(mouseButton));
 }
 
 inline void getMousePosition(int *x,int *y){
