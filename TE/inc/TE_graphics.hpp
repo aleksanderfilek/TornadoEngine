@@ -26,7 +26,7 @@ struct Texture{
 
 Texture Tex_Load(const char *path);
 //TODO: function to set texture in GPU
-void BindTexture(GLuint &index,const Texture &texture);
+void BindTexture(GLuint &index, const Texture &texture);
 
 class Shader{
 public:
@@ -72,4 +72,9 @@ class Graphics{
 void SetBackgroundColor(float r, float g, float b, float a);
 
 typedef TTF_Font Font;
+typedef SDL_Color Color;
+
+Font *loadFont(const char *path, unsigned int size);
+bool createTextTexture(Texture *texture, Font *font, const char *text, Color color);
+
 #endif

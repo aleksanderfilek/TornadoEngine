@@ -1,6 +1,7 @@
 #include"TE_input.hpp"
 
 #include<stdio.h>
+#include<stdlib.h>
 
 int keyboardStateNumber = 0;
 const uint8_t *currentKeyboardState = NULL;

@@ -92,7 +92,7 @@ Texture Tex_Load(const char *path){
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surface->w, surface->h, 0, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+        glTexImage2D(GL_TEXTURE_2D, 0, surface->format->format, surface->w, surface->h, 0, surface->format->format, GL_UNSIGNED_BYTE, surface->pixels);
         glGenerateMipmap(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -107,6 +107,11 @@ Texture Tex_Load(const char *path){
     }
     vector2ui vec;
     return {0,vec};
+}
+
+void BindTexture(GLuint &index, const Texture &texture){
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture.id);
 }
 
 Mesh::Mesh(){
@@ -220,6 +225,37 @@ void Mesh::Generate(vector3f *_vertices,unsigned int _verticesCount , vector2f *
         glBindVertexArray(0);
 }
 
-void SetBackgroundColor(float r, float g, float b, float a){
+inline void SetBackgroundColor(float r, float g, float b, float a){
     glClearColor(r,g,b,a);
+}
+
+Font *loadFont(const char *path, unsigned int size){
+    Font *font;
+    font =  TTF_OpenFont(path, size);
+    return font;
+}
+
+bool createTextTexture(Texture *texture, Font *font, const char *text, Color color){
+    bool succes = true;
+
+    SDL_Surface *textSurface = TTF_RenderText_Solid(font, text, color);
+    if(textSurface == NULL){
+        printf("Unable to render text surface! SDL_ttf Error: %s\n",TTF_GetError());
+        succes = false;
+    }
+    else{
+        SDL_Texture *tex =SDL_CreateTextureFromSurface(renderer,textSurface);
+        if(tex == NULL){
+            printf("Unable to create texture from rendered text! SDL Error: %s\n",SDL_GetError());
+            succes = false;
+        }
+        else{
+            texture->texture = tex;
+            texture->width = textSurface->w;
+            texture->height = textSurface->h;
+        }
+
+        SDL_FreeSurface(textSurface);
+    }
+    return true;
 }
