@@ -1,6 +1,5 @@
 #ifndef TECORE_H_
 #define TECORE_H_
-#define TE_OPENGL
 
 #include<stdio.h>
 
@@ -31,11 +30,7 @@ private:
     WindowInfo windowInfo;
 
     SDL_Window *window;
-//#ifndef TE_OPENGL
-    SDL_Renderer *renderer;
-//#else
     SDL_GLContext glContext;
-//#endif
     SDL_Event event;
 
     State *gameState = NULL;
@@ -52,10 +47,7 @@ public:
 
     void SetNextState(State *nextState);
 
-//#ifndef TE_OPENGL
-    inline SDL_Renderer *GetRenderer(){ return this->renderer; }
-//#endif
-     SDL_Window *GetWindow(){ return this->window; }
+    SDL_Window *GetWindow(){ return this->window; }
     inline SDL_Event *GetEvent(){ return &this->event; }
 };
 

@@ -1,6 +1,7 @@
 #include"TE_core.h"
 
 TornadoEngine engine;
+Input *inputManager;
 
 bool TornadoEngine::Init(const char *title, int width, int height, uint32_t flags){
     if(SDL_Init(SDL_INIT_VIDEO |  SDL_INIT_TIMER) < 0){
@@ -22,29 +23,21 @@ bool TornadoEngine::Init(const char *title, int width, int height, uint32_t flag
             windowInfo.size.y = height;
             windowInfo.fullScreen = false;
 
-            #ifndef TE_OPENGL
-                renderer = SDL_CreateRenderer(window,-1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-                if(renderer == NULL){
-                    printf("Renderer could not be created! SDL Error: %s\n",SDL_GetError());
-                    return true;
-                }
-            #else
-                SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-                SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-                SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, 
-                                    SDL_GL_CONTEXT_PROFILE_CORE);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, 
+                                SDL_GL_CONTEXT_PROFILE_CORE);
 
-                this->glContext = SDL_GL_CreateContext(this->window);
-            
-                glewExperimental = GL_TRUE;
-                glewInit();
+            this->glContext = SDL_GL_CreateContext(this->window);
+        
+            glewExperimental = GL_TRUE;
+            glewInit();
 
-                glViewport(0,0,width, height);
-                glClearColor(1.0f,1.0f,1.0f,1.0f);
-                glEnable(GL_DEPTH_TEST);
-                glEnable(GL_BLEND);
-            #endif
+            glViewport(0,0,width, height);
+            glClearColor(1.0f,1.0f,1.0f,1.0f);
+            glEnable(GL_DEPTH_TEST);
+            glEnable(GL_BLEND);
             
             int imgFlags = IMG_INIT_PNG;
             if(!(IMG_Init(imgFlags)&imgFlags)){
@@ -58,7 +51,7 @@ bool TornadoEngine::Init(const char *title, int width, int height, uint32_t flag
                 }
             }
 
-            input_Start();
+            inputManager = new Input();
         }
     }
     return true;
@@ -91,7 +84,7 @@ void TornadoEngine::Start(State *startState){
         }
 
         gameState->OnUpdate(elapsedTime);
-        input_Update();
+        inputManager->Update();
         //ui_update();
         
         Clear();
@@ -109,11 +102,9 @@ void TornadoEngine::Start(State *startState){
 
 TornadoEngine::~TornadoEngine(){
     this->CloseState();
-    input_Close();
+    delete inputManager;
     // /ui_close();
     
-    SDL_DestroyRenderer(renderer);
-    renderer = NULL;
     SDL_DestroyWindow(window);
     window = NULL;
 
