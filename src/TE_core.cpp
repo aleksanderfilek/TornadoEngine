@@ -1,7 +1,7 @@
 #include"TE_core.h"
 
 TornadoEngine engine;
-Input *inputManager;
+Input inputManager;
 
 bool TornadoEngine::Init(const char *title, int width, int height, uint32_t flags){
     if(SDL_Init(SDL_INIT_VIDEO |  SDL_INIT_TIMER) < 0){
@@ -50,8 +50,6 @@ bool TornadoEngine::Init(const char *title, int width, int height, uint32_t flag
                     return true;
                 }
             }
-
-            inputManager = new Input();
         }
     }
     return true;
@@ -84,7 +82,7 @@ void TornadoEngine::Start(State *startState){
         }
 
         gameState->OnUpdate(elapsedTime);
-        inputManager->Update();
+        inputManager.Update();
         //ui_update();
         
         Clear();
@@ -102,7 +100,6 @@ void TornadoEngine::Start(State *startState){
 
 TornadoEngine::~TornadoEngine(){
     this->CloseState();
-    delete inputManager;
     // /ui_close();
     
     SDL_DestroyWindow(window);

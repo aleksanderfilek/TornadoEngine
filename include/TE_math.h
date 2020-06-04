@@ -4,131 +4,74 @@
 
 #define PI 3.141596f
 
-struct vector2f
+struct float2
 {
     float x,y;
-
-    float length();
-    void normalize();
-
-    vector2f operator+(const vector2f& rhs);
-    vector2f operator-(const vector2f& rhs);
-    vector2f& operator=(const vector2f& rhs);
-    vector2f& operator+=(const vector2f& rhs);
-    vector2f& operator-=(const vector2f& rhs);
 };
 
-static vector2f normalized(vector2f &vector);
-static vector2f crossProduct(vector2f &vectorA, vector2f &vectorB);
+static float2 operator+(const float2& v1, const float2& v2);
+static float2 operator-(const float2& v1, const float2& v2);
+static float2& operator+=(const float2& v1, const float2& v2);
+static float2& operator-=(const float2& v1, const float2& v2);
+static float2& operator*(const float2& v, float factor);
+static float2& operator*(float factor, const float2& v);
 
-typedef vector2f mat2x2[2];
+static float length(const float2 &vector);
+static float2 normalize(const float2 &vector);
+static float2 crossProduct(const float2 &vectorA, const float2 &vectorB);
+static float dotProduct(const float2 &vectorA, const float2 &vectorB);
 
-struct vector2i{
-    int x,y;
+typedef float2 matrix2x2[2];
 
-    float length();
-
-    vector2i operator+(const vector2i& rhs);
-    vector2i operator-(const vector2i& rhs);
-    vector2i& operator=(const vector2i& rhs);
-    vector2i& operator+=(const vector2i& rhs);
-    vector2i& operator-=(const vector2i& rhs);
-};
-
-struct vector2ui{
-    unsigned int x,y;
-
-    float length();
-
-    vector2ui operator+(const vector2ui& rhs);
-    vector2ui operator-(const vector2ui& rhs);
-    vector2ui& operator=(const vector2ui& rhs);
-    vector2ui& operator+=(const vector2ui& rhs);
-    vector2ui& operator-=(const vector2ui& rhs);
-};
-
-struct vector3f{
+struct float3{
     float x,y,z;
-
-    float length();
-    void normalize();
-
-    vector3f operator-(const vector3f& rhs);
-    vector3f operator+(const vector3f& rhs);
-    vector3f& operator=(const vector3f& rhs);
-    vector3f& operator+=(const vector3f& rhs);
-    vector3f& operator-=(const vector3f& rhs);
 };
 
-vector3f normalized(vector3f &vector);
-vector3f crossProduct(const vector3f &vectorA, const vector3f &vectorB);
-float dotProduct(const vector3f &vectorA, const vector3f &vectorB);
+static float3 operator-(const float3& v1, const float3& v2);
+static float3 operator+(const float3& v1, const float3& v2);
+static float3& operator+=(const float3& v1, const float3& v2);
+static float3& operator-=(const float3& v1, const float3& v2);
+static float3& operator*(const float3& v, float factor);
+static float3& operator*(float factor, const float3& v);
+static float length(const float3 &vector);
+static float3 normalize(const float3 &vector);
+static float3 crossProduct(const float3 &vectorA, const float3 &vectorB);
+static float dotProduct(const float3 &vectorA, const float3 &vectorB);
 
-struct vector3i{
-    int x,y,z;
-    
-    float length();
+typedef float3 matrix3x3[3];
 
-    vector3i operator-(const vector3i& rhs);
-    vector3i operator+(const vector3i& rhs);
-    vector3i& operator=(const vector3i& rhs);
-    vector3i& operator+=(const vector3i& rhs);
-    vector3i& operator-=(const vector3i& rhs);
-};
-
-struct vector3ui{
-    unsigned int x,y,z;
-
-    float length();
-
-    vector3ui operator-(const vector3ui& rhs);
-    vector3ui operator+(const vector3ui& rhs);
-    vector3ui& operator=(const vector3ui& rhs);
-    vector3ui& operator+=(const vector3ui& rhs);
-    vector3ui& operator-=(const vector3ui& rhs);
-};
-
-typedef vector3f mat3x3[3];
-
-struct vector4f
+struct float4
 {
     float x,y,z,w;
-
-    float length();
-    void normalize();
-
-    vector3f operator-(const vector3f& rhs);
-    vector3f operator+(const vector3f& rhs);
-    vector3f& operator=(const vector3f& rhs);
-    vector3f& operator+=(const vector3f& rhs);
-    vector3f& operator-=(const vector3f& rhs);
 };
 
-typedef vector4f mat4x4[4];
+typedef float4 matrix4x4[4];
 
-struct vector4i
-{
-    int x,y,z,w;
-};
+static float4 operator-(const float4& v1, const float4& v2);
+static float4 operator+(const float4& v1, const float4& v2);
+static float4& operator+=(const float4& v1, const float4& v2);
+static float4& operator-=(const float4& v1, const float4& v2);
+static float4& operator*(const float4& v, float factor);
+static float4& operator*(float factor, const float4& v);
+static float length(const float4 &vector);
+static float4 normalize(const float4 &vector);
+static float4 crossProduct(const float4 &vectorA, const float4 &vectorB);
+static float dotProduct(const float4 &vectorA, const float4 &vectorB);
 
-float degreeToRadians(float degree);
-float radiansToDegree(float radians);
+static const float deg2rad(float degree);
+static const float rad2deg(float radians);
 
-const float *matrix_ptr(mat2x2 matrix);
-const float *matrix_ptr(mat3x3 matrix);
-const float *matrix_ptr(mat4x4 matrix);
+static void matrix_identity(matrix4x4 &matrix);
 
-void matrix_identity(mat4x4 &matrix);
+static void matrix_projection(matrix4x4 &matrix, int width, int height, float FOV, float near, float far);
+static void matrix_orthographic(matrix4x4 &matrix, int width, int height, float near, float far);
+static void matrix_lookAt(matrix4x4 &matrix, float3 &eye, float3 &target, float3 &up);
 
-void matrix_projection(mat4x4 &matrix, int width, int height, float FOV, float near, float far);
-void matrix_orthographic(mat4x4 &matrix, int width, int height, float near, float far);
-void matrix_lookAt(mat4x4 &matrix, vector3f &eye, vector3f &target, vector3f &up);
-
-void matrix_translate(mat4x4 &matrix, vector3f translation);
-void matrix_scale(mat4x4 &matrix, vector3f scale);
-void matrix_rotateAxisX(mat4x4 &matrix, float angle);
-void matrix_rotateAxisY(mat4x4 &matrix, float angle);
-void matrix_rotateAxisZ(mat4x4 &matrix, float angle);
-void matrix_rotate(mat4x4 &matrix, vector3f rotation);
+static void matrix_translate(matrix4x4 &matrix, float3 translation);
+static void matrix_scale(matrix4x4 &matrix, float3 scale);
+static void matrix_rotateAxisX(matrix4x4 &matrix, float angle);
+static void matrix_rotateAxisY(matrix4x4 &matrix, float angle);
+static void matrix_rotateAxisZ(matrix4x4 &matrix, float angle);
+static void matrix_rotate(matrix4x4 &matrix, float3 rotation);
 
 #endif
