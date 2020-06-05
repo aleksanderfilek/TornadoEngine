@@ -44,9 +44,9 @@ class TextureManager{
 };
 
 struct Vertex{
-    vector3f position;
-    vector3f normal;
-    vector2f textureCoord;
+    float3 position;
+    float3 normal;
+    float2 textureCoord;
 };
 
 class Mesh{
@@ -67,9 +67,21 @@ class Mesh{
         bool Load(std::string path);     
         void Set(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, bool saveData);   
         void SetTextures(unsigned int count, unsigned int *_textures);
-        void Draw();
         void Clear(bool onlyData);
+
+        friend void Draw(const Mesh& mesh);
+        friend void DrawInstanced(int count, const Mesh& mesh);
 };
+
+class MeshManager{
+    private:
+
+    public:
+    
+};
+
+void Draw(const Mesh& mesh);
+void DrawInstanced(int count, const Mesh& mesh);
 
 class Shader{
 private:

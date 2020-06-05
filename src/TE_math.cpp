@@ -3,292 +3,151 @@
 #include<cstring>
 #include<stdlib.h>
 
-float vector2f::length(){
-    float l = x*x + y*y;
-    return sqrtf(l);
-}
 
-void vector2f::normalize(){
-    float l = length();
-    x/=l;
-    y/=l;
-}
-
-vector2f vector2f::operator+(const vector2f& rhs){
-    vector2f vec;
-    vec.x += rhs.x;
-    vec.y += rhs.y;
+float2 operator+(const float2& v1, const float2& v2){
+    float2 vec;
+    vec.x = v1.x + v2.x;
+    vec.y = v1.y + v2.y;
     return vec;
 }
 
-vector2f vector2f::operator-(const vector2f& rhs){
-    vector2f vec;
-    vec.x -= rhs.x;
-    vec.y -= rhs.y;
+float2 operator-(const float2& v1, const float2& v2){
+    float2 vec;
+    vec.x = v1.x - v2.x;
+    vec.y = v1.y - v2.y;
     return vec;
 }
 
-vector2f& vector2f::operator=(const vector2f& rhs){
-    x = rhs.x;
-    y = rhs.y;
-    return *this;
+float2& operator+=(float2& v1, const float2& v2){
+        v1.x += v2.x;
+        v1.y += v2.y;
+        return v1;
 }
 
-vector2f& vector2f::operator+=(const vector2f& rhs){
-        x += rhs.x;
-        y += rhs.y;
-        return *this;
+float2& operator-=(float2& v1, const float2& v2){
+    v1.x -= v2.x;
+    v1.y -= v2.y;
+    return v1;
 }
 
-vector2f& vector2f::operator-=(const vector2f& rhs){
-    x -= rhs.x;
-    y -= rhs.y;
-    return *this;
+float2& operator*(float2& v, float factor){
+    v.x *= factor;
+    v.y *= factor;
+    return v;
 }
 
-vector2f normalized(vector2f &vector){
-    vector2f vec;
-    float l = vector.length();
+float2& operator*(float factor, float2& v){
+    v.x *= factor;
+    v.y *= factor;
+    return v;
+}
+
+float length(const float2 &vector){
+    float len = vector.x*vector.x + vector.y*vector.y;
+    len = sqrtf(len);
+    return len;
+}
+
+float2 normalize(const float2 &vector){
+    float2 vec;
+    float l = length(vector);
     vec.x = vector.x/l;
     vec.y = vector.y/l;
     return vec;
 }
 
-float vector2i::length(){
-    float l = x*x + y*y;
-    return sqrtf(l);
+float dotProduct(const float2& vectorA, const float2& vectorB){
+    return vectorA.x*vectorB.x + vectorA.y*vectorB.y;
 }
 
-
-vector2i vector2i::operator+(const vector2i& rhs){
-    vector2i vec;
-    vec.x += rhs.x;
-    vec.y += rhs.y;
+float3 operator+(const float3& v1, const float3& v2){
+    float3 vec;
+    vec.x = v1.x + v2.x;
+    vec.y = v1.y + v2.y;
+    vec.z = v1.z + v2.z;
     return vec;
 }
 
-vector2i vector2i::operator-(const vector2i& rhs){
-    vector2i vec;
-    vec.x -= rhs.x;
-    vec.y -= rhs.y;
+float3 operator-(const float3& v1, const float3& v2){
+    float3 vec;
+    vec.x = v1.x - v2.x;
+    vec.y = v1.y - v2.y;
+    vec.z = v1.z - v2.z;
     return vec;
 }
 
-vector2i& vector2i::operator=(const vector2i& rhs){
-    x = rhs.x;
-    y = rhs.y;
-    return *this;
+float3& operator+=(float3& v1, const float3& v2){
+    v1.x += v2.x;
+    v1.y += v2.y;
+    v1.z += v2.z;
+    return v1;
 }
 
-vector2i& vector2i::operator+=(const vector2i& rhs){
-        x += rhs.x;
-        y += rhs.y;
-        return *this;
+float3& operator-=(float3& v1, const float3& v2){
+    v1.x -= v2.x;
+    v1.y -= v2.y;
+    v1.z -= v2.z;
+    return v1;
 }
 
-vector2i& vector2i::operator-=(const vector2i& rhs){
-    x -= rhs.x;
-    y -= rhs.y;
-    return *this;
+float3& operator*(float3& v, float factor){
+    v.x *= factor;
+    v.y *= factor;
+    v.z *= factor;
+    return v;
 }
 
-float vector2ui::length(){
-    float l = x*x + y*y;
-    return sqrtf(l);
+float3& operator*(float factor, float3& v){
+    v.x *= factor;
+    v.y *= factor;
+    v.z *= factor;
+    return v;
 }
 
-
-vector2ui vector2ui::operator+(const vector2ui& rhs){
-    vector2ui vec;
-    vec.x += rhs.x;
-    vec.y += rhs.y;
-    return vec;
+float length(const float3 &vector){
+    float len = vector.x*vector.x;
+    len += vector.y*vector.y;
+    len += vector.z*vector.z;
+    len = sqrtf(len);
+    return len;
 }
 
-vector2ui vector2ui::operator-(const vector2ui& rhs){
-    vector2ui vec;
-    vec.x -= rhs.x;
-    vec.y -= rhs.y;
-    return vec;
-}
-
-vector2ui& vector2ui::operator=(const vector2ui& rhs){
-    x = rhs.x;
-    y = rhs.y;
-    return *this;
-}
-
-vector2ui& vector2ui::operator+=(const vector2ui& rhs){
-        x += rhs.x;
-        y += rhs.y;
-        return *this;
-}
-
-vector2ui& vector2ui::operator-=(const vector2ui& rhs){
-    x -= rhs.x;
-    y -= rhs.y;
-    return *this;
-}
-
-float vector3f::length(){
-    float l = x*x + y*y +z*z;
-    return sqrtf(l);
-}
-
-void vector3f::normalize(){
-    float l = length();
-    x/=l;
-    y/=l;
-    z/=l;
-}
-
-vector3f normalized(vector3f &vector){
-    vector3f vec;
-    float l = vector.length();
+float3 normalize(const float3 &vector){
+    float3 vec;
+    float l = length(vector);
     vec.x = vector.x/l;
     vec.y = vector.y/l;
     vec.z = vector.z/l;
     return vec;
 }
-vector3f vector3f::operator-(const vector3f& rhs){
-    vector3f vec;
-    vec.x = x - rhs.x;
-    vec.y = y - rhs.y;
-    vec.z = z - rhs.z;
-    return vec;
-}
-vector3f vector3f::operator+(const vector3f& rhs){
-    vector3f vec;
-    vec.x = x + rhs.x;
-    vec.y = y + rhs.y;
-    vec.z = z + rhs.z;
-    return vec;
-}
-vector3f& vector3f::operator=(const vector3f& rhs){
-    x = rhs.x;
-    y = rhs.y;
-    z = rhs.z;
-    return *this;
-}
-vector3f& vector3f::operator+=(const vector3f& rhs){
-    x += rhs.x;
-    y += rhs.y;
-    z += rhs.z;
-    return *this;
-}
 
-vector3f& vector3f::operator-=(const vector3f& rhs){
-    x -= rhs.x;
-    y -= rhs.y;
-    z -= rhs.z;
-    return *this;
-}
-
-float vector3i::length(){
-    float l = x*x + y*y +z*z;
-    return sqrtf(l);
-}
-
-vector3i vector3i::operator-(const vector3i& rhs){
-    vector3i vec;
-    vec.x = x - rhs.x;
-    vec.y = y - rhs.y;
-    vec.z = z - rhs.z;
-    return vec;
-}
-vector3i vector3i::operator+(const vector3i& rhs){
-    vector3i vec;
-    vec.x = x + rhs.x;
-    vec.y = y + rhs.y;
-    vec.z = z + rhs.z;
-    return vec;
-}
-vector3i& vector3i::operator=(const vector3i& rhs){
-    x = rhs.x;
-    y = rhs.y;
-    z = rhs.z;
-    return *this;
-}
-vector3i& vector3i::operator+=(const vector3i& rhs){
-    x += rhs.x;
-    y += rhs.y;
-    z += rhs.z;
-    return *this;
-}
-
-vector3i& vector3i::operator-=(const vector3i& rhs){
-    x -= rhs.x;
-    y -= rhs.y;
-    z -= rhs.z;
-    return *this;
-}
-
-float vector3ui::length(){
-    float l = x*x + y*y +z*z;
-    return sqrtf(l);
-}
-
-vector3ui vector3ui::operator-(const vector3ui& rhs){
-    vector3ui vec;
-    vec.x = x - rhs.x;
-    vec.y = y - rhs.y;
-    vec.z = z - rhs.z;
-    return vec;
-}
-vector3ui vector3ui::operator+(const vector3ui& rhs){
-    vector3ui vec;
-    vec.x = x + rhs.x;
-    vec.y = y + rhs.y;
-    vec.z = z + rhs.z;
-    return vec;
-}
-vector3ui& vector3ui::operator=(const vector3ui& rhs){
-    x = rhs.x;
-    y = rhs.y;
-    z = rhs.z;
-    return *this;
-}
-vector3ui& vector3ui::operator+=(const vector3ui& rhs){
-    x += rhs.x;
-    y += rhs.y;
-    z += rhs.z;
-    return *this;
-}
-
-vector3ui& vector3ui::operator-=(const vector3ui& rhs){
-    x -= rhs.x;
-    y -= rhs.y;
-    z -= rhs.z;
-    return *this;
-}
-
-float degreeToRadians(float degree){
-    return (degree * PI)/180.0f;
-}
-
-float radiansToDegree(float radians){
-    return (180.0f * radians)/PI;
-}
-
-vector3f crossProduct(const vector3f &vectorA, const vector3f &vectorB){
-    vector3f vec;
+float3 crossProduct(const float3 &vectorA, const float3 &vectorB){
+    float3 vec;
     vec.x = vectorA.y*vectorB.z - vectorA.z*vectorB.y;
     vec.y = vectorA.z*vectorB.x - vectorA.x*vectorB.z;
     vec.z = vectorA.x*vectorB.y - vectorA.y*vectorB.x;
     return vec;
 }
 
-float dotProduct(const vector3f &vectorA, const vector3f &vectorB){
+float dotProduct(const float3 &vectorA, const float3 &vectorB){
     float x = vectorA.x*vectorB.x;
     float y = vectorA.y*vectorB.y;
     float z = vectorA.z*vectorB.z;
     return x+y+z;
 }
 
-void matrix_projection(mat4x4 &matrix, int width, int height, float FOV, float near, float far){
+float deg2rad(float degree){
+    return (degree * PI)/180.0f;
+}
+
+float rad2deg(float radians){
+    return (180.0f * radians)/PI;
+}
+
+void matrix_projection(matrix4x4 &matrix, int width, int height, float FOV, float near, float far){
     float aspectRatio = (float)height/(float)width;
     float tg = tanf(FOV*0.5f/180.0f*PI);
-    memset(&matrix, 0, sizeof(mat4x4));
+    memset(&matrix, 0, sizeof(matrix4x4));
     matrix[0].x = aspectRatio*tg;
     // matrix[0].y = 0.0f;
     // matrix[0].z = 0.0f;
@@ -307,7 +166,7 @@ void matrix_projection(mat4x4 &matrix, int width, int height, float FOV, float n
     // matrix[3].w = 0.0f;
 }
 
-void matrix_orthographic(mat4x4 &matrix, int width, int height, float near, float far){
+void matrix_orthographic(matrix4x4 &matrix, int width, int height, float near, float far){
     matrix[0].x = 1.0f/(float)width;
     matrix[1].y = 1.0f/(float)height;
     matrix[2].z = -2.0f/(far-near);
@@ -315,13 +174,13 @@ void matrix_orthographic(mat4x4 &matrix, int width, int height, float near, floa
     matrix[2].w = 1.0f;
 }
 
-void matrix_lookAt(mat4x4 &matrix, vector3f &eye, vector3f &target, vector3f &up){
+void matrix_lookAt(matrix4x4 &matrix, float3 &eye, float3 &target, float3 &up){
 
-    vector3f f = target - eye;
-    f.normalize();
-    vector3f u = up;
-    u.normalize();
-    vector3f s = crossProduct(f, u);
+    float3 f = target - eye;
+    f = normalize(f);
+    float3 u = up;
+    u = normalize(u);
+    float3 s = crossProduct(f, u);
     u = crossProduct(s, f);
 
     matrix[0].x = s.x;
@@ -342,26 +201,26 @@ void matrix_lookAt(mat4x4 &matrix, vector3f &eye, vector3f &target, vector3f &up
     matrix[3].w = 1.0f;
 }
 
-void matrix_identity(mat4x4 &matrix){
+void matrix_identity(matrix4x4 &matrix){
     matrix[0] = {1.0f, 0.0f, 0.0f, 0.0f};
     matrix[1] = {0.0f, 1.0f, 0.0f, 0.0f};
     matrix[2] = {0.0f, 0.0f, 1.0f, 0.0f};
     matrix[3] = {0.0f, 0.0f, 0.0f, 1.0f};
 }
 
-void matrix_translate(mat4x4 &matrix, vector3f translation){
+void matrix_translate(matrix4x4 &matrix, float3 translation){
     matrix[3].x += translation.x;
     matrix[3].y += translation.y;
     matrix[3].z += translation.z;
 }
 
-void matrix_scale(mat4x4 &matrix, vector3f scale){
+void matrix_scale(matrix4x4 &matrix, float3 scale){
     matrix[0].x *= scale.x;
     matrix[1].y *= scale.y;
     matrix[2].z *= scale.z;
 }
 
-void matrix_rotateAxisX(mat4x4 &matrix, float angle){
+void matrix_rotateAxisX(matrix4x4 &matrix, float angle){
     float a = matrix[0].y, b = matrix[0].z;
     matrix[0].y = a*cosf(angle) - b*sinf(angle);
     matrix[0].z = a*sinf(angle) + b*cosf(angle);
@@ -379,7 +238,7 @@ void matrix_rotateAxisX(mat4x4 &matrix, float angle){
     matrix[3].z = a*sinf(angle) + b*cosf(angle);
 }
 
-void matrix_rotateAxisY(mat4x4 &matrix, float angle){
+void matrix_rotateAxisY(matrix4x4 &matrix, float angle){
     float a = matrix[0].x, b = matrix[0].z;
     matrix[0].x = a*cosf(angle) + b*sinf(angle);
     matrix[0].z = -a*sinf(angle) + b*cosf(angle);
@@ -397,7 +256,7 @@ void matrix_rotateAxisY(mat4x4 &matrix, float angle){
     matrix[3].z = -a*sinf(angle) + b*cosf(angle);
 }
 
-void matrix_rotateAxisZ(mat4x4 &matrix, float angle){
+void matrix_rotateAxisZ(matrix4x4 &matrix, float angle){
     float a = matrix[0].x, b = matrix[0].y;
     matrix[0].x = a*cosf(angle) + b*sinf(angle);
     matrix[0].y = -a*sinf(angle) + b*cosf(angle);
@@ -415,7 +274,7 @@ void matrix_rotateAxisZ(mat4x4 &matrix, float angle){
     matrix[3].y = -a*sinf(angle) + b*cosf(angle);
 }
 
-void matrix_rotate(mat4x4 &matrix, vector3f rotation){
+void matrix_rotate(matrix4x4 &matrix, float3 rotation){
     if(rotation.x != 0.0f)
         matrix_rotateAxisX(matrix,rotation.x);
     if(rotation.y != 0.0f)

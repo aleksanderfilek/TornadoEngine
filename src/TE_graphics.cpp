@@ -5,8 +5,7 @@
 
 
 extern TornadoEngine engine;
-
-TextureManager textureManager;
+extern TextureManager textureManager;
 
 int Clear(){ 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -154,17 +153,6 @@ void Mesh::SetTextures(unsigned int count, unsigned int *_textures){
     }
 }
 
-void Mesh::Draw(){
-
-    if(this->texturesCount > 0){
-        textureManager.Bind(this->texturesCount, this->textures);
-    }
-
-    glBindVertexArray(this->VAO);
-    glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-}
-
 void Mesh::Clear(bool onlyData){
     this->vertices.clear();
     this->indices.clear();
@@ -179,10 +167,32 @@ void Mesh::Clear(bool onlyData){
     }
 }
 
+void Draw(const Mesh& mesh){
+
+    if(mesh.texturesCount > 0){
+        textureManager.Bind(mesh.texturesCount, mesh.textures);
+    }
+
+    glBindVertexArray(mesh.VAO);
+    glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+}
+
+void DrawInstanced(int count, const Mesh& mesh){
+        if(mesh.texturesCount > 0){
+        textureManager.Bind(mesh.texturesCount, mesh.textures);
+    }
+
+    glBindVertexArray(mesh.VAO);
+    glDrawElementsInstanced(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0, count);
+    glBindVertexArray(0);
+}
+
+
 bool Mesh::Load(std::string path){
-    std::vector<vector3f> temp_vertices;
-    std::vector<vector3f> temp_normalVertices;
-    std::vector<vector2f> temp_uvs;
+    std::vector<float3> temp_vertices;
+    std::vector<float3> temp_normalVertices;
+    std::vector<float2> temp_uvs;
     std::vector<Vertex> _vertices;
     std::vector<unsigned int> _indices;
 
@@ -199,17 +209,17 @@ bool Mesh::Load(std::string path){
             break; 
 
         if(strcmp( lineHeader, "vt" ) == 0){
-            vector2f uv;
+            float2 uv;
             fscanf(file, "%f %f\n", &uv.x, &uv.y);
             temp_uvs.push_back(uv);
         }
         else if(strcmp( lineHeader, "vn" ) == 0){
-            vector3f normal;
+            float3 normal;
             fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
             temp_normalVertices.push_back(normal);
         }
         else if(strcmp( lineHeader, "v" ) == 0){
-            vector3f vertex;
+            float3 vertex;
             fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
             temp_vertices.push_back(vertex);
         }
