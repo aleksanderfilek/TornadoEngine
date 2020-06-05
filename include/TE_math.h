@@ -47,17 +47,6 @@ struct float4
 
 typedef float4 matrix4x4[4];
 
-// static float4 operator-(const float4& v1, const float4& v2);
-// static float4 operator+(const float4& v1, const float4& v2);
-// static float4& operator+=(const float4& v1, const float4& v2);
-// static float4& operator-=(const float4& v1, const float4& v2);
-// static float4& operator*(const float4& v, float factor);
-// static float4& operator*(float factor, const float4& v);
-// static float length(const float4 &vector);
-// static float4 normalize(const float4 &vector);
-// static float4 crossProduct(const float4 &vectorA, const float4 &vectorB);
-// static float dotProduct(const float4 &vectorA, const float4 &vectorB);
-
 static float deg2rad(float degree);
 static float rad2deg(float radians);
 

@@ -1,7 +1,9 @@
 #include"TE_core.h"
 
 TornadoEngine engine;
+
 Input inputManager;
+TextureManager textureManager;
 
 bool TornadoEngine::Init(const char *title, int width, int height, uint32_t flags){
     if(SDL_Init(SDL_INIT_VIDEO |  SDL_INIT_TIMER) < 0){

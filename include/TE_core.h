@@ -9,7 +9,7 @@
 #include"TE_input.h"
 
 struct WindowInfo{
-    vector2ui size;
+    float2 size;
     bool fullScreen;
 };
 
