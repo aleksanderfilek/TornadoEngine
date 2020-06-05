@@ -11,14 +11,13 @@ struct float2
 
 static float2 operator+(const float2& v1, const float2& v2);
 static float2 operator-(const float2& v1, const float2& v2);
-static float2& operator+=(const float2& v1, const float2& v2);
-static float2& operator-=(const float2& v1, const float2& v2);
-static float2& operator*(const float2& v, float factor);
-static float2& operator*(float factor, const float2& v);
+static float2& operator+=(float2& v1, const float2& v2);
+static float2& operator-=(float2& v1, const float2& v2);
+static float2& operator*(float2& v, float factor);
+static float2& operator*(float factor, float2& v);
 
 static float length(const float2 &vector);
 static float2 normalize(const float2 &vector);
-static float2 crossProduct(const float2 &vectorA, const float2 &vectorB);
 static float dotProduct(const float2 &vectorA, const float2 &vectorB);
 
 typedef float2 matrix2x2[2];
@@ -29,10 +28,11 @@ struct float3{
 
 static float3 operator-(const float3& v1, const float3& v2);
 static float3 operator+(const float3& v1, const float3& v2);
-static float3& operator+=(const float3& v1, const float3& v2);
-static float3& operator-=(const float3& v1, const float3& v2);
-static float3& operator*(const float3& v, float factor);
-static float3& operator*(float factor, const float3& v);
+static float3& operator+=(float3& v1, const float3& v2);
+static float3& operator-=(float3& v1, const float3& v2);
+static float3& operator*(float3& v, float factor);
+static float3& operator*(float factor, float3& v);
+
 static float length(const float3 &vector);
 static float3 normalize(const float3 &vector);
 static float3 crossProduct(const float3 &vectorA, const float3 &vectorB);
@@ -47,19 +47,19 @@ struct float4
 
 typedef float4 matrix4x4[4];
 
-static float4 operator-(const float4& v1, const float4& v2);
-static float4 operator+(const float4& v1, const float4& v2);
-static float4& operator+=(const float4& v1, const float4& v2);
-static float4& operator-=(const float4& v1, const float4& v2);
-static float4& operator*(const float4& v, float factor);
-static float4& operator*(float factor, const float4& v);
-static float length(const float4 &vector);
-static float4 normalize(const float4 &vector);
-static float4 crossProduct(const float4 &vectorA, const float4 &vectorB);
-static float dotProduct(const float4 &vectorA, const float4 &vectorB);
+// static float4 operator-(const float4& v1, const float4& v2);
+// static float4 operator+(const float4& v1, const float4& v2);
+// static float4& operator+=(const float4& v1, const float4& v2);
+// static float4& operator-=(const float4& v1, const float4& v2);
+// static float4& operator*(const float4& v, float factor);
+// static float4& operator*(float factor, const float4& v);
+// static float length(const float4 &vector);
+// static float4 normalize(const float4 &vector);
+// static float4 crossProduct(const float4 &vectorA, const float4 &vectorB);
+// static float dotProduct(const float4 &vectorA, const float4 &vectorB);
 
-static const float deg2rad(float degree);
-static const float rad2deg(float radians);
+static float deg2rad(float degree);
+static float rad2deg(float radians);
 
 static void matrix_identity(matrix4x4 &matrix);
 
