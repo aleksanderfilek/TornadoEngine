@@ -1,6 +1,5 @@
 #ifndef TEGRAPHICS_H_
 #define TEGRAPHICS_H_
-#define TE_OPENGL
 
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
@@ -71,13 +70,6 @@ class Mesh{
 
         friend void Draw(const Mesh& mesh);
         friend void DrawInstanced(int count, const Mesh& mesh);
-};
-
-class MeshManager{
-    private:
-
-    public:
-    
 };
 
 void Draw(const Mesh& mesh);

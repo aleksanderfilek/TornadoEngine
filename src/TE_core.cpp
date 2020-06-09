@@ -8,52 +8,35 @@ TextureManager textureManager;
 bool TornadoEngine::Init(const char *title, int width, int height, uint32_t flags){
     if(SDL_Init(SDL_INIT_VIDEO |  SDL_INIT_TIMER) < 0){
         printf("SDL could not initialize! SDL Error: %s\n",SDL_GetError());
-        return true;
+        return false;
     }
-    else{
-        #ifdef TE_OPENGL
-            flags |= SDL_WINDOW_OPENGL;
-        #endif
 
         window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
         if(window == NULL){
             printf("Window could not be created! SDL Error: %s\n",SDL_GetError());
-            return true;
+            return false;
         }
-        else{
-            windowInfo.size.x = width;
-            windowInfo.size.y = height;
-            windowInfo.fullScreen = false;
-
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, 
-                                SDL_GL_CONTEXT_PROFILE_CORE);
-
-            this->glContext = SDL_GL_CreateContext(this->window);
         
-            glewExperimental = GL_TRUE;
-            glewInit();
+        windowInfo.size.x = width;
+        windowInfo.size.y = height;
+        windowInfo.fullScreen = false;
 
-            glViewport(0,0,width, height);
-            glClearColor(1.0f,1.0f,1.0f,1.0f);
-            glEnable(GL_DEPTH_TEST);
-            glEnable(GL_BLEND);
-            
-            int imgFlags = IMG_INIT_PNG;
-            if(!(IMG_Init(imgFlags)&imgFlags)){
-                printf("SDL_image could not initialize! SDL_image Error: %s\n",IMG_GetError());
-                return true;
-            }
-            else{
-                if(TTF_Init() == -1){
-                    printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n",TTF_GetError());
-                    return true;
-                }
-            }
-        }
-    }
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, 
+                            SDL_GL_CONTEXT_PROFILE_CORE);
+
+        this->glContext = SDL_GL_CreateContext(this->window);
+    
+        glewExperimental = GL_TRUE;
+        glewInit();
+
+        glViewport(0,0,width, height);
+        glClearColor(1.0f,1.0f,1.0f,1.0f);
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+    
     return true;
 }
 
@@ -106,9 +89,6 @@ TornadoEngine::~TornadoEngine(){
     
     SDL_DestroyWindow(window);
     window = NULL;
-
-    IMG_Quit();
-    TTF_Quit();
     SDL_Quit();
 }
 
