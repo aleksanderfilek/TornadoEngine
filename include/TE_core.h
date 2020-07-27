@@ -1,54 +1,44 @@
 #ifndef TECORE_H_
 #define TECORE_H_
 
-#include<stdio.h>
-
+#include"TE.h"
 #include"TE_math.h"
-#include"TE_graphics.h"
-#include"TE_ui.h"
-#include"TE_input.h"
 
-struct WindowInfo{
+#include<SDL2/SDL.h>
+
+#include<GL/glew.h>
+
+#include<stdint.h>
+
+typedef struct {
+    void (*start)();
+    void (*update)(double elapsed_time);
+    void (*draw)();
+    void (*exit)();
+}TE_State;
+
+TE_State* TE_create_state(void (*start)(), void (*update)(double), void (*draw)(), void (*exit)());
+void TE_set_next_state(TE_State *next_state);
+
+typedef struct {
     float2 size;
-    bool fullScreen;
-};
+    uint8_t full_screen;
+}TE_Window_Info;
 
-class State{
-public:
-    State(){};
-    virtual ~State(){};
-    virtual void OnStart() = 0;
-    virtual void OnUpdate(float elapsedTime) = 0;
-    virtual void OnDraw() = 0;
-#ifdef TE_DEBUG
-    virtual void OnDebug() = 0;
-#endif   
-};
-
-class TornadoEngine{
-private:
-    WindowInfo windowInfo;
-
+typedef struct TE_Game{
     SDL_Window *window;
-    SDL_GLContext glContext;
+    SDL_GLContext gl_context;
     SDL_Event event;
 
-    State *gameState = NULL;
-    State *nextState = NULL;
+    TE_Window_Info window_info;
 
-    void CheckState();
-    void CloseState();
-public:
-    TornadoEngine(){}
-    ~TornadoEngine();
+    TE_State *current_state;
+    TE_State *next_state;
+}TE_Game;
 
-    bool Init(const char *title, int width, int height, uint32_t flags = SDL_WINDOW_SHOWN);
-    void Start(State *startState);
+int TE_init_game(const char *title, int width, int height, int flags);
+void TE_start_game(TE_State *start_state);
+void TE_close_game();
 
-    void SetNextState(State *nextState);
-
-    SDL_Window *GetWindow(){ return this->window; }
-    inline SDL_Event *GetEvent(){ return &this->event; }
-};
 
 #endif

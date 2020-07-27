@@ -1,66 +1,60 @@
 #ifndef TEMATH_H_
 #define TEMATH_H_
-#include<cmath>
 
 #define PI 3.141596f
 
-struct float2
+typedef struct float2
 {
     float x,y;
-};
+}float2;
 
-static float2 operator+(const float2& v1, const float2& v2);
-static float2 operator-(const float2& v1, const float2& v2);
-static float2& operator+=(float2& v1, const float2& v2);
-static float2& operator-=(float2& v1, const float2& v2);
-static float2& operator*(float2& v, float factor);
-static float2& operator*(float factor, float2& v);
+float2 TE_add_f2(const float2* a, const float2* b);
+float2 TE_substract_f2(const float2* a, const float2* b);
+float2 TE_multiply_f2(const float2* a, float k);
+float TE_dot_product_f2(const float2* a, const float2* b);
+float TE_length_f2(const float2* vector);
+float2 TE_normalized_f2(const float2* vector);
+void TE_normalize_f2(float2* vector);
 
-static float length(const float2 &vector);
-static float2 normalize(const float2 &vector);
-static float dotProduct(const float2 &vectorA, const float2 &vectorB);
-
-typedef float2 matrix2x2[2];
-
-struct float3{
+typedef struct float3
+{
     float x,y,z;
-};
+}float3;
 
-static float3 operator-(const float3& v1, const float3& v2);
-static float3 operator+(const float3& v1, const float3& v2);
-static float3& operator+=(float3& v1, const float3& v2);
-static float3& operator-=(float3& v1, const float3& v2);
-static float3& operator*(float3& v, float factor);
-static float3& operator*(float factor, float3& v);
-
-static float length(const float3 &vector);
-static float3 normalize(const float3 &vector);
-static float3 crossProduct(const float3 &vectorA, const float3 &vectorB);
-static float dotProduct(const float3 &vectorA, const float3 &vectorB);
+float3 TE_add_f3(const float3* a, const float3* b);
+float3 TE_substract_f3(const float3* a, const float3* b);
+float3 TE_multiply_f3(const float3* a, float k);
+float TE_dot_product_f3(const float3* a, const float3* b);
+float3 TE_cross_product_f3(const float3* a, const float3* b);
+float TE_length_f3(const float3* vector);
+float3 TE_normalized_f3(const float3* vector);
+void TE_normalize_f3(float3* vector);
 
 typedef float3 matrix3x3[3];
 
-struct float4
+typedef struct float4
 {
     float x,y,z,w;
-};
+}float4;
 
-typedef float4 matrix4x4[4];
+typedef struct
+{
+    float4 v[4];
+}matrix4x4;
 
-static float deg2rad(float degree);
-static float rad2deg(float radians);
+float TE_deg2rad(float degree);
+float TE_rad2deg(float radians);
 
-static void matrix_identity(matrix4x4 &matrix);
+void TE_matrix_identity(matrix4x4* matrix);
+void TE_matrix_projection(matrix4x4* matrix, int width, int height, float FOV, float near, float far);
+void TE_matrix_orthographic(matrix4x4* matrix, int width, int height, float near, float far);
+void TE_matrix_lookAt(matrix4x4* matrix, float3 eye, float3 target, float3 up);
 
-static void matrix_projection(matrix4x4 &matrix, int width, int height, float FOV, float near, float far);
-static void matrix_orthographic(matrix4x4 &matrix, int width, int height, float near, float far);
-static void matrix_lookAt(matrix4x4 &matrix, float3 &eye, float3 &target, float3 &up);
-
-static void matrix_translate(matrix4x4 &matrix, float3 translation);
-static void matrix_scale(matrix4x4 &matrix, float3 scale);
-static void matrix_rotateAxisX(matrix4x4 &matrix, float angle);
-static void matrix_rotateAxisY(matrix4x4 &matrix, float angle);
-static void matrix_rotateAxisZ(matrix4x4 &matrix, float angle);
-static void matrix_rotate(matrix4x4 &matrix, float3 rotation);
+void TE_matrix_translate(matrix4x4* matrix, float3 translation);
+void TE_matrix_scale(matrix4x4* matrix, float3 scale);
+void TE_matrix_rotateAxisX(matrix4x4* matrix, float angle);
+void TE_matrix_rotateAxisY(matrix4x4* matrix, float angle);
+void TE_matrix_rotateAxisZ(matrix4x4* matrix, float angle);
+void TE_matrix_rotate(matrix4x4* matrix, float3 rotation);
 
 #endif
