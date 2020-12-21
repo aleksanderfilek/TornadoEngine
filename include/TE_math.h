@@ -3,6 +3,9 @@
 
 #define PI 3.141596f
 
+#define Min(a, b) (a > b)?b:a
+#define Max(a, b) (a > b)?a:b
+
 typedef struct float2
 {
     float x,y;
@@ -56,5 +59,9 @@ void TE_matrix_rotateAxisX(matrix4x4* matrix, float angle);
 void TE_matrix_rotateAxisY(matrix4x4* matrix, float angle);
 void TE_matrix_rotateAxisZ(matrix4x4* matrix, float angle);
 void TE_matrix_rotate(matrix4x4* matrix, float3 rotation);
+
+typedef float4 quaternion;
+quaternion TE_multiply_quaternion(const quaternion* A, const quaternion* B);
+float3 TE_multiply_quaternion_f3(const quaternion* A, const float3* B);
 
 #endif

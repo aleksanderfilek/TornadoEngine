@@ -1,3 +1,4 @@
 
 *.o
 main.cpp
+.vscode/settings.json
