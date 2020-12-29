@@ -30,8 +30,7 @@ int TE_init_game(const char *title, int width, int height, int flags)
     }
 
     // Set window info data
-    game->window_info.size.x = width;
-    game->window_info.size.y = height;
+    game->window_info.size = (int2){ width, height };
     game->window_info.full_screen = -1;
 
     // Setting OpenGL attributes
