@@ -16,10 +16,6 @@ int TE_init_game(const char *title, int width, int height, int flags)
         return -1;
     }
 
-    game = (TE_Game*)malloc(sizeof(TE_Game));
-    game->current_state = NULL;
-    game->next_state = NULL;
-
     // Create window object
     game->window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
@@ -31,7 +27,7 @@ int TE_init_game(const char *title, int width, int height, int flags)
 
     // Set window info data
     game->window_info.size = (int2){ width, height };
-    game->window_info.full_screen = -1;
+    game->window_info.full_screen = 0;
 
     // Setting OpenGL attributes
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
@@ -54,6 +50,11 @@ int TE_init_game(const char *title, int width, int height, int flags)
     glEnable(GL_DEPTH_TEST);
     // Enable blending
     glEnable(GL_BLEND);
+
+    // init states
+    game = (TE_Game*)malloc(sizeof(TE_Game));
+    game->current_state = NULL;
+    game->next_state = NULL;
 
     // Start input system
     TE_start_input();
