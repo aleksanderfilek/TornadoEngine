@@ -4,7 +4,6 @@ TE_TextureManager* TE_textureManager_init(int size)
 {
     TE_TextureManager* manager = (TE_TextureManager*)malloc(sizeof(TE_TextureManager));
 
-    manager->map_bitset = 0;
     manager->allocated_elements = size;
     manager->name = (char**)malloc(size * sizeof(char*));
     manager->gl_id = (unsigned int*)malloc(size * sizeof(unsigned int));
@@ -24,7 +23,7 @@ void TE_textureManager_clear(TE_TextureManager* manager)
     // free string and delete glTexture
     for(int i = 0; i < manager->allocated_elements; i++)
     {
-        if(manager->map_bitset & 1UL<<i ){
+        if(manager->name[i] != NULL){
             free(manager->name[i]);
             glDeleteTextures(1, &manager->gl_id[i]);
         }
@@ -41,7 +40,7 @@ TE_Texture TE_texture_load(TE_TextureManager* manager, const char* path)
     // check if texture already was loaded. If yes, return index
     for(int i = 0; i < manager->allocated_elements; i++)
     {
-        if(manager->map_bitset & 1UL<<i && strcmp(path, manager->name[i]) == 0)
+        if(manager->name[i] != NULL && strcmp(path, manager->name[i]) == 0)
         {
             return i;
         }
@@ -69,29 +68,25 @@ TE_Texture TE_texture_load(TE_TextureManager* manager, const char* path)
     glBindTexture(GL_TEXTURE_2D, 0);
 
 
-    // find place for new texture
+    // find space for new texture
     int index;
-
-    unsigned long maximum_posible_number = pow(2, manager->allocated_elements) - 1;
-    if(manager->map_bitset < maximum_posible_number) // check if value of bitmask is smaller then already allocated number of places
+    for(index = 0; index < manager->allocated_elements; index++)
     {
-        // iterate through array to find free place
-        for(index = 0; index < manager->allocated_elements; index++)
+        if(manager->name[index] == NULL)
         {
-            if(!(manager->map_bitset & 1UL<<index))
-            {
-                break;
-            }
+            break;
         }
     }
-    else{
-        // Add texture map element to texture map
+
+    // condition is true, means that there is need to allocate new space
+    if(index == manager->allocated_elements)
+    {
         manager->allocated_elements++;
         manager->name = (char**)realloc(manager->name, manager->allocated_elements * sizeof(char*));
         manager->gl_id = (unsigned int*)realloc(manager->gl_id, manager->allocated_elements * sizeof(unsigned int));
         manager->size = (int2*)realloc(manager->size, manager->allocated_elements * sizeof(int2));
 
-        index = manager->allocated_elements - 1; // get last index
+        index = manager->allocated_elements - 1; // get new index
     }
 
     manager->name[index] = (char*)malloc(strlen(path)+1); //allocate memory for name
@@ -106,15 +101,13 @@ TE_Texture TE_texture_load(TE_TextureManager* manager, const char* path)
 
 void TE_texture_free(TE_TextureManager* manager, TE_Texture texture)
 {
-    if(!(manager->map_bitset & 1UL<<texture))
+    if(manager->name[texture] == NULL)
         return;
 
     free(manager->name[texture]);
     manager->name[texture] = NULL;
     glDeleteTextures(1, &manager->gl_id[texture]);
     manager->size[texture] = (int2){0,0};
-
-    manager->map_bitset ^= 1UL << texture;
 }
 
 void TE_texture_bind(TE_TextureManager* manager, TE_Texture* texture, unsigned int count)

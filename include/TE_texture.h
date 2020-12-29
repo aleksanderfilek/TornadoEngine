@@ -7,7 +7,6 @@
 typedef unsigned int TE_Texture;
 
 typedef struct TE_TextureManager{
-    unsigned long map_bitset;
     unsigned int allocated_elements;
 
     char** name;
