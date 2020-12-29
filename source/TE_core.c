@@ -56,14 +56,8 @@ int TE_init_game(const char *title, int width, int height, int flags)
     // Enable blending
     glEnable(GL_BLEND);
 
-    //glEnable(GL_CULL_FACE);
-    //glCullFace(GL_BACK);
-    //glFrontFace(GL_CW);
-
     // Start input system
     TE_start_input();
-    // Start graphics systems
-    TE_start_graphics();
 
     return 0;
 }
@@ -120,9 +114,6 @@ void TE_close_game()
 
     // Close input system
     TE_close_input();
-
-    // Close graphics systems
-    TE_close_graphics();
 
     free(game);
     // Delet OpenGL context

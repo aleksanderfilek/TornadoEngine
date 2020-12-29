@@ -2,20 +2,6 @@
 
 extern TE_Game *game;
 
-inline void TE_start_graphics()
-{
-    TE_shader_manager_init();
-
-    TE_texture_manager_init();
-}
-
-inline void TE_close_graphics()
-{
-    TE_shader_manager_close();
-
-    TE_texture_manager_close();
-}
-
 inline void TE_clear()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

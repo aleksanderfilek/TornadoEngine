@@ -1,70 +1,59 @@
 #include"TE_texture.h"
 
-
-typedef struct{
-    unsigned int id;
-    float2 size;
-}Texture;
-
-typedef struct{
-    char* name;
-    Texture texture;
-}Texture_Map;
-
-typedef struct Texture_Manager{
-    long map_bitset;
-    Texture_Map* texture_map;
-    unsigned int allocated_elements;
-}Texture_Manager;
-
-Texture_Manager* texture_manager = NULL;
-
-void TE_texture_manager_init()
+TE_TextureManager* TE_textureManager_init(int size)
 {
-    texture_manager = (Texture_Manager*)malloc(sizeof(Texture_Manager));
-    texture_manager->texture_map = NULL;
-    texture_manager->map_bitset = 0;
-    texture_manager->allocated_elements = 0;
+    TE_TextureManager* manager = (TE_TextureManager*)malloc(sizeof(TE_TextureManager));
+
+    manager->map_bitset = 0;
+    manager->allocated_elements = size;
+    manager->name = (char**)malloc(size * sizeof(char*));
+    manager->gl_id = (unsigned int*)malloc(size * sizeof(unsigned int));
+    manager->size = (int2*)malloc(size * sizeof(int2));
+
+    return manager;
 }
 
-void TE_texture_manager_close()
+void TE_textureManager_free(TE_TextureManager* manager)
 {
-    TE_texture_manager_clear();
-    free(texture_manager);
+    TE_textureManager_clear(manager);
+    free(manager);
 }
 
-void TE_texture_manager_clear()
+void TE_textureManager_clear(TE_TextureManager* manager)
 {
-    int i;
-    for(i = 0; i < texture_manager->allocated_elements; i++)
+    // free string and delete glTexture
+    for(int i = 0; i < manager->allocated_elements; i++)
     {
-        if(texture_manager->map_bitset & 1UL<<i ){
-            free(texture_manager->texture_map[i].name);
-            glDeleteTextures(1, &texture_manager->texture_map[i].texture.id);
+        if(manager->map_bitset & 1UL<<i ){
+            free(manager->name[i]);
+            glDeleteTextures(1, &manager->gl_id[i]);
         }
     }
 
-    free(texture_manager->texture_map);
-    texture_manager->allocated_elements = 0;
+    free(manager->name);
+    free(manager->gl_id);
+    free(manager->size);
+    manager->allocated_elements = 0;
 }
 
-TE_Texture TE_texture_load(const char* path)
+TE_Texture TE_texture_load(TE_TextureManager* manager, const char* path)
 {
-    int i;
-    for(i = 0; i < texture_manager->allocated_elements; i++)
+    // check if texture already was loaded. If yes, return index
+    for(int i = 0; i < manager->allocated_elements; i++)
     {
-        if(texture_manager->map_bitset & 1UL<<i && strcmp(path, texture_manager->texture_map[i].name) == 0)
+        if(manager->map_bitset & 1UL<<i && strcmp(path, manager->name[i]) == 0)
         {
             return i;
         }
     }
 
-     int width, height;
-    unsigned char *image = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGBA);
+    // load texture from file
+    int2 size;
+    unsigned char *image = SOIL_load_image(path, &size.x, &size.y, 0, SOIL_LOAD_RGBA);
 
-    unsigned int id;
-    glGenTextures(1, &id);
-    glBindTexture(GL_TEXTURE_2D, id);
+    unsigned int gl_id;
+    glGenTextures(1, &gl_id);
+    glBindTexture(GL_TEXTURE_2D, gl_id);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -72,23 +61,24 @@ TE_Texture TE_texture_load(const char* path)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, 
         GL_RGBA, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     SOIL_free_image_data(image);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    Texture texture = {id, {width, height}};
-    
+
+    // find place for new texture
     int index;
 
-    int maximum_posible_number = pow(2,texture_manager->allocated_elements) - 1;
-    if(texture_manager->map_bitset < maximum_posible_number)
+    unsigned long maximum_posible_number = pow(2, manager->allocated_elements) - 1;
+    if(manager->map_bitset < maximum_posible_number) // check if value of bitmask is smaller then already allocated number of places
     {
-        for(index = 0; index < texture_manager->allocated_elements; index++)
+        // iterate through array to find free place
+        for(index = 0; index < manager->allocated_elements; index++)
         {
-            if(!(texture_manager->map_bitset & 1UL<<index))
+            if(!(manager->map_bitset & 1UL<<index))
             {
                 break;
             }
@@ -96,40 +86,46 @@ TE_Texture TE_texture_load(const char* path)
     }
     else{
         // Add texture map element to texture map
-        texture_manager->allocated_elements++;
-        texture_manager->texture_map = (Texture_Map*)realloc(texture_manager->texture_map, 
-                                                    texture_manager->allocated_elements * sizeof(Texture_Map));
-        index = texture_manager->allocated_elements - 1;
+        manager->allocated_elements++;
+        manager->name = (char**)realloc(manager->name, manager->allocated_elements * sizeof(char*));
+        manager->gl_id = (unsigned int*)realloc(manager->gl_id, manager->allocated_elements * sizeof(unsigned int));
+        manager->size = (int2*)realloc(manager->size, manager->allocated_elements * sizeof(int2));
+
+        index = manager->allocated_elements - 1; // get last index
     }
 
-    texture_manager->texture_map[index].texture = texture;
-    texture_manager->texture_map[index].name = (char*)malloc(strlen(path)+1);
-    strcpy(texture_manager->texture_map[index].name, path);
+    manager->name[index] = (char*)malloc(strlen(path)+1); //allocate memory for name
+    strcpy(manager->name[index], path);
+    manager->gl_id[index] = gl_id; 
+    manager->size[index] = size; 
 
     return index;
+    
+
 }
 
-void TE_texture_free(TE_Texture texture)
+void TE_texture_free(TE_TextureManager* manager, TE_Texture texture)
 {
-    if(!(texture_manager->map_bitset & 1UL<<texture))
+    if(!(manager->map_bitset & 1UL<<texture))
         return;
 
-    free(texture_manager->texture_map[texture].name);
-    texture_manager->texture_map[texture].name = NULL;
-    glDeleteTextures(1, &texture_manager->texture_map[texture].texture.id);
+    free(manager->name[texture]);
+    manager->name[texture] = NULL;
+    glDeleteTextures(1, &manager->gl_id[texture]);
+    manager->size[texture] = (int2){0,0};
 
-    texture_manager->map_bitset ^= 1UL << texture;
+    manager->map_bitset ^= 1UL << texture;
 }
 
-void TE_texture_bind(TE_Texture* texture, unsigned int count)
+void TE_texture_bind(TE_TextureManager* manager, TE_Texture* texture, unsigned int count)
 {
     for(int i = 0; i < count; i++){
         glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, texture_manager->texture_map[texture[i]].texture.id);
+        glBindTexture(GL_TEXTURE_2D, manager->gl_id[texture[i]]);
     }
 }
 
-inline float2 TE_texture_get_size(TE_Texture texture)
+inline int2 TE_texture_get_size(TE_TextureManager* manager, TE_Texture texture)
 {
-    return texture_manager->texture_map[texture].texture.size;
+    return manager->size[texture];
 }
