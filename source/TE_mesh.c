@@ -212,3 +212,97 @@ void TE_mesh_draw_instanced(const TE_Mesh* mesh, unsigned int count)
     glDrawElementsInstanced(GL_TRIANGLES, mesh->indices_count, GL_UNSIGNED_INT, 0, count);
     glBindVertexArray(0);
 }
+
+TE_SharedMeshManager* TE_sharedMeshManager_init(int size)
+{
+    TE_SharedMeshManager* manager = (TE_SharedMeshManager*)malloc(sizeof(TE_SharedMeshManager));
+
+    manager->allocated_elements = size;
+
+    manager->name = (char**)malloc(size * sizeof(char*));
+    manager->mesh = (TE_Mesh*)malloc(size * sizeof(TE_Mesh));
+
+    return manager;
+}
+
+void TE_sharedMeshManager_free(TE_SharedMeshManager* manager)
+{
+    // free string and delete glTexture
+    for(int i = 0; i < manager->allocated_elements; i++)
+    {
+        if(manager->name[i] != NULL)
+        {
+            free(manager->name[i]);
+            TE_mesh_clear(&manager->mesh[i]);
+        }
+    }
+
+    free(manager->name);
+    free(manager->mesh);
+
+    manager->allocated_elements = 0;
+
+    free(manager);
+}
+
+TE_SharedMesh TE_sharedMeshManager_load(TE_SharedMeshManager* manager, const char* path)
+{
+    // check if mesh already was loaded. If yes, return index
+    for(int i = 0; i < manager->allocated_elements; i++)
+    {
+        if(manager->name[i] != NULL && strcmp(path, manager->name[i]) == 0)
+        {
+            return i;
+        }
+    }
+
+    TE_Mesh mesh;
+    if(TE_mesh_load(&mesh, path) < 0)
+    {
+        return -1;
+    }
+
+        // find space for new mesh
+    int index;
+    for(index = 0; index < manager->allocated_elements; index++)
+    {
+        if(manager->name[index] == NULL)
+        {
+            break;
+        }
+    }
+
+    // condition is true, means that there is need to allocate new space
+    if(index == manager->allocated_elements)
+    {
+        manager->allocated_elements++;
+
+        manager->name = (char**)realloc(manager->name, manager->allocated_elements * sizeof(char*));
+        manager->mesh = (TE_Mesh*)realloc(manager->mesh, manager->allocated_elements * sizeof(TE_Mesh));
+
+        index = manager->allocated_elements - 1; // get new index
+    }
+
+    manager->name[index] = (char*)malloc(strlen(path)+1); // allocate memory for name
+    strcpy(manager->name[index], path);
+    manager->mesh[index] = mesh; 
+
+    return index;
+}
+
+inline void TE_sharedMesh_clear(TE_SharedMeshManager* manager, TE_SharedMesh mesh)
+{
+    TE_mesh_clear(&manager->mesh[mesh]);
+    free(manager->name[mesh]);
+    manager->name[mesh] = NULL;
+}
+
+inline void TE_sharedMesh_draw(TE_SharedMeshManager* manager, TE_SharedMesh mesh)
+{
+    TE_mesh_draw(&manager->mesh[mesh]);
+}
+
+inline void TE_sharedMesh_draw_instanced(TE_SharedMeshManager* manager, TE_SharedMesh mesh, unsigned int count)
+{
+    TE_mesh_draw_instanced(&manager->mesh[mesh], count);
+}
