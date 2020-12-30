@@ -3,60 +3,46 @@
 #include<stdio.h>
 #include<string.h>
 
-typedef struct Shader{
-    unsigned int Id;
-}Shader;
 
-typedef struct{
-    char* name;
-    Shader shader;
-}Shader_Map;
-
-typedef struct Shader_manager{
-    long map_bitset;
-    Shader_Map* shader_map;
-    unsigned int allocated_elements;
-} Shader_Manager;
-
-Shader_Manager* shader_manager = NULL;
-
-void TE_shader_manager_init()
+TE_ShaderManager* TE_shaderManager_init(int size)
 {
-    shader_manager = (Shader_Manager*)malloc(sizeof(Shader_Manager));
-    shader_manager->shader_map = NULL;
-    shader_manager->map_bitset = 0;
-    shader_manager->allocated_elements = 0;
+    TE_ShaderManager* manager = (TE_ShaderManager*)malloc(sizeof(TE_ShaderManager));
+    
+    manager->allocated_elements = size;
+
+    manager->name = (char**)malloc(size * sizeof(char*));
+    manager->gl_id = (unsigned int*)malloc(size * sizeof(unsigned int));
+   
+    return manager;
 }
 
-void TE_shader_manager_close()
+void TE_shaderManager_close(TE_ShaderManager* manager)
 {
-    TE_shader_manager_clear();
-    free(shader_manager);
-}
 
-void TE_shader_manager_clear()
-{
-    int i;
-    for(i = 0; i < shader_manager->allocated_elements; i++)
+    for(int i = 0; i < manager->allocated_elements; i++)
     {
-        if(shader_manager->map_bitset & 1UL<<i ){
-            free(shader_manager->shader_map[i].name);
-            glDeleteShader(shader_manager->shader_map[i].shader.Id);
+        if(manager->name[i] != NULL){
+            free(manager->name[i]);
+            glDeleteShader(manager->gl_id[i]);
         }
     }
 
-    free(shader_manager->shader_map);
-    shader_manager->allocated_elements = 0;
+    free(manager->name);
+    free(manager->gl_id);
+
+    manager->allocated_elements = 0;
+
+    free(manager);
 }
 
-TE_Shader TE_shader_load(const char* path)
+TE_Shader TE_shader_load(TE_ShaderManager* manager, const char* path)
 {
     // Check if shader was loaded
     // If was loaded return it
     int i;
-    for(i = 0; i < shader_manager->allocated_elements; i++)
+    for(i = 0; i < manager->allocated_elements; i++)
     {
-        if(shader_manager->map_bitset & 1UL<<i && strcmp(path, shader_manager->shader_map[i].name) == 0)
+        if(manager->name[i] != NULL && strcmp(path, manager->name[i]) == 0)
         {
             return i;
         }
@@ -141,56 +127,49 @@ TE_Shader TE_shader_load(const char* path)
     free(fragment_shader_code);
 
     // Create shader
-    Shader shader;
-    shader.Id = program;
-
     int index;
-
-    int maximum_posible_number = pow(2,shader_manager->allocated_elements) - 1;
-    if(shader_manager->map_bitset < maximum_posible_number)
+    for(index = 0; index < manager->allocated_elements; index++)
     {
-        for(index = 0; index < shader_manager->allocated_elements; index++)
+        if(manager->name[index] == NULL)
         {
-            if(!(shader_manager->map_bitset & 1UL<<index))
-            {
-                break;
-            }
+            break;
         }
     }
-    else{
-        // Add shader map element to shader map
-        shader_manager->allocated_elements++;
-        shader_manager->shader_map = (Shader_Map*)realloc(shader_manager->shader_map, 
-                                                    shader_manager->allocated_elements * sizeof(Shader_Map));
-        index = shader_manager->allocated_elements - 1;
+
+    if(index == manager->allocated_elements)
+    {
+        manager->allocated_elements++;
+
+        manager->name = (char**)realloc(manager->name, manager->allocated_elements * sizeof(char*));
+        manager->gl_id = (unsigned int*)realloc(manager->gl_id, manager->allocated_elements * sizeof(unsigned int));
+
+        index = manager->allocated_elements - 1; // get new index
     }
 
-    shader_manager->shader_map[index].shader = shader;
-    shader_manager->shader_map[index].name = (char*)malloc(strlen(path)+1);
-    strcpy(shader_manager->shader_map[index].name, path);
-
+    manager->name[index] = (char*)malloc(strlen(path)+1);
+    strcpy(manager->name[index], path);
+    manager->gl_id[index] = program;
+    
     return index;
 }
 
-void TE_shader_free(TE_Shader shader)
+void TE_shader_free(TE_ShaderManager* manager, TE_Shader shader)
 {
-    if(!(shader_manager->map_bitset & 1UL<<shader))
+    if(manager->name[shader] == NULL)
         return;
 
-    free(shader_manager->shader_map[shader].name);
-    shader_manager->shader_map[shader].name = NULL;
-    glDeleteProgram(shader_manager->shader_map[shader].shader.Id);
-
-    shader_manager->map_bitset ^= 1UL << shader;
+    free(manager->name[shader]);
+    manager->name[shader] = NULL;
+    glDeleteProgram(manager->gl_id[shader]);
 }
 
-inline void TE_shader_bind(TE_Shader shader)
+inline void TE_shader_bind(TE_ShaderManager* manager, TE_Shader shader)
 {
-    glUseProgram(shader_manager->shader_map[shader].shader.Id);
+    glUseProgram(manager->gl_id[shader]);
 }
 
-inline unsigned int TE_shader_get_uniform_location(TE_Shader shader, const char* name)
+inline unsigned int TE_shader_get_uniform_location(TE_ShaderManager* manager, TE_Shader shader, const char* name)
 {
-    glGetUniformLocation(shader_manager->shader_map[shader].shader.Id, name);
+    glGetUniformLocation(manager->gl_id[shader], name);
 }
 

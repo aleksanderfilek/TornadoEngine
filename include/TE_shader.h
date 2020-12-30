@@ -7,13 +7,20 @@
 
 typedef unsigned int TE_Shader;
 
-void TE_shader_manager_init();
-void TE_shader_manager_close();
-void TE_shader_manager_clear();
+typedef struct TE_ShaderManager{
+    unsigned int allocated_elements;
 
-TE_Shader TE_shader_load(const char* path);
-void TE_shader_free(TE_Shader shader);
-void TE_shader_bind(TE_Shader shader);
-unsigned int TE_shader_get_uniform_location(TE_Shader shader, const char* name);
+    char** name;
+    unsigned int* gl_id;
+}TE_ShaderManager;
+
+
+TE_ShaderManager* TE_shaderManager_init(int size);
+void TE_shaderManager_close(TE_ShaderManager* manager);
+
+TE_Shader TE_shader_load(TE_ShaderManager* manager, const char* path);
+void TE_shader_free(TE_ShaderManager* manager, TE_Shader shader);
+void TE_shader_bind(TE_ShaderManager* manager, TE_Shader shader);
+unsigned int TE_shader_get_uniform_location(TE_ShaderManager* manager, TE_Shader shader, const char* name);
 
 #endif
