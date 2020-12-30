@@ -10,7 +10,7 @@ TE_ShaderManager* TE_shaderManager_init(int size)
     
     manager->allocated_elements = size;
 
-    manager->name = (char**)malloc(size * sizeof(char*));
+    manager->name = (char**)calloc(size, sizeof(char*));
     manager->gl_id = (unsigned int*)malloc(size * sizeof(unsigned int));
    
     return manager;
@@ -23,13 +23,11 @@ void TE_shaderManager_close(TE_ShaderManager* manager)
     {
         if(manager->name[i] != NULL){
             free(manager->name[i]);
-            glDeleteShader(manager->gl_id[i]);
+            glDeleteProgram(manager->gl_id[i]);
         }
     }
-
     free(manager->name);
     free(manager->gl_id);
-
     manager->allocated_elements = 0;
 
     free(manager);

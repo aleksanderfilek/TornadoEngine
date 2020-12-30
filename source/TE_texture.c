@@ -5,7 +5,7 @@ TE_TextureManager* TE_textureManager_init(int size)
     TE_TextureManager* manager = (TE_TextureManager*)malloc(sizeof(TE_TextureManager));
 
     manager->allocated_elements = size;
-    manager->name = (char**)malloc(size * sizeof(char*));
+    manager->name = (char**)calloc(size, sizeof(char*));
     manager->gl_id = (unsigned int*)malloc(size * sizeof(unsigned int));
     manager->size = (int2*)malloc(size * sizeof(int2));
 

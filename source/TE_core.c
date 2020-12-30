@@ -16,6 +16,11 @@ int TE_init_game(const char *title, int width, int height, int flags)
         return -1;
     }
 
+    // init game
+    game = (TE_Game*)malloc(sizeof(TE_Game));
+    game->current_state = NULL;
+    game->next_state = NULL;
+    
     // Create window object
     game->window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
@@ -51,11 +56,6 @@ int TE_init_game(const char *title, int width, int height, int flags)
     // Enable blending
     glEnable(GL_BLEND);
 
-    // init states
-    game = (TE_Game*)malloc(sizeof(TE_Game));
-    game->current_state = NULL;
-    game->next_state = NULL;
-
     // Start input system
     TE_start_input();
 
@@ -84,7 +84,7 @@ void TE_start_game(TE_State *start_state)
             switch (game->event.type)
             {
             case SDL_QUIT:
-                quit = 1;
+                return;
                 break;
             case SDL_WINDOWEVENT:
                 if(game->event.window.event == SDL_WINDOWEVENT_RESIZED){
@@ -114,14 +114,14 @@ void TE_close_game()
 
     // Close input system
     TE_close_input();
-
-    free(game);
     // Delet OpenGL context
     SDL_GL_DeleteContext(game->gl_context);
     
     // Destroy window object
     SDL_DestroyWindow(game->window);
     game->window = NULL;
+
+    free(game);
 
     // Quit SDL
     SDL_Quit();

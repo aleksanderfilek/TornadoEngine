@@ -219,7 +219,7 @@ TE_SharedMeshManager* TE_sharedMeshManager_init(int size)
 
     manager->allocated_elements = size;
 
-    manager->name = (char**)malloc(size * sizeof(char*));
+    manager->name = (char**)calloc(size, sizeof(char*));
     manager->mesh = (TE_Mesh*)malloc(size * sizeof(TE_Mesh));
 
     return manager;
