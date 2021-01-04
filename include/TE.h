@@ -8,5 +8,6 @@
 #include"TE_shader.h"
 #include"TE_graphics.h"
 #include"TE_texture.h"
+#include"TE_standard.h"
 
 #endif
